@@ -46,12 +46,16 @@ class AjaxController extends AdminbaseController{
 				$html.='<b style=" font-size:14px !important;width: 15px; display: inline-block; text-align:center" class="zimu_b">'.strtoupper($v).'</b>';
 				$html.='：<input type="text" name="post['.strtoupper($v).']" value="'.$selectques_info[$v].'" class="zimu_input" placeholder="请输入答案内容" style="width: 180px;">';
 				$html.='<label class="radio inline">';
-					$html.='<input type="checkbox" name="post[daan][]" class="daan_input" value="'.strtoupper($v).'" />符合';
+					if (strpos($selectques_info['daan'], strtoupper($v)) === FALSE) {
+						$html.='<input type="checkbox" name="post[daan][]" class="daan_input" value="'.strtoupper($v).'" />符合';
+					} else {
+						$html.='<input type="checkbox" name="post[daan][]" class="daan_input" checked value="'.strtoupper($v).'" />符合';
+					}
 				$html.='</label>';
 				$html.='<a class="btn" onClick="del(this)" href="javascript:">移除</a>';
 				//逻辑跳转
-				$html.='&nbsp;&nbsp;&nbsp;跳转至<select name="post[turn_to][]" display="inline"  style="width:120px">
-                            <option value="">请选择</option>';
+				$html.='&nbsp;&nbsp;&nbsp;跳转至<select name="post[turn_to][]" display="inline"  style="width:120px">';
+				$html.='<option value="">请选择</option>';
                             foreach ($ques_list as $key => $value){
                             	if($selectques_info['turn_to'][$v]==$value['ques_id'])
                             	{
