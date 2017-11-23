@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>个人背景信息填写</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/ui.css" />
+<style type="text/css">
+*{ font-size:16px;}
+a, span, label, b{ font-size:16px !important; }
+background{ background:#FFF !important}
+	
+</style>
+</head>
+
+<body style="background: #fff;">
+
+    <div class="back-project">
+        <!--<div class="title5">
+            <h3 class="color-sky-blue">{$project_info.title}</h3>
+            <h4 class="color-grey"><?php echo date("Y-m-d",$project_info['project_start_time'])?>开始</h4>
+        </div>
+        <div style="padding: 0 20px">
+            <div class="btn-img" onClick="show('{$new_info.name}',{$new_info.process_id})">
+                {$new_info.name}
+            </div>
+        </div>-->
+        <div class="ui-content">
+            <div class="ui-step">
+            <?php $i=0?>
+            <foreach name="new_list" key="k" item="v">
+                <div class="ui-step-item ui-flex">
+                    <span class="time-title">{$k}</span>
+                    <div class="ui-flex-1">
+                     <foreach name="v" item="vv">
+                        <div class="text">
+                        	<?php $i++; if($sub_num==$i){?>
+                            <i class="icon bg-pink"></i>
+                            <?php }else {?>
+                            <i class="icon bg-grey"></i>
+                            <?php }?>
+                            <div class="vertical-line bg-grey"></div>
+                            <?php if($vv['start_time']!='::'){?><b><!--{$vv.start_time}-->{$vv.start_time}~{$vv.end_time}</b><?php }?>
+                            <p>
+                                <font style="width:75%; display:block">
+                                    {$vv.name}
+                                    ->
+                                    <span style="color:red; margin:0 20px;">{$vv.href_url}</span>
+                                    <?php if(!empty($vv['process_desc'])){?>
+                                    <i class="ok">重做</i>
+                                    <!--<i class='font color-grey' style="width:120px;"><?php echo date("H:i:s",$vv['process_desc']['mp_time']);?></i>-->
+                                    <?php }?>
+                                    
+                                </font>
+                                
+                            </p>
+                            <span style="color:red; font-size:0.8em; width:66%; display:block">{$vv.desc}</span>
+                        </div>
+                      </foreach>
+                    </div>
+                </div>
+           </foreach>
+                
+            </div>
+        </div>
+    </div>
+</body>
+<script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>
+
+</html>

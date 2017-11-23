@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>照片上传</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/ui.css" />
+    <script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="video/jquery.form.js"></script>
+<style type="text/css">
+.demo{width: auto; margin:30px auto; font-size:14px; font-weight:normal}
+.demo p{line-height:32px}
+.btn1{position: relative;overflow: hidden;margin-right: 4px;display:inline-block;*display:inline;padding:4px 10px 4px;font-size:14px;line-height:18px;*line-height:20px;color:#fff;text-align:center;vertical-align:middle;cursor:pointer;background-color:#5bb75b;border:1px solid #cccccc;border-color:#e6e6e6 #e6e6e6 #bfbfbf;border-bottom-color:#b3b3b3;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
+.btn1 input {position: absolute;top: 0; right: 0;margin: 0;border: solid transparent;opacity: 0;filter:alpha(opacity=0); cursor: pointer;}
+.progress1 { position:relative;  width:150px;padding: 1px; border-radius:3px; display:none}
+.bar {background-color: #CCC; display:block; width:0%; height:30px; border-radius: 3px; }
+.percent { position:absolute; height:18px; display:inline-block; top:3px; left:2%; }
+.files{height:22px; line-height:22px; margin:10px 0}
+.delimg{margin-left:20px; color:#090; cursor:pointer}
+form{ margin:0px;}
+</style>
+</head>
+
+<style type="text/css">
+#fileupload {
+opacity: 0;
+position: absolute;
+z-index: 10;
+width:100%;
+height:50px;
+margin:-40px 0 0 -50%;
+}
+</style>
+
+<body>
+<form name="formUser" method="post" action="" id="submit">
+    <div class="again-photo">
+
+        <ul class="ui-table-view" id="img">
+            
+        </ul>
+
+        <div class="add-photo">
+        	<a href="javascript:" class="a">
+                <img src="__TMPL__Public/mobile/images/add-photo.png" alt="">
+                <span class="color-pink">添加照片</span>
+                <!-- <input id="fileupload" type="file" name="mypic">  -->
+                 <input id="fileupload" type="file" name="mypic" accept="image/*" multiple>
+            </a>
+
+        </div>
+        		<!--<div class="demo">
+                <!-- <input type="file"><br/>
+                      <p>说明：示例中只允许上传gif/jpg格式的图片，图片大小不能超过500k。</p>- ->
+                      <div class="btn1">
+                          <span>添加附件</span>
+                          <input id="fileupload" type="file" name="mypic">
+                      </div>
+                      <div class="progress1">
+                          <span class="bar"></span><span class="percent">0%</span >
+                      </div>
+                      <div class="files"></div>
+                      <div id="showimg">
+                      	
+                      </div>
+                 </div>-->
+        <div style="padding: 0 20px">
+        <a href="javascript:" onclick="tijiao('submit')">
+            <div class="btn-img">
+                提交照片
+            </div>
+        </a>
+        </div>
+    </div>
+    <input type="hidden" name="project_id" value="{$id.project_id}">
+    <input type="hidden" name="process_id" value="{$id.id}">
+
+
+</body>
+
+<script type="text/javascript">
+
+	
+	function del(e)
+	{
+		$(e).parent().detach();
+		
+	}
+	function tijiao(form){
+		if($("#img").children().length!="{$process_info.ques_type}")
+		{
+			alert("照片规定上传{$process_info.ques_type}张、上传数量不符！");
+		}else
+		{
+			$.ajax({
+				type : "POST",
+				url:"index.php?g=Mobile&m=Process&a=photo_ajax",//+tab,
+				data : $('#'+form).serialize(),// 你的formid
+				dataType: "html",
+				success: function(data){
+					window.location="index.php?g=&m=Process&a=index&project_id=<?php echo $_GET['project_id']?>";
+					//alert(data);return true;
+				}
+			});
+			
+		}
+		
+	}
+</script>
+
+
+
+<script type="text/javascript">
+$("#fileupload").click(function(){
+	//alert(153);
+	if($("#img").children().length>="{$process_info.ques_type}")
+	{
+		alert("照片规定上传{$process_info.ques_type}张、超过上传数量！");return false;
+	}
+})
+$(function () {
+
+	$("#fileupload").wrap("<form id='myupload' action='index.php?g=mobile&m=upload&a=upload_photos&project_id={$process_info.project_id}' method='post' enctype='multipart/form-data'></form>");
+    $("#fileupload").change(function(){
+    	//进度条
+    		html='<li class="ui-table-view-cell">';
+				html+='<a href="javascript:" onClick="del(this)" class="ui-navigate-photo" style="z-index:100">删除</a>';
+				html+='<div class="ui-flex">';
+					html+='<div class="img">';
+						html+='<img src="" class="img_list[]" alt="">';
+						// html+='<img class="video_img" src="themes/simplebootx/Public/mobile/images/default_vedio.png" alt="">';
+                        	// html+='<img class="icon" src="__TMPL__Public/mobile/images/vedio@2x.png" alt="">';
+						html+='</div>';
+						html+='<div class="ui-media-body ui-flex-1">';
+							html+='<div class="ui-flex text color-pink">';
+								html+='<div class="ui-flex-1">';
+									html+='<div class="progress1"><span class="bar"></span><span class="percent">0%</span ></div>';
+								html+='</div>';
+								html+='<div class="ui-flex-3">';
+									html+='<span class="btn"></span>';
+								html+='</div>';
+							html+='</div>';
+						html+='</div>';
+					html+='</div>';
+					html+='<input type="hidden" value="" name="thumb[]">';
+            		// html+='<input type="hidden" value="" name="move_type[]">';
+				html+='</li>';
+		$("#img").append(html);
+		// var bar = $('.bar');
+		// var percent = $('.percent');
+		var showimg = $('#showimg');
+		// var progress = $(".progress1");
+		var files = $(".files");
+		// var btn = $(".btn");
+		var progress1 =document.getElementsByClassName("progress1");
+		var bar =document.getElementsByClassName("bar");
+		var percent =document.getElementsByClassName("percent");
+		var btn =document.getElementsByClassName("btn");
+		var i=progress1.length-1;
+		//将dom对象转化为jquery对象
+		var progress=$(progress1[i]);
+		var btn=$(btn[i]);
+		var bar=$(bar[i]);
+		var percent=$(percent[i]);
+
+		$("#myupload").ajaxSubmit({
+			dataType:  'json',
+			beforeSend: function() {
+        		showimg.empty();
+				progress.show();
+        		var percentVal = '0%';
+        		bar.width(percentVal);
+        		percent.html(percentVal);
+				btn.html("上传中...");
+    		},
+    		uploadProgress: function(event, position, total, percentComplete) {
+        		var percentVal = percentComplete + '%';
+        		bar.width(percentVal);
+        		percent.html(percentVal);
+    		},
+			success: function(data) {
+				//alert(data.mypic.name);
+				//console.info(data.mypic); 
+				/*obj=data.mypic;
+				$.each(obj, function(k, v){
+					console.info("k=" + k);
+					console.info("v=" + v);
+				});*/
+				// html='<li class="ui-table-view-cell">';
+				// 	html+='<a href="javascript:" onClick="del(this)" class="ui-navigate-photo" style="z-index:100">删除</a>';
+				// 	html+='<div class="ui-flex">';
+				// 		html+='<div class="img">';
+				// 			//html+='<img src="'+data.mypic.url+'" alt="">';
+				// 			html+='<img src="__TMPL__Public/mobile/images/vedio2@2x.png" alt="">';
+    //                     	html+='<img class="icon" src="__TMPL__Public/mobile/images/vedio@2x.png" alt="">';
+				// 		html+='</div>';
+				// 		html+='<div class="ui-media-body ui-flex-1">';
+				// 			html+='<div class="ui-flex text color-pink">';
+				// 				html+='<div class="ui-flex-1">';
+				// 					html+='<span>100%</span>';
+				// 				html+='</div>';
+				// 				html+='<div class="ui-flex-3">';
+				// 					html+='<span>上传成功</span>';
+				// 				html+='</div>';
+				// 			html+='</div>';
+				// 		html+='</div>';
+				// 	html+='</div>';
+				// 	html+='<input type="hidden" value="'+data.mypic.url+'" name="move[]">';
+    			//  html+='<input type="hidden" value="'+data.mypic.type+'" name="move_type[]">';
+				// html+='</li>';
+				var thumbs=document.getElementsByName('thumb[]');
+				var img_list=document.getElementsByClassName('img_list[]');
+				var m_num=thumbs.length-1;
+				thumbs[m_num].value=data.mypic.url;
+				img_list[m_num].src=data.mypic.url;
+				// moves_type[m_num].value=data.mypic.type;
+				// $("#img").append(html);
+				btn.html("上传完成");
+				html2='<span class="bar"></span><span class="percent">100%</span >';
+				$('.progress1').html(html2);
+				/*
+				html='<a href="index.php?g=&m=Material&a=move_show&url='+data.mypic.url+'" target="_blank">上传成功点击查看</a>';
+				html+='<input type="hidden" value="'+data.mypic.url+'" name="post[move]">';
+            	html+='<input type="hidden" value="'+data.mypic.type+'" name="post[move_type]">';
+				showimg.html(html);
+				btn.html("添加附件");*/
+			},
+			error:function(xhr){
+				alert('上传中途出现错误');
+				btn.html("上传失败");
+				bar.width('0')
+				files.html(xhr.responseText);
+			}
+		});
+	});
+	
+	/*$(".delimg").live('click',function(){
+		var pic = $(this).attr("rel");
+		$.post("action.php?act=delimg",{imagename:pic},function(msg){
+			if(msg==1){
+				files.html("删除成功.");
+				showimg.empty();
+				progress.hide();
+			}else{
+				alert(msg);
+			}
+		});
+	});*/
+});
+</script>
+</html>

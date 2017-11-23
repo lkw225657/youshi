@@ -1,1 +1,325 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>项目反馈</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/ui.css" />
+    
+</head>
+<style type="text/css">
+.ui-step .ui-step-item .text i.blue {
+  
+  font-size: 20px;
+  width:30px;
+  height:20px;
+  line-height: 20px;
+  font-style: normal;
+  background-color: #1db3cb;
+  color: #FFF;
+
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+</style>
+
+<body style="background: #fff;" onload="space_time_js()">
+
+    <div class="back-project">
+        <div class="title5">
+            <h3 class="color-sky-blue">{$project_info.title}</h3>
+            <h4 class="color-grey"><?php echo date("Y-m-d",$project_info['project_start_time'])?>开始</h4>
+        </div>
+        <input type='hidden' id='space_time' name='space_time_num' value="{$new_info.left_time}">
+        <div style="padding: 0 20px">
+        <?php 
+        if($new_info[name]=='签到扫描'||$new_info[name]=='使用扫描'|| $new_info[name]=='现场测试')
+			{ if($new_info['is_can']=='go'){ if($new_info[name]=='现场测试'){
+			?> <div class='btn-img' id='' style='display: block'>{$new_info.name}
+            </div>
+			<?php } else{ ?> 
+              <div class='btn-img' id='scanQRCode1' style='display: block'>{$new_info.name}
+            </div>
+       <?php }}else{ ?>
+            <div class='btn-img' id='' style='display: block'>请在{$new_info.is_can}之后开始或者进行下一步
+            </div>
+    <?php } 
+
+      }else{ 
+      if($new_info['is_can']=='go'||$new_info['is_can']==''||empty($new_info['is_can'])){
+			?>
+            <div class='btn-img' id='btn-img' onClick="show('{$new_info.process_id}')" style='display: block'>{$new_info.name}
+            </div>
+           <?php }else{ ?>
+          <div class='btn-img' id='btn-img' onClick="show('{$new_info.process_id}')" style='display: block'>请在{$new_info.is_can}之后开始或者进行下一步
+            </div>
+          <?php }   
+            } ?>
+
+        
+
+
+           <!--  <div class="btn-img" id='btn-img' id='scanQRCode1' style='display: block' onClick="show('{$new_info.name}',{$new_info.process_id})">
+                {$new_info.name}
+            </div> -->
+            <!-- 间隔时间内不能点击 -->
+             <div class="btn-img" id="btn-img-space" style='display: none'>
+                {$new_info.name}
+            </div>
+        </div>
+        <div class="ui-content">
+            <div class="ui-step">
+            <?php if($airradio_info['is_show']=='1'){ ?>
+            <div class="ui-step-item ui-flex">
+                    <span class="time-title" style='width: 134px;'></span>
+                    <div class="ui-flex-1">
+                    <a href="{:U('process/airradio',array('project_id'=>$_GET['project_id']))}"> 
+
+                        <div class="text">
+                           
+                          <i class="icon" style='background-color: #1db3cb'></i>查看环境数据 <i class='blue'>查看</i>
+
+                        </div>
+                    </a>
+                    
+                    </div>
+                </div>
+                <?php } ?>
+                
+            <?php $i=0?>
+            <foreach name="new_list" key="k" item="v">
+                <div class="ui-step-item ui-flex">
+                    <span class="time-title">{$k}<br> <?php if($new_space[$k]['section_date']){
+
+                    ?> <?php if($new_space[$k][section_date]){ ?><i style="color:pink">至</i><br>  <?php  print_r($new_space[$k][section_date]); ?><?php} }?></span>
+                    <div class="ui-flex-1">
+                     <foreach name="v" item="vv">
+                        <div class="text">
+                        	<?php  if($new_info['process_id']&&$new_info['process_id']==$vv['process_id']){?>
+                            <i class="icon bg-pink"></i>
+                            <?php }else {?>
+                            <i class="icon bg-grey"></i>
+                            <?php }?>
+                            <div class="vertical-line bg-grey"></div>
+                            <?php if($vv['start_time']!='::'){?><b><!--{$vv.start_time}-->{$vv.start_time}~{$vv.end_time}</b><?php }?>
+                            <p>
+                                <font style="width:75%; display:block">
+                                    {$vv.name}
+                                    <?php if(!empty($vv['space_time'])){?><span class="color-sky-blue font-small">间隔上一步<?php echo $vv['space_time']?>分钟后</span><?php }?>
+                                    
+                                    <?php if(!empty($vv['process_desc'])){?>
+                                    <i class="ok">完成</i>
+                                    <i class='font color-grey' style="width:120px;"><?php echo date("H:i:s",$vv['process_desc']['mp_time']);?></i>
+                                    <?php }?>
+                                </font>
+                                
+                            </p>
+                            <span style="color:red; font-size:0.8em; width:66%; display:block">{$vv.desc}</span>
+                        </div>
+                      </foreach>
+                    </div>
+                </div>
+           </foreach>
+                
+            </div>
+        </div>
+    </div>
+
+  <div class="member_Promptcont baoming_ok" <?php if($new_info['success_all']=='yes'){ ?> style='display: block;z-index: 9999999'<?php } ?> >
+  <div class="member_Prompt">
+      <div class="member_Prompt_title">项目反馈</div>
+        <div class="member_Prompt_desc">
+          <!--<p>恭喜您报名成功，获得20个积分。</p>-->
+            <p>您已完成本次项目的所有反馈任务。我们的工作人员将对您的数据进行审核，审核通过后将会获得{$project_info.integral}个积分的奖励和{$project_info.price}元感谢金。感谢您的参与！</p>
+        </div>
+        <div class="member_Prompt_button"><a href="{:U('project/project_show',array('id'=>$project_info['id']))}"><span style="color:#d35e7e;">确定</span></a></div>
+    </div>
+</div>
+
+
+	<script type="text/javascript">
+	//倒计时进行间隔时间 单位是秒
+	var m=document.getElementById('space_time').value;
+
+	seconds=m;
+	var process_name=document.getElementById('btn-img').innerHTML;
+	function space_time_js(){
+		if(m > 0){
+		//将seconds实时转化为分和秒
+		var minute=Math.floor(seconds/60);
+		var se=seconds%60;
+		var ht=minute+'分'+se+'秒后才可以进行'+process_name;
+		$('#btn-img-space').html(ht);
+		 if(seconds == 0)
+			{
+			$('#btn-img-space').hide();
+			$('#btn-img').show();	
+			}
+		 else
+		 {
+		 	$('#btn-img-space').show();		 	
+			$('#btn-img').hide();
+		 	window.setTimeout('space_time_js()',1000);
+		 }
+			
+		seconds--;
+
+		}else{
+			$('#btn-img').show();
+		}
+		
+	}
+
+
+	function show(id)
+	{
+    var name=$('#btn-img').html();
+        var name=$.trim(name);
+		//alert(name+'----'+id);
+		if(name=='签到扫描')
+		{
+
+
+			// $.ajax({
+			// 	type : "POST",
+			// 	url:"index.php?g=Mobile&m=process&a=qiandao_ajax&process_id="+id,//+tab,
+			// 	//data : $('#'+form).serialize(),// 你的formid
+			// 	dataType: "html",
+			// 	success: function(data){
+			// 		location.replace(location.href);
+			// 		alert(data);return true;
+			// 	}
+			// });
+		}
+		
+		if(name=='使用扫描')
+		{
+			// $.ajax({
+			// 	type : "POST",
+			// 	url:"index.php?g=Mobile&m=process&a=shiyong_ajax&process_id="+id+"&project_id=<?php echo $_GET['project_id']?>",//+tab,
+			// 	//data : $('#'+form).serialize(),// 你的formid
+			// 	dataType: "html",
+			// 	success: function(data){
+			// 		location.replace(location.href);
+			// 		alert(data);return true;
+			// 	}
+			// });
+		}
+		
+		if(name=='现场测试')
+		{
+			window.location="index.php?g=&m=Process&a=diaocha&project_id=<?php echo $_GET['project_id']?>&sort=1&type=3";
+		}
+		
+		if(name=='照片上传')
+		{
+			window.location="index.php?g=&m=Process&a=photo&project_id=<?php echo $_GET['project_id']?>&id="+id;
+		}
+		
+		if(name=='视频上传')
+		{
+			window.location="index.php?g=&m=Process&a=video&project_id=<?php echo $_GET['project_id']?>&id="+id;
+		}
+		
+		if(name=='问卷反馈')
+		{
+			window.location="index.php?g=&m=Process&a=diaocha&project_id=<?php echo $_GET['project_id']?>&sort=1&type=4&num={$new_info.ques_type}&process_id={$new_info.process_id}";
+		}
+    if(name=='获取环境数据')
+    {
+      window.location="index.php?g=&m=Process&a=airradio&project_id=<?php echo $_GET['project_id']?>&id="+id;
+    }
+	}
+	</script>
+
+</body>
+<script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+  /*
+   * 注意：
+   * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+   * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+   * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+   *
+   * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+   * 邮箱地址：weixin-open@qq.com
+   * 邮件主题：【微信JS-SDK反馈】具体问题
+   * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+   */
+  wx.config({
+    debug: false,
+    appId: '<?php echo $signPackage["appId"];?>',
+    timestamp: <?php echo $signPackage["timestamp"];?>,
+    nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+    signature: '<?php echo $signPackage["signature"];?>',
+    jsApiList: [
+      // 所有要调用的 API 都要加到这个列表中
+      'checkJsApi',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'onMenuShareQZone',
+        'hideMenuItems',
+        'showMenuItems',
+        'hideAllNonBaseMenuItem',
+        'showAllNonBaseMenuItem',
+        'translateVoice',
+        'startRecord',
+        'stopRecord',
+        'onVoiceRecordEnd',
+        'playVoice',
+        'onVoicePlayEnd',
+        'pauseVoice',
+        'stopVoice',
+        'uploadVoice',
+        'downloadVoice',
+        'chooseImage',
+        'previewImage',
+        'uploadImage',
+        'downloadImage',
+        'getNetworkType',
+        'openLocation',
+        'getLocation',
+        'hideOptionMenu',
+        'showOptionMenu',
+        'closeWindow',
+        'scanQRCode',
+        'chooseWXPay',
+        'openProductSpecificView',
+        'addCard',
+        'chooseCard',
+        'openCard'
+
+    ]
+  });
+  wx.ready(function () {
+      // 9 微信原生接口
+      // 9.1.1 扫描二维码并返回结果
+     //  document.querySelector('#scanQRCode1').onclick = function () {
+        // wx.scanQRCode({
+        //   desc: 'scanQRCode desc'
+        // });
+  // };
+ 
+      // 9.1.2 扫描二维码并返回结果
+      document.querySelector('#scanQRCode1').onclick = function () {
+        wx.scanQRCode({
+          needResult: 0,
+          desc: 'scanQRCode desc',
+          success: function (res) {
+         //  alert(JSON.stringify(res));
+          }
+        });
+      };
+ });
+
+wx.error(function (res) {
+  alert(res.errMsg);
+});
+</script>
+</html>

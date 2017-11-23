@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>视频上传</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/ui.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/statics/webuploader-0.1.5/webuploader.css" />
+    <script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/statics/webuploader-0.1.5/webuploader.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/statics/webuploader-0.1.5/md5.js"></script>
+    <script type="text/javascript" src="video/jquery.form.js"></script>
+<style type="text/css">
+.demo{width: auto; margin:30px auto; font-size:14px; font-weight:normal}
+.demo p{line-height:32px}
+.btn1{position: relative;overflow: hidden;margin-right: 4px;display:inline-block;*display:inline;padding:4px 10px 4px;font-size:14px;line-height:18px;*line-height:20px;color:#fff;text-align:center;vertical-align:middle;cursor:pointer;background-color:#5bb75b;border:1px solid #cccccc;border-color:#e6e6e6 #e6e6e6 #bfbfbf;border-bottom-color:#b3b3b3;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
+.btn1 input {position: absolute;top: 0; right: 0;margin: 0;border: solid transparent;opacity: 0;filter:alpha(opacity=0); cursor: pointer;}
+.progress1 { position:relative;  width:150px;padding: 1px; border-radius:3px; display:none}
+.bar {background-color: #CCC; display:block; width:0%; height:30px; border-radius: 3px; }
+.percent { position:absolute; height:18px; display:inline-block; top:3px; left:2%; }
+.files{height:22px; line-height:22px; margin:10px 0}
+.delimg{margin-left:20px; color:#090; cursor:pointer}
+form{ margin:0px;}
+</style>
+</head>
+
+<style type="text/css">
+#fileupload {
+opacity: 0;
+position: absolute;
+z-index: 10;
+width:100%;
+height:50px;
+margin:-40px 0 0 -50%;
+}
+</style>
+
+<body>
+<form name="formUser" method="post" action="" id="submit">
+    <div class="again-photo">
+
+        <ul class="ui-table-view" id="theList">
+            
+        </ul>
+
+        <div class="add-photo"  id="picker">
+        	<a href="javascript:" class="a">
+                <img src="__TMPL__Public/mobile/images/add-photo.png" alt="">
+                <span class="color-pink">添加视频</span>
+            </a>
+
+        </div>
+
+        <div style="padding: 0 20px">
+        <a href="javascript:" onclick="tijiao('submit')">
+            <div class="btn-img">
+                提交视频
+            </div>
+        </a>
+        </div>
+    </div>
+    <input type="hidden" name="project_id" value="{$id.project_id}">
+    <input type="hidden" name="process_id" value="{$id.id}">
+
+
+</body>
+
+<script type="text/javascript">
+	var progressNum = 0;
+	function tijiao(form){
+		if(progressNum != 0){
+			alert("请等待视频上传完成！");
+		}
+		else if($("#theList").children().length!="{$process_info.ques_type}")
+		{
+			alert("视频规定上传{$process_info.ques_type}张、上传数量不符！");
+		}else
+		{
+			$.ajax({
+				type : "POST",
+				url:"index.php?g=Mobile&m=Process&a=video_ajax",//+tab,
+				data : $('#'+form).serialize(),// 你的formid
+				dataType: "html",
+				success: function(data){
+					window.location="index.php?g=&m=Process&a=index&project_id=<?php echo $_GET['project_id']?>";
+					//alert(data);return true;
+				}
+			});
+			
+		}
+	}
+</script>
+
+<script type="text/javascript">
+
+jQuery(function() {
+    var $ = jQuery;   // just in case. Make sure it's not an other libaray.
+	var chunkSize = 2000 * 1024;        //分块大小
+	function getServer(){   //测试用，根据不同类型的后端返回对应的请求地址
+		return 'index.php?g=mobile&m=MoveUpload&a=move&project_id={$process_info.project_id}';
+	}
+	var backEndUrl = getServer();
+	
+	var uploader = WebUploader.create({
+		swf: "__PUBLIC__/statics/webuploader-0.1.5/Uploader.swf"
+		, server: backEndUrl
+		, pick: "#picker"
+		, disableGlobalDnd: true
+		, chunked: true
+		, chunkSize: chunkSize
+		, formData: function(){return $.extend(true, {}, {});}
+		, fileNumLimit: '{$process_info.ques_type}'
+		, fileSingleSizeLimit: 1000 * 1024 * 1024
+		, duplicate: true
+		, auto: true
+		, threads: 1
+		, accept: {
+				title: 'Images',
+				extensions: 'swf,wmv,asf,wma,mp3,asx,mid,midi,rm,ra,rmvb,mp4,mov,avi,wav,ram,mpg,mpeg,flv',
+			}
+	});
+	uploader.on("fileQueued", function(file){
+		var html='<li class="ui-table-view-cell" id="'+file.id+'">';
+		html+='<a href="javascript:" class="ui-navigate-photo" style="z-index:100">删除</a>';
+		html+='<div class="ui-flex">';
+			html+='<div class="img">';
+				html+='<img class="video_img" src="themes/simplebootx/Public/mobile/images/default_vedio.png" alt="">';
+				html+='<img class="icon" src="__TMPL__Public/mobile/images/vedio@2x.png" alt="">';
+				html+='</div>';
+				html+='<div class="ui-media-body ui-flex-1">';
+					html+='<div class="ui-flex text color-pink">';
+						html+='<div class="ui-flex-1">';
+							html+='<div class="progress1"><span class="bar"></span><span class="percent">0%</span ></div>';
+						html+='</div>';
+						html+='<div class="ui-flex-3">';
+							html+='<span class="btn"></span>';
+						html+='</div>';
+					html+='</div>';
+				html+='</div>';
+			html+='</div>';
+			html+='<input type="hidden" value="" name="move[]" id="move">';
+			html+='<input type="hidden" value="" name="move_type[]" id="move_type">';
+		html+='</li>';
+		
+		$("#theList").append(html);
+	});
+	
+	uploader.on("error",function (type){
+        if (type=="Q_TYPE_DENIED"){
+            alert("请上传视频文件");
+        }else if(type=="F_EXCEED_SIZE"){
+            alert("文件大小不能超过900M");
+        } else if(type =="Q_EXCEED_NUM_LIMIT"){
+			alert("文件数量不能超过{$process_info.ques_type}个");
+		}
+    });
+	
+	$("#theList").on("click", ".ui-navigate-photo", function(){
+		if($("#" + $(this).parent().attr("id") + " .btn").text()=='上传中'){
+			alert("上传中的视频无法删除！");
+			return;
+		}
+		uploader.removeFile($(this).parent().attr("id"));	//从上传文件列表中删除
+		$(this).parent().remove();	//从上传列表dom中删除
+	});
+	
+	uploader.on("uploadProgress", function(file, progress){
+		progressNum = uploader.getStats().progressNum;
+		$("#" + file.id + " .progress1").show();
+		$("#" + file.id + " .progress1 .percent").html(parseInt(progress * 99) + "%");
+		$("#" + file.id + " .progress1 .bar").width(parseInt(progress * 99) + "%");
+		$("#" + file.id + " .btn").text("上传中");
+	});
+	uploader.on('uploadSuccess',function(file ,response ){
+		progressNum = uploader.getStats().progressNum;
+		$("#" + file.id + " .btn").text("上传成功");
+		$("#" + file.id).find("#move").val(response._raw + file.name);
+		$("#" + file.id).find("#move_type").val(file.type);
+		$("#" + file.id + " .progress1 .percent").html("100%");
+	});
+});
+</script>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>问卷调查</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/ui.css" />
+    <script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>
+</head>
+
+<body>
+
+    <div class="screening">
+        <div class="title5">
+            <h3 class="color-sky-blue">{$ques_info.ques_nam}</h3>
+            <small class="color-grey">调查问卷填写</small>
+        </div>
+        <form name="formUser" method="post" action="" id="submit">
+        <div class="ui-container">
+            <div class="ui-form-wrapper">
+                <div class="qu-item">
+                    <h4 class="color-pink">Q{$ques_info.sort}.{$ques_info.name}</h4>
+                    
+                    <if condition="($ques_info.class eq '问答题')">
+						<label class="textarea">
+                            <textarea name="ques">{$ques_info.new_daan}</textarea>
+                   		</label>
+                    </if>
+                    
+                    <if condition="($ques_info.class neq '问答题')">
+                    <foreach name="ques_info.answer" key="k" item="v">
+                    <label>
+                        <input type="<?php if($ques_info['class']=='单选'){echo 'radio';}else{echo 'checkbox';}?>" value="{$k}" name="ques[]" value="simple1" class="radiocss" <?php if(in_array($k,$ques_info['new_daan'])){echo 'checked';}?> >
+                        <span>{$v}</span>
+                    </label>
+                    </foreach>
+                    </if>
+                    <!--<label>
+                        <input type="radio" name="group" value="simple1" class="radiocss">
+                        <span>3个以上</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="group" value="simple1" class="radiocss">
+                        <span>没有</span>
+                    </label>-->
+                </div>
+            </div>
+            <div class="ui-flex">
+            <?php if($_GET['sort']>1){?>
+            <!--{:U('question/ques',array('project_id'=>$ques_info['project_id'],'sort'=>$ques_info['sort']-1))}-->
+                <div class="ui-flex-1 ui-btn ui-btn-one">
+                    <a href="{:U('Process/diaocha',array('project_id'=>$ques_info['project_id'],'sort'=>$_GET['sort']-1,'process_id'=>$_GET['process_id'],'type'=>$_GET['type'],'num'=>$ques_info['num']))}">上一题</a>
+                </div>
+            <?php }?>
+                <div class="ui-flex-1 ui-btn ui-btn-two">
+                    <!--<a href="{:U('question/ques',array('project_id'=>$ques_info['project_id'],'sort'=>$ques_info['sort']+1))}">下一题</a>-->
+                    <a href="javascript:" onclick="tijiao('submit')">下一题</a>
+                </div>   
+            </div>
+        </div>
+        <input type="hidden" value="{$ques_info.ques_id}" name="ques_id">
+        <!--<input type="text" value="{$ques_info.sort}" name="sort">
+        <input type="text" value="{$ques_info.project_id}" name="project_id">-->
+        </form>
+    </div>
+
+</body>
+<script type="text/javascript">
+	function tijiao(form){
+        var ques =document.getElementsByName('ques[]');
+        var ques_txt =document.getElementsByName('ques');
+        var check_val='';
+        for(var i=0;i<ques.length;i++)
+        {
+            if(ques[i].checked)
+            {
+                check_val+=ques[i].value;
+            }
+        }
+        for(var k=0;k<ques_txt.length;k++)
+        {
+
+                check_val+=$.trim(ques_txt[i].value);
+
+        }
+        //check_val+=ques_txt.value;
+        if(check_val)
+        {
+            $.ajax({
+            type : "POST",
+            url:"index.php?g=Mobile&m=Process&a=ques_ajax",//+tab,
+            data : $('#'+form).serialize(),// 你的formid
+            dataType: "json",
+            success: function(data){
+                //alert(data);return true;
+                if(data.msg=='操作成功！')
+                {
+                    location.href="{:U('Process/diaocha',array('project_id'=>$ques_info['project_id'],'process_id'=>$_GET['process_id'],'sort'=>$_GET['sort']+1,'type'=>$_GET['type']))}&turn_to="+data.turn_to+"&num="+data.num;
+					 //拼接返回的json数据
+					//location.href="{:U('question/ques',array('project_id'=>$ques_info['project_id'],'sort'=>$_GET['sort']+1))}&turn_to="+data.turn_to;
+                }else
+                {
+                    alert(data.msg);
+                }
+            }
+        });
+        }else{
+            alert('请选择/填写你的答案！');
+        }
+		
+	}
+</script>
+
+</html>
