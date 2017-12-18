@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{$article_info.title}</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/ui.css" />
+</head>
+
+<body style="background: #fff">
+
+    <div class="other-detail">
+        <div class="other-title">
+            {$article_info.title}
+        </div>
+        <?php if(!empty($article_info['thumb'])){?>
+        <div class="other-title-img">
+            <img src="<?php echo $article_info['thumb']?>" alt="">
+        </div>
+        <?php }?>
+        <div class="other-text">
+        	<?php echo htmlspecialchars_decode($article_info['content'])?>
+        </div>
+    </div>
+
+
+</body>
+<script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>
+
+</html>

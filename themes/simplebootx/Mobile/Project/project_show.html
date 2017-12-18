@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>项目详情</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/ui.css" />
+    <script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>
+</head>
+
+<body style="background: #fff;">
+
+    <div class="projoct-detail">
+        <div class="title5">
+            <h3 class="color-sky-blue">{$project_info.title}</h3>
+            <h4 class="color-grey"><?php echo date("Y-m-d",$project_info['add_time'])?></h4>
+        </div>
+        <div class="content">
+            <div class="line"></div>
+            
+            <if condition="($project_info.project_desc neq '')">
+            <div class="ui-item ui-flex">
+                <span class="item-title">项目介绍:</span>
+                <div class="ui-flex-1">
+                    <p><?php echo htmlspecialchars_decode($project_info['project_desc']);?></p>
+                </div>
+            </div>
+            </if>
+            
+            <div class="ui-item ui-flex">
+                <span class="item-title">招募要求:</span>
+                <div class="ui-flex-1">
+                    <p><b class="color-pink">性别：</b>{$project_info.demand_sex}</p>
+                    <?php if(!empty($project_info['demand_age']) && $project_info['demand_age']!=','){?>
+                    <!--{$project_info.demand_height}-->
+                    <p><b class="color-pink">出生年月：</b>{$project_info.demand_age}</p>
+                    <?php }?>
+                    <?php if(!empty($project_info['demand_height']) && $project_info['demand_height']!='-'){?>
+                    <!--{$project_info.demand_height}-->
+                    <p><b class="color-pink">身高：</b>{$project_info.demand_height}</p>
+                    <?php }?>
+                    <?php if(!empty($project_info['demand_weight']) && $project_info['demand_weight']!='-'){?>
+                    <!--{$project_info.demand_height}-->
+                    <p><b class="color-pink">体重：</b>{$project_info.demand_weight}</p>
+                    <?php }?>
+
+                    <?php if(!empty($project_info['demand_educa']) && $project_info['demand_educa']!=','){?>
+                    <!--{$project_info.demand_height}-->
+                    <p><b class="color-pink">教育程度：</b>{$project_info.demand_educa}</p>
+                    <?php }?>
+                    <?php if(!empty($project_info['demand_marriage']) && $project_info['demand_marriage']!=','){?>
+                    <!--{$project_info.demand_height}-->
+                    <p><b class="color-pink">婚姻状况：</b>{$project_info.demand_marriage}</p>
+                    <?php }?>
+                    <?php if(!empty($project_info['demand_profession']) && $project_info['demand_profession']!=','){?>
+                    <!--{$project_info.demand_height}-->
+                    <p><b class="color-pink">职业：</b>{$project_info.demand_profession}</p>
+                    <?php }?>
+                    <?php if(!empty($project_info['demand_work']) && $project_info['demand_work']!=','){?>
+                    <!--{$project_info.demand_height}-->
+                    <p><b class="color-pink">工作环境：</b>{$project_info.demand_work}</p>
+                    <?php }?>
+                    <?php if(!empty($project_info['demand_month_income']) && $project_info['demand_month_income']!=','){?>
+                    <!--{$project_info.demand_height}-->
+                    <p><b class="color-pink">个人月收入：</b>{$project_info.demand_month_income}</p>
+                    <?php }?>
+                    <?php if(!empty($project_info['demand_family_income']) && $project_info['demand_family_income']!=','){?>
+                    <!--{$project_info.demand_height}-->
+                    <p><b class="color-pink">家庭月收入：</b>{$project_info.demand_family_income}</p>
+                    <?php }?>
+                    <?php if(!empty($project_info['demand_area']) && $project_info['demand_area']!=','){?>
+                    <!--{$project_info.demand_height}-->
+                    <p><b class="color-pink">地区：</b>{$project_info.demand_area}</p>
+                    <?php }?>
+                    <?php echo htmlspecialchars_decode($project_info['demand']);?>
+                    <!--<p>1、不在怀孕期，哺乳期，备孕期</p>
+                    <p>2、脸部没有疤痕</p>
+                    <p>3、无抽烟习惯</p>-->
+                </div>
+            </div>
+            <div class="ui-item ui-flex">
+                <span class="item-title">报名结束时间:</span>
+                <div class="ui-flex-1">
+                    <p><?php echo date("Y-m-d",$project_info['end_time'])?></p>
+                </div>
+            </div>
+            <div class="ui-item ui-flex">
+                <span class="item-title">预计项目起止:</span>
+                <div class="ui-flex-1">
+                    <p><?php echo date("Y-m-d",$project_info['project_start_time'])?> ~ <?php echo date("Y-m-d",$project_info['project_end_time'])?></p>
+                </div>
+            </div>
+            
+            <if condition="($project_info.type neq '3' )">
+            <div class="ui-item ui-flex">
+                <span class="item-title">到访次数:</span>
+                <div class="ui-flex-1">
+                    <p>{$project_info.project_num}</p>
+                </div>
+            </div>
+            </if>
+            
+            <if condition="($project_info.project_time neq '')">
+            <div class="ui-item ui-flex">
+                <span class="item-title">项目时长:</span>
+                <div class="ui-flex-1">
+                    <p><pre>{$project_info.project_time}</pre></p>
+                </div>
+            </div>
+            </if>
+            
+            <if condition="($project_info.project_address neq '')">
+            <div class="ui-item ui-flex">
+                <span class="item-title">到访地点:</span>
+                <div class="ui-flex-1">
+                    <p><pre>{$project_info.project_address}</pre></p>
+                </div>
+            </div>
+            </if>
+            
+            <if condition="($project_info.project_phone neq '')">
+            <div class="ui-item ui-flex">
+                <span class="item-title">联系方式:</span>
+                <div class="ui-flex-1">
+                    <p><pre>{$project_info.project_phone}</pre></p>
+                </div>
+            </div>
+            </if>
+            
+            <if condition="($project_info.price neq '0.00')">
+            <div class="ui-item ui-flex">
+                <span class="item-title">感谢金:</span>
+                <div class="ui-flex-1">
+                    <p class="color-pink"><?php echo $project_info['price_desc'];?></p>
+                </div>
+            </div>
+            </if>
+            
+            <if condition="($project_info.integral neq '')">
+            <div class="ui-item ui-flex">
+                <span class="item-title">激励积分:</span>
+                <div class="ui-flex-1">
+                    <p class="color-pink">{$project_info.integral}<!--50(会员120)--></p>
+                </div>
+            </div>
+            </if>
+        <!--追加需求-->
+            <if condition="($project_info.demand_other neq '')">
+            <foreach name="project_info.demand_other" item='v'>
+            <div class="ui-item ui-flex">
+                <span class="item-title">{$v.other_name}:</span>
+                <div class="ui-flex-1">
+                    <p class="color-pink">{$v.other_value}</p>
+                </div>
+            </div>
+            </foreach>
+            </if>
+            
+        </div>
+        <div class="share flex-right">
+            <div class="">
+                <a href="{:U('member/fenxiang')}">
+                    <img src="__TMPL__Public/mobile/images/invite@2x.png" alt="">
+                    <span>分享到朋友圈</span>
+                </a>
+                <a href="javascript:" onClick="shoucang({$project_info.id})">
+                    <img src="<?php if($project_info['shoucang']==1){echo '__TMPL__Public/mobile/images/collect1@1x.png';}else{echo '__TMPL__Public/mobile/images/collect1@2x.png';}?>" alt="">
+                    <span>收藏</span>
+                </a>
+            </div>
+        </div>
+        <div style="padding: 0 20px">
+        <?php if(empty($project_info['but_state'])){  if($project_info['type']=='4'){ ?> <div class="btn-img" onclick="tijiao('submit')">
+                我要报名
+            </div> <center><a style=" text-decoration:underline;color:blue;" href="index.php?g=&m=project&a=show_longterm&id=<?php echo $project_info['id']?>">查看组内项目</a></center>
+                 <?php }else{    ?>
+        	<div class="btn-img" onclick="tijiao('submit')">
+                我要报名
+            </div>
+            <?php }?>
+        <?php }elseif($project_info['but_state']==2){?>
+        	<div class="btn-img no-btn-img">
+                报名未通过
+            </div>
+        <?php }elseif($project_info['but_state']==1){ if($project_info['type']=='4'){   ?>
+        <div class="btn-img" id="scanQRCode1">
+                现场初筛签到
+            </div><center><a style=" text-decoration:underline;color:blue;" href="index.php?g=&m=project&a=show_longterm&id=<?php echo $project_info['id']?>">查看组内项目</a></center>
+                 <?php }else{    ?>
+           <div class="btn-img" id="scanQRCode1">
+                现场初筛签到
+            </div>
+            <?php }?>
+        	
+            
+        <?php }elseif($project_info['but_state']==3){?>
+            <div class="btn-img ok-btn-img">
+                报名完成
+            </div>
+           <?php }elseif($project_info['but_state']==44){?>
+            <div class="btn-img no-btn-img">
+                报名未通过
+            </div> 
+        <?php }elseif($project_info['but_state']==5){?>
+            <a href="index.php?g=&m=Process&a=index&project_id=<?php echo $project_info['id']?>">
+            <div class="btn-img">
+                现场筛选通过,查看项目安排
+            </div>
+            </a>
+             <center><a style=" text-decoration:underline;color:blue;" href="index.php?g=&m=project&a=show_project_desc&id=<?php echo $project_info['id']?>">产品及用法介绍</a></center>
+        <?php }elseif($project_info['but_state']==6){?>
+            <div class="btn-img no-btn-img">
+                参与中止
+            </div>
+        <?php }elseif($project_info['but_state']==7){?>
+            <div class="btn-img ok-btn-img">
+                已完成
+            </div>
+        <?php }elseif($project_info['but_state']==4){?>
+            <div class="btn-img no-btn-img">
+                现场筛选未通过
+            </div>
+        <?php }elseif($project_info['but_state']==51){?>
+            <div class="btn-img no-btn-img">
+                招募未开始
+            </div>
+        <?php }elseif($project_info['but_state']==52){?>
+            <div class="btn-img no-btn-img">
+                招募已结束
+            </div>
+        <?php }elseif($project_info['but_state']==8){?>
+            <div class="btn-img ok-btn-img">
+                筛选中
+            </div>
+        <?php }elseif($project_info['but_state']==21){?>
+        	<a href="index.php?g=&m=Process&a=diaocha&project_id=<?php echo $project_info['id']?>&type=5&sort=1">
+            <div class="btn-img">
+                填写问卷
+            </div>
+            </a>
+        <?php }elseif($project_info['but_state']==22){?>
+            <div class="btn-img ok-btn-img">
+                审核中
+            </div>
+        <?php }elseif($project_info['but_state']==34){?>
+            <div class="btn-img ok-btn-img">
+                审核中
+            </div>
+        <?php }elseif($project_info['but_state']==31){?>
+        	<a href="index.php?g=&m=member&a=queren&project_id=<?php echo $project_info['id']?>&type=1">
+            <div class="btn-img">
+                填写收货地址
+            </div>
+            </a>
+        <?php }elseif($project_info['but_state']==32){?>
+        	<div class="btn-img" id="scanQRCode1">
+                扫码签收试用品
+            </div>
+                <center><a style=" text-decoration:underline;color:blue;" href="index.php?g=&m=member&a=shiyong_wuliu&project_id=<?php echo $project_info['id']?>">查看快递信息</a></center>
+        <?php }elseif($project_info['but_state']==33){?>
+        	<a href="index.php?g=&m=Process&a=index&project_id=<?php echo $project_info['id']?>">
+            <div class="btn-img">
+                试用反馈
+            </div>
+            </a>
+        <?php }elseif($project_info['but_state']==41){?>
+        	<div class="btn-img ok-btn-img" id="">
+                已加入长期项目组
+            </div>
+            <center><a style=" text-decoration:underline;color:blue;" href="index.php?g=&m=project&a=show_longterm&id=<?php echo $project_info['id']?>">查看组内项目</a></center>
+        <?php }elseif($project_info['but_state']==42){?>
+           <!--  <a href="index.php?g=&m=project&a=project_show&id=<?php echo $project_info['longterm']?>"> -->
+            <div class="btn-img" id="longterm_on">
+                我要报名
+            </div>
+          <!--   </a> -->
+        <?php }?>
+        </div>
+    </div>
+    
+<script type="text/javascript">
+	function shoucang(p_id)
+	{
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Mobile&m=ajax&a=shoucang&type=2&project_id="+p_id,//+tab,
+			//data : $('#'+form).serialize(),// 你的formid
+			dataType: "html",
+			success: function(data){
+				
+				location.replace(location.href);
+				alert(data);return true;
+			}
+		});
+	}
+
+	function tijiao(form){
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Mobile&m=project&a=baoming_ajax&project_id={$project_info.id}",//+tab,
+			data : $('#'+form).serialize(),// 你的formid
+			dataType: "html",
+			success: function(data){
+				//alert(data);return true;
+				if(data=='报名成功！')
+				{
+					$(".baoming_ok").show();
+				}else
+				{
+					$(".member_Promptcont").show();
+                     $("#desc").html(data);
+				}
+			}
+		});
+	}
+</script>
+    
+<!--报名成功-->
+<div class="member_Promptcont baoming_ok" style="display:none;">
+	<div class="member_Prompt">
+    	<div class="member_Prompt_title">项目报名</div>
+        <div class="member_Prompt_desc">
+        	<p>报名前需要您完成一份甄别问卷，以便确定您是否适合参加本次项目。点击确定开始回答答卷。</p>
+        </div>
+        <div class="member_Prompt_button"><a href="{:U('question/ques',array('project_id'=>$project_info['id'],'sort'=>1))}"><span style="color:#d35e7e;">确定</span></a></div>
+    </div>
+</div>
+
+<!--报名成功-->
+<div class="member_Promptcont" id="longterm_msg" style="display:none;">
+    <div class="member_Prompt">
+        <div class="member_Prompt_title">项目报名</div>
+        <div class="member_Prompt_desc">
+            <p>抱歉，报名此项目前需要先加入长期项目组。是否要先报名进入该长期项目组？</p>
+        </div>
+        
+        <div class="member_Prompt_button"><span class="member_yc2" style="color:#CCC;">取消</span><a href="{:U('project/project_show',array('id'=>$project_info['longterm']))}"><span style="color:#d35e7e;">确定</span></a></div>
+    </div>
+</div>
+
+<!--报名失败-->
+<div class="member_Promptcont" style="display:none;">
+	<div class="member_Prompt">
+    	<div class="member_Prompt_title">项目报名</div>
+        <div class="member_Prompt_desc">
+        	<p id='desc'></p>
+        </div>
+        <div class="member_Prompt_button"><span class="member_yc2" style="color:#d35e7e;">确定</span></div>
+    </div>
+</div>
+<div class="member_Promptcont" id="erweima_msg" style="display:none;">
+    <div class="member_Prompt">
+        <div class="member_Prompt_title">扫码签收</div>
+        <div class="member_Prompt_desc">
+            <p>收货二维码不正确！</p>
+        </div>
+        <div class="member_Prompt_button"><span class="member_yc2" style="color:#d35e7e;">确定</span></div>
+    </div>
+</div>
+<script type="text/javascript">
+$(".member_yc2").click(function(){
+	$(".member_Promptcont").hide();
+});
+$("#longterm_on").click(function(){
+    $("#longterm_msg").show();
+});
+</script>
+</body>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+  /*
+   * 注意：
+   * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+   * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+   * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+   *
+   * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+   * 邮箱地址：weixin-open@qq.com
+   * 邮件主题：【微信JS-SDK反馈】具体问题
+   * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+   */
+  wx.config({
+    debug: false,
+    appId: '<?php echo $signPackage["appId"];?>',
+    timestamp: <?php echo $signPackage["timestamp"];?>,
+    nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+    signature: '<?php echo $signPackage["signature"];?>',
+    jsApiList: [
+      // 所有要调用的 API 都要加到这个列表中
+	  'checkJsApi',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'onMenuShareQZone',
+        'hideMenuItems',
+        'showMenuItems',
+        'hideAllNonBaseMenuItem',
+        'showAllNonBaseMenuItem',
+        'translateVoice',
+        'startRecord',
+        'stopRecord',
+        'onVoiceRecordEnd',
+        'playVoice',
+        'onVoicePlayEnd',
+        'pauseVoice',
+        'stopVoice',
+        'uploadVoice',
+        'downloadVoice',
+        'chooseImage',
+        'previewImage',
+        'uploadImage',
+        'downloadImage',
+        'getNetworkType',
+        'openLocation',
+        'getLocation',
+        'hideOptionMenu',
+        'showOptionMenu',
+        'closeWindow',
+        'scanQRCode',
+        'chooseWXPay',
+        'openProductSpecificView',
+        'addCard',
+        'chooseCard',
+        'openCard'
+
+    ]
+  });
+  
+  wx.ready(function () {
+	  // 9 微信原生接口
+	  // 9.1.1 扫描二维码并返回结果
+	 //  document.querySelector('#scanQRCode1').onclick = function () {
+		// wx.scanQRCode({
+		//   desc: 'scanQRCode desc';
+  //         location.href=desc;
+		// });
+	 //  };
+	  // 9.1.2 扫描二维码并返回结果
+	  document.querySelector('#scanQRCode1').onclick = function () {
+		wx.scanQRCode({
+		  needResult: 1,
+		  desc: 'scanQRCode desc',
+		  success: function (res) {
+//    	  alert(res.resultStr);
+            if (/^.+g=mobile&m=process&a=erweima_ajax&action=shouhuo&project_id={$project_info['id']}/.test(res.resultStr)) {
+                window.location.href = res.resultStr + '&v='+Math.random();
+            } else {
+                $("#erweima_msg").show();
+            }
+		  }
+		});
+	  };
+  });
+
+wx.error(function (res) {
+  alert(res.errMsg);
+});
+</script>
+
+
+</html>

@@ -1,0 +1,460 @@
+<admintpl file="header" />
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap js-check-wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#">报名列表</a></li>
+		<!--<li><a href="{:U('quespaper/quespaper_info')}">项目列表</a>-->
+	</ul>
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<table style='margin:0 auto'>
+				<tr ><td width="200px;" height='50px;' >用户姓名</td><td width="200px;" >{$row.name}</td>
+				<td width="200px;">注册时间</td><td width="200px;" >{$row.add_time}</td>
+				<td width="200px;" >性别</td><td width="200px;">{$row.sex}</td>
+				</tr>
+				<tr height='50px;'><td>年龄</td><td>{$row.age}岁</td>
+				<td>电话</td><td>{$row.phone}</td>
+				<td>地区</td><td>{$row.area_name}</td>
+				</tr>
+				<tr height='50px;'><td>注册来源</td><td>{$row.yaoqing}</td>
+				<td>等级</td><td>{$row.type}</td>
+				<td>微信绑定</td><td>{$row.is_weixin}</td>
+				</tr>
+				<tr height='50px;'><td>积分</td><td>{$row.integral}</td>
+				<td>状态</td><td>{$row.state}</td>
+				<td>信息完整度</td><td>{$row.wanzhengdu}</td>
+				</tr>
+				<tr height='50px;'><td>身高</td><td>{$row.height}&nbsp;&nbsp;CM</td>
+				<td>体重</td><td>{$row.weight}&nbsp;&nbsp;KG</td>
+				<td>教育程度</td><td>{$row.ededuca}</td>
+				</tr>
+				<tr height='50px;'><td>婚姻状况</td><td>{$row.marriage}</td>
+				<td>职业</td><td>{$row.profession}</td>
+				<td>工作环境</td><td>{$row.work}</td>
+				</tr>
+				<tr height='50px;'><td>个人月收入</td><td>{$row.month_income}</td>
+				<td>家庭月收入</td><td>{$row.family_income}</td>
+				<td>血型</td><td>{$row.blood}</td>
+				</tr>
+				<tr height='50px;'><td>籍贯</td><td>{$row.jiguan}</td>
+				<td>邮箱</td><td>{$row.email}</td>
+				<td>常住地址</td><td>{$row.new_area_name}</td>
+				</tr>
+				<tr height='50px;'><td>住房类型</td><td>{$row.housing}</td>
+				<td>过敏史</td><td>{$row.guomin}</td>
+				<td>慢性病历</td><td>{$row.manxing}</td>
+				</tr>
+				<tr height='50px;'><td>子女人数</td><td>{$row.child_num}</td>
+				<td>子女性别</td><td></td>
+				<td>子女出生年月</td><td></td>
+				</tr>
+				
+			</table>
+		</div>
+	</form>
+
+<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:" onClick="show_pro('type_list')">参与项目</a></li>
+		<li class="active"><a href="javascript:" onClick="show_pro('longterm')">长期项目组</a></li>
+		<li class="active"><a href="javascript:" onClick="show_pro('jifen')">积分</a></li>
+		<!--<li><a href="{:U('quespaper/quespaper_info')}">项目列表</a>-->
+	</ul>
+
+	<div id='type_list'  style='display: block'>
+	
+	<?php if(!empty($type1)){?>
+	<form class="js-ajax-form" action="" method="post">
+		<b style='font-size: 18px;'>产品测试</b>
+		<table class="table table-hover table-bordered table-list" with='80%'>
+			<thead>
+			<tr>
+
+				<th width="120">项目编号</th>
+				<th width="120">项目名称</th>
+
+                <th width="120">报名时间</th>
+                <th width="120">甄别问卷</th>
+				<th width="120">查看过程</th>
+                <th width="120">反馈问卷</th>
+				<th width="120">开始日期</th>
+
+                <th width="120">结束日期</th>
+                <th width="70">状态</th>
+			</tr>
+			</thead>
+			
+
+			<foreach name="type1" item="v1">
+				<tr>
+					
+					<td>{$v1.project_no}</td>
+					<td width="82">{$v1.project_name}</td>
+                   
+                    <td><php>if(!empty($v1['add_time'])){echo date("Y-m-d H:i:s",$v1['add_time']);}</php></td>
+
+                   <!--  <td></td> -->
+                    <td><a href="{:U('project/zhenbie_show',array('member_id'=>$v1['member_id'],'project_id'=>$v1['project_id'],'type'=>1))}" target="_blank">甄别问卷</a></td>
+                    <td><a href="javascript:" onClick="guocheng({$v1.project_id},{$v1.member_id});">查看过程</a></td>
+                    <td><a href="{:U('project/zhenbie_show',array('member_id'=>$v1['member_id'],'project_id'=>$v1['project_id'],'type'=>4))}" target="_blank">反馈问卷</a></td>
+                    <td width="82"><php>if(!empty($v1['enrol_start_time'])){echo $v1['enrol_start_time'];}</php></td>
+                    <td width="82"><php>if(!empty($v1['enrol_end_time'])){echo $v1['enrol_end_time'];}</php></td>
+                    <td>{$v1.state}</td>
+ 
+				</tr>
+			</foreach>
+
+		</table>
+		
+
+	</form>
+	<?php } ?>
+	<?php if(!empty($type2)){?>
+	<form class="js-ajax-form" action="" method="post">
+		<b style='font-size: 18px;'>在线调查</b>
+		<table class="table table-hover table-bordered table-list" with='80%'>
+			<thead>
+			<tr>
+
+				<th width="120">项目编号</th>
+				<th width="120">项目名称</th>
+
+                <th width="120">报名时间</th>
+                <th width="120">甄别问卷</th>
+				<th width="120">查看过程</th>
+                <th width="120">反馈问卷</th>
+				<th width="120">开始日期</th>
+
+                <th width="120">结束日期</th>
+                <th width="70">状态</th>
+			</tr>
+			</thead>
+			<foreach name="type2" item="v1">
+				<tr>
+					
+					<td>{$v1.project_no}</td>
+					<td width="82">{$v1.project_name}</td>
+                   
+                    <td><php>if(!empty($v1['add_time'])){echo date("Y-m-d H:i:s",$v1['add_time']);}</php></td>
+
+                   <!--  <td></td> -->
+                    <td><a href="{:U('project/zhenbie_show',array('member_id'=>$v1['member_id'],'project_id'=>$v1['project_id'],'type'=>1))}" target="_blank">甄别问卷</a></td>
+                    <td><a href="javascript:" onClick="guocheng({$v1.project_id},{$v1.member_id});">查看过程</a></td>
+                    <td><a href="{:U('project/zhenbie_show',array('member_id'=>$v1['member_id'],'project_id'=>$v1['project_id'],'type'=>4))}" target="_blank">反馈问卷</a></td>
+                    <td width="82"><php>if(!empty($v1['enrol_start_time'])){echo $v1['enrol_start_time'];}</php></td>
+                    <td width="82"><php>if(!empty($v1['enrol_end_time'])){echo $v1['enrol_end_time'];}</php></td>
+                    <td>{$v1.state}</td>
+ 
+				</tr>
+			</foreach>
+
+		</table>
+		
+
+	</form>
+	<?php } ?>
+	<?php if(!empty($type3)){?>
+	<form class="js-ajax-form" action="" method="post">
+		<b style='font-size: 18px;'>试用品派发</b>
+		<table class="table table-hover table-bordered table-list" with='80%'>
+			<thead>
+			<tr>
+
+				<th width="120">项目编号</th>
+				<th width="120">项目名称</th>
+
+                <th width="120">报名时间</th>
+                <th width="120">甄别问卷</th>
+				<th width="120">查看过程</th>
+                <th width="120">反馈问卷</th>
+				<th width="120">开始日期</th>
+
+                <th width="120">结束日期</th>
+                <th width="70">状态</th>
+			</tr>
+			</thead>
+			<foreach name="type3" item="v1">
+				<tr>
+					
+					<td>{$v1.project_no}</td>
+					<td width="82">{$v1.project_name}</td>
+                   
+                    <td><php>if(!empty($v1['add_time'])){echo date("Y-m-d H:i:s",$v1['add_time']);}</php></td>
+
+                   <!--  <td></td> -->
+                    <td><a href="{:U('project/zhenbie_show',array('member_id'=>$v1['member_id'],'project_id'=>$v1['project_id'],'type'=>1))}" target="_blank">甄别问卷</a></td>
+                    <td><a href="javascript:" onClick="guocheng({$v1.project_id},{$v1.member_id});">查看过程</a></td>
+                    <td><a href="{:U('project/zhenbie_show',array('member_id'=>$v1['member_id'],'project_id'=>$v1['project_id'],'type'=>4))}" target="_blank">反馈问卷</a></td>
+                    <td width="82"><php>if(!empty($v1['enrol_start_time'])){echo $v1['enrol_start_time'];}</php></td>
+                    <td width="82"><php>if(!empty($v1['enrol_end_time'])){echo $v1['enrol_end_time'];}</php></td>
+                    <td>{$v1.state}</td>
+ 
+				</tr>
+			</foreach>
+
+		</table>
+		
+
+	</form>
+	</div>
+<?php } ?>
+	<?php if(!empty($type4)){?>
+	<div id='longterm' style='display: none'>
+		<form class="js-ajax-form" action="" method="post">
+		<b style='font-size: 18px;'>长期项目组</b>
+		<table class="table table-hover table-bordered table-list" with='80%'>
+			<thead>
+			<tr>
+
+				<th width="120">项目编号</th>
+				<th width="120">项目名称</th>
+
+                <th width="120">报名时间</th>
+                <th width="120">甄别问卷</th>
+				<th width="120">查看过程</th>
+                <th width="120">反馈问卷</th>
+				<th width="120">开始日期</th>
+
+                <th width="120">结束日期</th>
+                <th width="70">状态</th>
+			</tr>
+			</thead>
+			<foreach name="type4" item="v3">
+				<tr>
+					
+					<td>{$v1.project_no}</td>
+					<td width="82">{$v1.project_name}</td>
+                   
+                    <td><php>if(!empty($v1['add_time'])){echo date("Y-m-d H:i:s",$v1['add_time']);}</php></td>
+
+                   <!--  <td></td> -->
+                    <td><a href="{:U('project/zhenbie_show',array('member_id'=>$v1['member_id'],'project_id'=>$v1['project_id'],'type'=>1))}" target="_blank">甄别问卷</a></td>
+                    <td><a href="javascript:" onClick="guocheng({$v1.project_id},{$v1.member_id});">查看过程</a></td>
+                    <td><a href="{:U('project/zhenbie_show',array('member_id'=>$v1['member_id'],'project_id'=>$v1['project_id'],'type'=>4))}" target="_blank">反馈问卷</a></td>
+                    <td width="82"><php>if(!empty($v1['enrol_start_time'])){echo $v1['enrol_start_time'];}</php></td>
+                    <td width="82"><php>if(!empty($v1['enrol_end_time'])){echo $v1['enrol_end_time'];}</php></td>
+                    <td>{$v1.state}</td>
+ 
+				</tr>
+			</foreach>
+
+		</table>
+		
+
+	</form>
+	<?php } ?>
+	</div>
+	<div id='jifen' style='display: none'>
+		<form class="js-ajax-form" action="" method="post">
+		<b style='font-size: 18px;'></b>
+		<table class="table table-hover table-bordered table-list" with='80%'>
+			<thead>
+			<tr>
+				<th width="120">日期</th>
+				<th width="120">积分</th>
+                <th width="120">事项</th>
+                <th width="120">管理</th>			
+			</tr>
+			</thead>
+			<foreach name="jifen_list" item="v3">
+				<tr>		
+					<td><php>if(!empty($v3['add_time'])){echo date("Y-m-d H:i:s",$v3['add_time']);}</php></td>
+					<td width="82">{$v3.jifen}</td>                   
+                    <td>{$v3.desc}</td>        
+                    <td><a href="{U('goods/jifen_del')}&tid={$v3.jifen_id}">删除</a></td>
+				</tr>
+			</foreach>
+		</table>
+	</form>
+	</div>
+
+</div>
+
+
+<script type="text/javascript">
+
+function show_pro(pro)
+{
+	if(pro=='longterm')
+	{
+		$('#longterm').show();
+		$('#type_list').hide();
+		$('#jifen').hide();
+
+	}
+	if(pro=='type_list')
+	{
+		$('#longterm').hide();
+		$('#type_list').show();
+		$('#jifen').hide();
+	}
+	if(pro=='jifen')
+	{
+		$('#longterm').hide();
+		$('#type_list').hide();
+		$('#jifen').show();
+		
+	}
+
+}
+
+
+function show_change(){
+		if($('#change_baoming_status').css('display')!='none')
+		{
+			$('#change_baoming_status').hide();
+		}else{
+				$('#change_baoming_status').show();
+		}
+
+	}
+
+
+
+	function guocheng(project_id,member_id)
+	{
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=&m=admin&a=admin&project_id="+project_id+"&member_id="+member_id,//+tab,
+			//data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+			dataType: "html",
+			success: function(data){
+				$("#guocheng_ss").html(data);
+				$("#guocheng").show();
+				$("body").css('background','#FFF');
+				//alert(data);
+				//reloadPage(window);
+			}
+		});
+	}
+	
+	function guocheng_none()
+	{
+		$("#guocheng").css('display','none');
+	}
+</script>
+
+<script type="text/javascript">
+
+	function select_save()
+	{
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=project&a=enrol_state&enrol_id="+$("#enrol_id").val()+"&enrol_state="+$("#enrol_state").val(),//+tab,
+			//data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+			dataType: "html",
+			success: function(data){
+				//alert(data);
+				reloadPage(window);
+			}
+		});
+	}
+	
+	function select_none()
+	{
+		$("#vv").css('display','none');
+	}
+	
+	function select_block(id)
+	{
+		$("#enrol_id").val(id);
+		$("#vv").css('display','block');
+	}
+</script>
+
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+	function refersh_window() {
+		var refersh_time = getCookie('refersh_time');
+		if (refersh_time == 1) {
+			window.location = "{:U('AdminPost/index',$formget)}";
+		}
+	}
+	setInterval(function() {
+		refersh_window();
+	}, 2000);
+	$(function() {
+		setCookie("refersh_time", 0);
+		Wind.use('ajaxForm', 'artDialog', 'iframeTools', function() {
+			//批量移动
+			$('.js-articles-move').click(function(e) {
+				var str = 0;
+				var id = tag = '';
+				$("input[name='ids[]']").each(function() {
+					if ($(this).attr('checked')) {
+						str = 1;
+						id += tag + $(this).val();
+						tag = ',';
+					}
+				});
+				if (str == 0) {
+					art.dialog.through({
+						id : 'error',
+						icon : 'error',
+						content : '您没有勾选信息，无法进行操作！',
+						cancelVal : '关闭',
+						cancel : true
+					});
+					return false;
+				}
+				var $this = $(this);
+				art.dialog.open("__ROOT__/index.php?g=portal&m=AdminPost&a=move&ids="+ id, {
+					title : "批量移动",
+					width : "80%"
+				});
+			});
+		});
+	});
+
+
+	function show_shouhuo(enrol_id){
+		var shou_id='shouhuo_'+enrol_id;
+		var show_id='show_e_'+enrol_id;
+		var hide_id='hide_e_'+enrol_id;
+			var sh =document.getElementById(shou_id);
+			var show_e =document.getElementById(show_id);
+			var hide_e =document.getElementById(hide_id);
+				url="{:U('Mobile/process/shouhuo_ajax@'.WX_HOME_URL_HOST,array('enrol_id'=>"+enrol_id+"))}";
+				$.ajax({
+							type : "POST",
+							url:"index.php?g=Admin&m=project&a=erweima&enrol_id="+enrol_id,//+tab,
+							data : {'url':url},// 你的formid//data : $('#'+form).serialize(),// 你的formi
+							dataType: "html",
+							success: function(data){
+								//alert(data);
+								//reloadPage(window);
+								sh.src=data;
+								//$('#shouhuo').attr('src',data);
+								show_e.style.display='none';
+								sh.style.display='block';
+								hide_e.style.display='block';
+
+							}
+						});
+				
+			}
+		function hide_shouhuo(enrol_id)
+		{
+			var shou_id='shouhuo_'+enrol_id;
+			var show_id='show_e_'+enrol_id;
+			var hide_id='hide_e_'+enrol_id;
+			var sh =document.getElementById(shou_id);
+			var show_e =document.getElementById(show_id);
+			var hide_e =document.getElementById(hide_id);
+			show_e.style.display='block';
+			sh.style.display='none';
+			hide_e.style.display='none';
+		}	
+
+
+</script>
+</body>
+</html>
+
+<div style="height:auto; width:30%; border:1px #CCCCCC solid; background:#FFF; padding:5px;position: fixed; top:50%; left:50%; margin:-22% 0px 0px -15%; display:none" id="guocheng">
+    
+    <div style=" border-bottom:1px solid #CCC; height:36px; line-height:36px; text-indent:15px;"><span style="font-size:16px; font-weight:bold">查看过程</span><a class="aui_close" onClick="guocheng_none()" href="javascript:;">×</a></div>
+    	<div style="margin:20px 20px 0 20px; height:500px; overflow: scroll" id="guocheng_ss">
+        
+        </div>
+        </div>

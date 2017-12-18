@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>我的收藏</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/ui.css" />
+    <script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>
+</head>
+<body style="background:#fff;">
+<script type="text/javascript">
+	$(document).ready(function () {
+            //首先将#back-to-top隐藏
+            //$("#back-to-top").hide();
+            //当滚动条的位置处于距顶部100像素以下时，跳转链接出现，否则消失
+            $(function () {
+				
+                $(window).scroll(function () {
+					
+					//$("#show").html($(window).scrollTop() + $(window).height() +'----'+ $(document).height())
+                    //当内容滚动到底部时加载新的内容
+                    if ($(window).scrollTop() + $(window).height()+1 >= $(document).height()) {
+                        //当前要加载的页码
+                        get_project();
+                    }
+                });
+                //当点击跳转链接后，回到页面顶部位置
+                $("#back-to-top").click(function () {
+                    $('body,html').animate({ scrollTop: 0 }, 1000);
+                    return false;
+                });
+            });
+        });
+	</script>
+<div class="member_yaoqinglist">
+	<ul id="main_enterprise">
+    	<!--<li><span>文章</span><a href="#">11月|你想要的2015化妆品趋势...</a><img src="__TMPL__Public/mobile/images/shanchu.png" onClick="del_shoucang(this,1)"></li>
+    	<li><span>文章</span><a href="#">11月|你想要的2015化妆品趋势...</a><img src="__TMPL__Public/mobile/images/shanchu.png"></li>
+    	<li><span>文章</span><a href="#">11月|你想要的2015化妆品趋势...</a><img src="__TMPL__Public/mobile/images/shanchu.png"></li>
+    	<li class="member_yaoqinglist_curr1"><span>项目</span><a href="#">11月|你想要的2015化妆品趋势...</a><img src="__TMPL__Public/mobile/images/shanchu.png"></li>
+    	<li class="member_yaoqinglist_curr2"><span>项目组</span><a href="#">11月|你想要的2015化妆品趋势...</a><img src="__TMPL__Public/mobile/images/shanchu.png"></li>-->
+    </ul>
+</div>
+<div class="dropload-down">
+    	<p style="text-align:center" onClick="get_project()" id="a1">加载更多...</p>
+        <p style="text-align:center" id="a2">没有更多了</p>
+        <p style="text-align:center" id="a3">加载中...</p>
+    </div>
+    <!--<div class="dropload-down">
+    	<div class="dropload-load">
+    	<span class="loading"></span>加载中...</div>
+    </div>-->
+    <input type="hidden" value="1" id="pageindex">
+<!--    <input type="hidden" value="{$type}" id="type">
+    <input type="hidden" value="{$state}" id="state">-->
+</body>
+<script type="text/javascript">
+function del_shoucang(e,id)
+{
+	$.ajax({
+		type : "POST",
+		url:"index.php?g=Mobile&m=ajax&a=del_shoucang&id="+id,//+tab,
+		//data : $('#'+form).serialize(),// 你的formid
+		dataType: "html",
+		success: function(data){
+			if(data=='删除成功')
+			{
+				$(e).parent().remove();
+			}else
+			{
+				alert(data);return true;
+			}
+			//window.location="index.php?g=&m=Process&a=index&project_id=<?php echo $_GET['project_id']?>";
+			//alert(data);return true;
+		}
+	});
+	
+}
+
+project_ajax(1);
+$("#a2").hide()
+$("#a3").hide()
+function get_project()
+{
+	project_ajax($("#pageindex").val());
+}
+
+function project_ajax(objPageIndex)
+{
+	$("#a1").hide()
+	$("#a2").hide()
+	$("#a3").show()
+	$.ajax({
+        type: "post",
+        url: "index.php?g=Mobile&m=member&a=ajax_shoucang&p="+objPageIndex,
+        data: {type:$("#type").val(),state:$("#state").val()},
+        dataType: "json",
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            //请求发送失败
+            alert("请求发送失败");
+        },
+        success: function (data, textStatus) {
+			//alert(data);
+			if (data.status == 1) {
+                //处理成功
+                if (data.msg != "") {
+					$("#a1").show()
+					$("#a3").hide()
+                    $("#main_enterprise").append(data.msg);
+                    $("#pageindex").val(parseInt(objPageIndex) + 1);
+                }
+            }
+            else {
+                //处理失败
+                if (data.msg != "") {
+					$("#a1").hide()
+					$("#a2").show()
+					$("#a3").hide()
+                    //alert(data.msg);
+                }
+            }
+        }
+    });
+}
+</script>
+
+</html>

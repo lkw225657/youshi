@@ -1,0 +1,363 @@
+<admintpl file="header" />
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap js-check-wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="{$typedata.list_url}">{$typedata.list}</a></li>
+		<li><a href="{$typedata.add_url}">{$typedata.add}</a>
+	</ul>
+	<form class="well form-search" method="post" action="{$typedata.list_url}">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">搜索：
+                    项目分类：
+                    <select class="select_2" style="width:100px;" name="search_class">
+						<option value=''>不限</option>
+                        <foreach name="class_list" item="v">
+                            <option value="{$v.name}" <php>if($search_class==$v['name']){echo 'selected';}</php>>{$v.name}</option> <!---->
+                        </foreach>
+                    </select>
+                    &nbsp;&nbsp;
+                    审核状态：
+                    <select class="select_2" style="width:100px;" name="search_project_status">
+						<option value=''>不限</option>
+                        <option value='wait' <php>if($project_status==wait){echo 'selected';}</php>>待审核</option>
+                        <option value='1' <php>if($project_status==1){echo 'selected';}</php>>已审核</option>
+                    </select>
+                    项目状态：
+                    <select class="select_2" style="width:100px;" name="search_project_state">
+						<option value=''>不限</option>
+                        <foreach name='project_state' item='p'>
+					<option value='{$p}' <php>if($search_project_state==$p){echo 'selected';}</php>>{$p}</option>
+                        </foreach>
+                    </select>
+                    &nbsp;&nbsp;
+                    隶属客户：
+                    <select class="select_2" style="width:100px;" name="search_kehu">
+						<option value=''>不限</option>
+                        <foreach name="kehu_list" item="v">
+                            <option value="{$v.name}" <php>if($search_kehu==$v['name']){echo 'selected';}</php>>{$v.name}</option> <!---->
+                        </foreach>
+                    </select>
+                    <!--&nbsp;&nbsp;
+                    微信绑定：
+                    <select class="select_2" style="width:100px;" name="search_wx">
+						<option value=''>不限</option>
+                        <option value='1' <php>if($search_wx=='1'){echo 'selected';}</php>>已绑定</option>
+                        <option value='2' <php>if($search_wx=='2'){echo 'selected';}</php>>未绑定</option>
+                    </select>
+                    &nbsp;&nbsp;
+                    状态：
+                    <select class="select_2" style="width:100px;" name="search_status">
+						<option value=''>不限</option>
+                        <option value='1' <php>if($search_status=='1'){echo 'selected';}</php>>正常</option>
+                        <option value='2' <php>if($search_status=='2'){echo 'selected';}</php>>禁用</option>
+                    </select>-->
+                    &nbsp;&nbsp;
+                    时间：
+                        <select class="select_2" name="time_type" id="jav_time_str" style=" width: 111px">
+                       
+                        	<option value="start_time" <php>if($time_type=='start_time'){echo 'selected';}</php>>招募开始时间</option>
+                            <option value="end_time" <php>if($time_type=='end_time'){echo 'selected';}</php>>招募结束时间</option>
+                            <option value="project_start_time" <php>if($time_type=='project_start_time'){echo 'selected';}</php>>项目开始时间</option>
+                            <option value="project_end_time" <php>if($time_type=='project_end_time'){echo 'selected';}</php>>项目结束时间</option>
+							<option value="add_time" <php>if($time_type=='add_time' && !empty($formget)){echo 'selected';}</php>>添加时间</option>
+							
+						</select> &nbsp;&nbsp;
+						<input type="text" name="start_time" class="js-date" value="{$formget.start_time|default=''}" style="width: 80px;" autocomplete="off">-
+						<input type="text" class="js-date" name="end_time" value="{$formget.end_time}" style="width: 80px;" autocomplete="off"> &nbsp; &nbsp;
+                    &nbsp;&nbsp;
+                    搜索：
+                    <select class="select_2" style="width:100px;" name="search_type">
+						<!--<option value=''>全部</option>-->
+                        <option value='1' <php>if($search_type==1){echo 'selected';}</php>>项目编号</option>
+                        <option value='2' <php>if($search_type==2){echo 'selected';}</php>>项目名称</option>
+                        <option value='3' <php>if($search_type==3){echo 'selected';}</php>>项目id</option>
+                        <option value='4' <php>if($search_type==4){echo 'selected';}</php>>负责人</option>
+                        <!--<option value='4' <php>if($search_type==3){echo 'selected';}</php>>用户id</option>
+						<option value='5' <php>if($search_type==4){echo 'selected';}</php>>姓名</option>-->
+                        
+
+                    </select>
+						<input type="text" name="keyword" style="width: 200px;" value="{$keyword}" placeholder="请输入关键字...">
+						<input type="submit" class="btn btn-primary" value="搜索" />
+					</span>
+			</div>
+		</div>
+	</form>
+	<form class="js-ajax-form" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="15"><label><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></label></th>
+				<th width="20">id</th>
+                <th width="57">项目编号</th>
+				<th width="120">项目名称</th>
+                <th width="57">项目分类</th>
+                <th width="57">隶属客户</th>
+                <th width="57">隶属项目组</th>
+                <th width="57">对外发布</th>
+                <th width="42">负责人</th>
+                <th width="42">创建人</th>
+                <th width="72">招募开始</th>
+                <th width="72">招募结束</th>
+                <th width="72">项目开始</th>
+                <th width="72">项目结束</th>
+				
+                <th width="50">感谢金</th>
+                <th width="50">积分</th>
+                <th width="95">通过/报名人数</th>
+                <th width="95">参与/招募人数</th>
+                <th width="80">项目状态</th>
+                <th width="57">审批状态</th>
+				<th width="72">添加时间</th>
+
+				<th width="120">操作</th>
+			</tr>
+			</thead>
+			<foreach name="list" item="v">
+				<tr>
+					<td><input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]" value="{$v.id}" title="ID:{$v.id}"></td>
+					<td>{$v.id}</td>
+                    <td><a href="{:U('project/baoming',array('id'=>$v['id']))}">{$v.project_no}</a></td>
+					<td><a href="{:U('project/baoming',array('id'=>$v['id']))}}">{$v.title}</a></td>
+                    <td>{$v.class}</td>
+                    <td>{$v.kehu}</td>
+                    <td>{$v.longterm}</td>
+                    <td>{$v.is_fabu}</td>
+                    <td>{$v.user_name}</td>
+                    <td>{$v.creat_name}</td>
+					<td><php>if(!empty($v['start_time'])){echo date("Y-m-d H:i:s",$v['start_time']);}</php></td>
+                    <td><php>if(!empty($v['end_time'])){echo date("Y-m-d H:i:s",$v['end_time']);}</php></td>
+                    <td><php>if(!empty($v['project_start_time'])){echo date("Y-m-d H:i:s",$v['project_start_time']);}</php></td>
+                    <td><php>if(!empty($v['project_end_time'])){echo date("Y-m-d H:i:s",$v['project_end_time']);}</php></td>
+                    <td>{$v.price}</td>
+                    <td>{$v.integral}</td>
+                    <td><a href="#">{$v.baoming_ok}</a>/{$v.baoming}</td>
+                    <td>{$v.canyu}/{$v.demand_num}</td>
+                    
+                    <td>
+					<php>if(!$auth_check) {echo $v['state'];}else{
+					echo "<select  id='project_state_$v[id]' name='state' style='width:120px' onchange='change_state(".$v[id].")'>";
+							foreach ($project_state as $s) 
+							{
+								if($s==$v['state'] )
+								{
+									echo "<option value=".$s." selected >$s</option>";
+								}
+								else{
+								echo "<option value=".$s.">$s</option>";
+								}
+							}
+							echo "</select>";         
+					}
+
+					</php>
+                    </td>
+                    <!-- <td ><center><a href='javascript:' onclick="toggle({$v.id},{$v.project_status},'project_state')"><img style='height:30px;width:30px' id='pro_status_{$v.id}' src="video/<?php if($v['project_status']==1){echo 'yes.jpg';}else{ echo 'no.jpg';} ?>"></a></center></td>
+					<td width="77"><php>if(!empty($v['add_time'])){echo date("Y-m-d H:i:s",$v['add_time']);}</php></td> -->
+					<td>
+							 <php>if($v[project_status]=='1') 
+							 {
+							 echo "审批通过";
+							 }
+							 elseif($v[project_status]=='2')
+							  echo "审批不通过";
+							  else
+							   echo "待审批";
+							 </php> 
+							
+						</td>
+						<td width="77"><php>if(!empty($v['add_time'])){echo date("Y-m-d H:i:s",$v['add_time']);}</php></td>
+					<td>
+
+						<a href="{:U('project/project_info',array('id'=>$v['id']))}">修改</a> |
+						<a href="{:U('project/project_del',array('tid'=>$v['id']))}" class="js-ajax-delete">删除</a>
+                         <!--| 
+                        <a href="{:U('quespaper/quespaper_info',array('project_id'=>$v['id']))}">添加试卷</a>-->
+
+					</td>
+				</tr>
+			</foreach>
+
+		</table>
+		<div class="table-actions">
+			<button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('project/project_del')}" data-subcheck="true" data-msg="你确定删除吗？">批量删除</button>
+			<button class="btn btn-danger btn-small " type="button" onclick='show_change()'>批量修改项目状态</button>
+			<select name='change_project_status' id='change_project_status' onchange="change_project_state()" style='display:none;width:100px;'>
+			<foreach name='project_state' item='v' >
+				<option value='{$v}'>{$v}</option>
+			</foreach>
+			</select>
+			<button class="btn btn-danger btn-small " type="button" data-subcheck="true" onclick="ajax_download()" ><a href="javascript:">导出</a></button>
+			<!--<button class="btn btn-primary btn-small J_ajax_submit_btn" type="submit" data-action="{:U('Phone/yes_d')}" data-subcheck="true" data-msg="你确定复原吗？">未下载</button>
+            <button class="btn btn-primary btn-small J_ajax_submit_btn" type="submit" data-action="{:U('Phone/no_d')}" data-subcheck="true" data-msg="你确定标记吗？">已下载</button>-->
+			<span style="float:right; margin:0 20px 0 0">共<span style="color:#F93"> {$count} </span>条记录</span>
+		</div>
+		<div class="pagination">{$page}</div>
+
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+	function ajax_download()
+	{
+		var search_class=$("select[name='search_class']").val();
+		var search_project_status=$("select[name='search_project_status']").val();
+		var search_project_state=$("select[name='search_project_state']").val();
+		var search_kehu=$("select[name='search_kehu']").val();
+		var time_type=$("select[name='time_type']").val();
+		var start_time=$("input[name='start_time']").val();
+		var end_time=$("input[name='end_time']").val();
+		var search_type=$("select[name='search_type']").val();
+		var keyword=$("input[name='keyword']").val();
+		var url="&search_class="+search_class+"&search_project_status="+search_project_status+"&search_project_state="+search_project_state+"&search_kehu="+search_kehu+"&time_type="+time_type+"&start_time="+start_time+"&end_time="+end_time+"&search_type="+search_type+"&keyword="+keyword;
+		location.href="index.php?g=Admin&m=download&a=downExcel&mod=project&type={$type}"+url;
+
+	} 
+
+
+	function show_change(){
+		if($('#change_project_status').css('display')!='none')
+		{
+			$('#change_project_status').hide();
+		}else{
+				$('#change_project_status').show();
+		}
+
+	}
+	//批量修改
+	function change_project_state()
+	{
+		var ids=document.getElementsByName('ids[]');
+		var status=$("#change_project_status").val();
+		var check_val='';
+			for(k in ids){
+        	if(ids[k].checked)
+            check_val+=ids[k].value+',';
+    		}
+    	if(check_val=='')
+    	{
+    		alert('您没有勾选信息，无法进行操作！');
+    	}
+    	if(check_val)
+    	{
+    		if(confirm('确定要批量修改吗？'))
+    		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=project&a=project_change_state&status="+status,//+tab,
+			data : {'check_val':check_val},// 你的formid//data : $('#'+form).serialize(),// 你的formi
+			dataType: "html",
+			success: function(data){
+			reloadPage(window);			
+		}	
+			
+		});
+    	}
+
+
+    }
+
+	function refersh_window() {
+		var refersh_time = getCookie('refersh_time');
+		if (refersh_time == 1) {
+			window.location = "{:U('AdminPost/index',$formget)}";
+		}
+	}
+	setInterval(function() {
+		refersh_window();
+	}, 2000);
+	$(function() {
+		setCookie("refersh_time", 0);
+		Wind.use('ajaxForm', 'artDialog', 'iframeTools', function() {
+			//批量移动
+			$('.js-articles-move').click(function(e) {
+				var str = 0;
+				var id = tag = '';
+				$("input[name='ids[]']").each(function() {
+					if ($(this).attr('checked')) {
+						str = 1;
+						id += tag + $(this).val();
+						tag = ',';
+					}
+				});
+				if (str == 0) {
+					art.dialog.through({
+						id : 'error',
+						icon : 'error',
+						content : '您没有勾选信息，无法进行操作！',
+						cancelVal : '关闭',
+						cancel : true
+					});
+					return false;
+				}
+				var $this = $(this);
+				art.dialog.open("__ROOT__/index.php?g=portal&m=AdminPost&a=move&ids="+ id, {
+					title : "批量移动",
+					width : "80%"
+				});
+			});
+		});
+	});
+
+//修改审批状态
+	function toggle(project_id,status,project)
+	{
+		//获取点击的图片
+			var id='pro_status_'+project_id;
+			var pro_td=document.getElementById(id);
+			//匹配图片的名字+后缀
+			var img_src =pro_td.src.match(/\/(\w+\.(?:png|jpg|gif|bmp))$/i)[1];
+			var img_arr=img_src.split('.');
+			var img_name=img_arr['0'];
+			if(img_name=='no')
+			{
+				 status=1;
+			}
+			if(img_name=='yes')
+			{
+				status=0;	
+			}
+		//	alert(status);
+		//project_id 是项目id  project 项目
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=ajax&a=ajax_toggle&project_id="+project_id+"&status="+status,//+tab,
+			//data : {id:id,from:from,is:is,name:name,id_name:id_name},// 你的formid//data : $('#'+form).serialize(),// 你的formi
+			dataType: "json",
+			success: function(data){
+			if(data.status=='0')
+			{
+				pro_td.src='video/no.jpg';
+			}else{
+				pro_td.src='video/yes.jpg';
+			}
+		}	
+			
+		});
+	}
+
+	function change_state(project_id)
+	{
+		id='project_state_'+project_id;
+		status=document.getElementById(id).value;
+		//var status=$('#project_state').val();
+		var status=$.trim(status);
+		if(confirm('确定要将该项目状态修改为<'+status+'>吗？'))
+
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=project&a=change_state&project_id="+project_id+"&status="+status,//+tab,
+			//data : {id:id,from:from,is:is,name:name,id_name:id_name},// 你的formid//data : $('#'+form).serialize(),// 你的formi
+			dataType: "html",
+			success: function(data){
+				document.getElementById(id).value=status;
+			// $('#project_state').val();
+		}	
+			
+		});
+	}
+</script>
+</body>
+</html>

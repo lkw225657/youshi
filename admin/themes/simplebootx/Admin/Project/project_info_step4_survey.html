@@ -1,0 +1,180 @@
+<admintpl file="header" />
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap js-check-wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="{:U('selectques/index')}">设置现场筛选</a></li>
+		<!--<li><a href="{:U('selectques/selectques_info')}">添加选择题</a>-->
+	</ul>
+    
+    
+    
+	<form class="well form-search" method="post" action="###">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					{$project_info.title}
+                    
+			</div>
+		</div>
+	</form>
+    
+    
+    
+    <!--<a class="btn btn-primary" id="aa" href="javascript:">添加甄别问卷</a>-->
+    <h4>调查问卷设置</h4>
+    
+    <div style="line-height:53px; margin: 0 0 0 50px;">
+    
+    <label class="radio inline">
+            {$project_info.project_no}调查问卷
+            
+    </label><a class="btn btn-danger" style="; margin:0 0px 0 20px; background:#06C" target="_blank" href="javascript:if(confirm('是否去添加?(最好先保存草稿！)'))location='index.php?g=Admin&m=project&a=project_ques&project_id={$project_id}&type=5'" data-msg="你是否保存过草稿？">设置</a>
+    </div>
+    
+	<form class="js-ajax-form" action="" method="post">
+		<div class="table-actions">
+        	<a class="btn btn-danger" style="float:left; margin:0 20px 0 0; background:#06C" href="index.php?g=Admin&m=project&a=project_info_step3&type=1&project_id={$project_id}">上一步</a>
+        	<a class="btn btn-danger" style="float:left; margin:0 20px 0 0;" href="javascript:alert('保存成功！！')">保存草稿</a>
+            <a class="btn btn-danger" style="float:left; margin:0 20px 0 0; background:#06C" href="javascript:" onClick='send_check({$project_id})'>提交审批</a>
+			
+
+		</div>
+		<div class="pagination">{$page}</div>
+
+	</form>
+</div>
+
+<script type="text/javascript">
+function send_check(project_id){
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=project&a=send_check&project_id="+project_id,//+tab,
+			//data : {id:id,from:from,is:is,name:name,id_name:id_name},// 你的formid//data : $('#'+form).serialize(),// 你的formi
+			dataType: "HTML",
+			success: function(data){
+				alert(data);
+			}
+		});
+	}
+	$(".is_xianchagn").click(function(){
+		if($(".is_xianchagn").attr('checked')=='checked')
+		{
+			is=1;
+		}else
+		{
+			is=0;
+		}
+		id='{$project_id}'
+		id_name='id'
+		from='project';
+		name='is_xianchagn';
+		
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=ajax&a=set_is",//+tab,
+			data : {id:id,from:from,is:is,name:name,id_name:id_name},// 你的formid//data : $('#'+form).serialize(),// 你的formi
+			dataType: "HTML",
+			success: function(data){
+				//alert(data);
+			}
+		});
+		
+	})
+	
+	$(".is_xcsm").click(function(){
+		if($(".is_xcsm").attr('checked')=='checked')
+		{
+			is=1;
+		}else
+		{
+			is=0;
+		}
+		id='{$project_id}'
+		id_name='id'
+		from='project';
+		name='is_xcsm';
+		
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=ajax&a=set_is",//+tab,
+			data : {id:id,from:from,is:is,name:name,id_name:id_name},// 你的formid//data : $('#'+form).serialize(),// 你的formi
+			dataType: "HTML",
+			success: function(data){
+				//alert(data);
+			}
+		});
+		
+	})
+	
+	$(".is_xcinput").click(function(){
+		if($(".is_xcinput").attr('checked')=='checked')
+		{
+			is=1;
+		}else
+		{
+			is=0;
+		}
+		id='{$project_id}'
+		id_name='id'
+		from='project';
+		name='is_xcinput';
+		
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=ajax&a=set_is",//+tab,
+			data : {id:id,from:from,is:is,name:name,id_name:id_name},// 你的formid//data : $('#'+form).serialize(),// 你的formi
+			dataType: "HTML",
+			success: function(data){
+				//alert(data);
+			}
+		});
+		
+	})
+	</script>
+
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+	function refersh_window() {
+		var refersh_time = getCookie('refersh_time');
+		if (refersh_time == 1) {
+			window.location = "{:U('AdminPost/index',$formget)}";
+		}
+	}
+	setInterval(function() {
+		refersh_window();
+	}, 2000);
+	$(function() {
+		setCookie("refersh_time", 0);
+		Wind.use('ajaxForm', 'artDialog', 'iframeTools', function() {
+			//批量移动
+			$('.js-articles-move').click(function(e) {
+				var str = 0;
+				var id = tag = '';
+				$("input[name='ids[]']").each(function() {
+					if ($(this).attr('checked')) {
+						str = 1;
+						id += tag + $(this).val();
+						tag = ',';
+					}
+				});
+				if (str == 0) {
+					art.dialog.through({
+						id : 'error',
+						icon : 'error',
+						content : '您没有勾选信息，无法进行操作！',
+						cancelVal : '关闭',
+						cancel : true
+					});
+					return false;
+				}
+				var $this = $(this);
+				art.dialog.open("__ROOT__/index.php?g=portal&m=AdminPost&a=move&ids="+ id, {
+					title : "批量移动",
+					width : "80%"
+				});
+			});
+		});
+	});
+</script>
+</body>
+</html>

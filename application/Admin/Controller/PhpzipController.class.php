@@ -50,8 +50,8 @@ function addFileToZip($path,$zip){
 	 	$project_info=$project->where("id=$project_id")->find();
 	 	$filename = "data/upload/move.zip"; 
 		$zip=new \ZipArchive();
-		if($zip->open('data/upload/move.zip', $zip::OVERWRITE)=== TRUE){
-		    $this->addFileToZip('data/upload/move/'.$project_info['project_no'], $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
+		if($zip->open('data/upload/move.zip', $zip::CREATE | $zip::OVERWRITE)=== TRUE){
+			$this->addFileToZip('data/upload/move/'.$project_info['project_no'], $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
 		    $zip->close(); //关闭处理的zip文件
 		}
 
@@ -61,7 +61,18 @@ function addFileToZip($path,$zip){
 		header("Content-Type: application/zip"); //zip格式的   
 		header("Content-Transfer-Encoding: binary"); //告诉浏览器，这是二进制文件    
 		header('Content-Length: '. filesize($filename)); //告诉浏览器，文件大小   
-		@readfile($filename);
+		//@readfile($filename);
+		$download_rate = 2048;
+		$file = fopen($filename, "r");
+		while (!feof($file)) {
+			print fread($file, round($download_rate * 1024));
+			flush();
+			ob_flush();  //防止PHP或web服务器的缓存机制影响输出
+			// 终端1秒后继续
+			sleep(1);
+		}
+		// 关闭文件流
+		fclose($file);
  }
 
 

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>个人背景信息填写</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/ui.css" />
+</head>
+<body style="background: #fff">
+<style>
+.other-list-wrapper2 { overflow:hidden; zoom:1; position:absolute; bottom:0px; margin-left:35px;
+    }
+    
+    .other-list-wrapper2 dl { float:left; width:150px; margin:20px;}
+	.other-list-wrapper2 dl dt{ margin-bottom:30px;}
+     .other-list-wrapper2 dl dt p{ height:50px; margin-bottom:10px;}
+    .other-list-wrapper2 dl dt p a {border:1px solid #bbbbbb; width:140px; border-radius:8px; height:50px; line-height:50px; text-align:center; font-size:22px; display:block;}
+    .other-list-wrapper2 dl dd span{border:1px solid #bbbbbb; width:140px; border-radius:8px; height:50px; line-height:50px; text-align:center; font-size:22px; display:block;}
+</style>
+
+    <div class="other-list-wrapper2">
+        <dl>
+        	<dt>
+            	<p><a href="{:U('login/login')}">登录</a></p>
+            	<p><a href="{:U('member/index')}">我的信息</a></p>
+            	<p><a href="{:U('member/jifen')}">我的积分</a></p>
+            	<p><a href="{:U('member/shoucang')}">我的收藏</a></p>
+            	<p><a href="{:U('article/article_list',array('type'=>1))}">行业资讯</a></p>
+            	<p><a href="{:U('article/article_list',array('type'=>2))}">常见问题</a></p>
+            </dt>
+            <dd><span>我的优试</span></dd>
+        </dl>
+        <dl>
+        	<dt>
+            	<p></p>
+                <p><a href="{:U('project/project_list')}">所有项目</a></p>
+            	<p><a href="{:U('project/project_list',array('type'=>1))}">产品测试</a></p>
+            	<p><a href="{:U('project/project_list',array('type'=>2))}">在线调查</a></p>
+            	<p><a href="{:U('project/project_list',array('type'=>3))}">试用派发</a></p>
+            	<p><a href="{:U('project/project_list',array('type'=>4))}">长期项目组</a></p>
+            </dt>
+            <dd><span>我要报名</span></dd>
+        </dl>
+        <dl>
+        	<dt>
+            	<p></p>
+                <p></p>
+            	<p></p>
+            	<p><a href="{:U('project/project_member')}">所有项目</a></p>
+            	<p><a href="{:U('project/project_member',array('enrol_state'=>'ing'))}">进行中的项目</a></p>
+            	<p><a href="{:U('project/project_member',array('type'=>4))}">我的项目组</a></p>
+            </dt>
+            <dd><span>我的项目</span></dd>
+        </dl>
+    </div>
+
+
+</body>
+<script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>
+
+<script type="text/javascript">
+	var aList = document.getElementsByTagName('a');//获取所有的标签a
+	for(var i=0;i<aList.length;i++){
+	   aList[i].target='_blank';//定义成打开新窗口
+	}
+</script>
+
+</html>

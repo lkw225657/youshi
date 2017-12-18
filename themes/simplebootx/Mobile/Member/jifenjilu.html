@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>兑换记录</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+</head>
+<body style="background:#fff;">
+<div class="member_dhjilubg"><img src="__TMPL__Public/mobile/images/diamond2x.png"></div>
+<div class="member_dhjilulist">
+    <foreach name='order_list' item='v'>
+    <div class="member_dhjilujilucon over">
+        <div class="member_dhjilujiluleft1 l"><img src="__TMPL__Public/mobile/images/suoluetu22x.png" width="100" height="100"></div>
+        <div class="member_dhjilujiluleft2 l">
+            <h2>{$v.goods_name}</h2>
+            <!-- <p>商品编号：1000000</p> -->
+            <p>{$v.add_time}兑换</p>
+        </div>
+        <div class="member_dhjilujiluright r">
+            <p>-{$v.jifen}分</p>
+            <p><a href="{:U('member/wuliu')}&order_id={$v.order_id}">查看物流</a></p>
+        </div>
+    </div>
+    </foreach>
+	
+	
+</div>
+</body>
+</html>

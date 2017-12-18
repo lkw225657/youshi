@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>个人背景信息填写</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/ui.css" />
+<style type="text/css">
+*{ font-size:16px;}
+a, span, label, b{ font-size:16px !important; }
+    .ok_1{
+    position: absolute;
+    top: 4px;
+    right: -4px;
+    font-size: 14px;
+    font-style: normal;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    color: #FFF;
+    display: block;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #1dccaa;
+    background-color: #1dccaa;
+    padding: 2px 6px;
+    border-radius: 2px;
+
+    }
+     .ok_2{
+    position: absolute;
+    top: 4px;
+    right: -4px;
+    font-size: 14px;
+    font-style: normal;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    color: #1dccaa;
+    display: block;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #FFF;
+    /*background-color: #1dccaa;*/
+    padding: 2px 6px;
+    border-radius: 2px;
+
+    }
+  .ui-step .ui-step-item .text i.blue {
+  
+  font-size: 16px;
+  width:30px;
+  height:20px;
+  line-height: 20px;
+  font-style: normal;
+  background-color: #1db3cb;
+  color: #FFF;
+
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+    
+</style>
+</head>
+
+<body style="background: #fff;">
+
+    <div class="back-project">
+        <!--<div class="title5">
+            <h3 class="color-sky-blue">{$project_info.title}</h3>
+            <h4 class="color-grey"><?php echo date("Y-m-d",$project_info['project_start_time'])?>开始</h4>
+        </div>
+        <div style="padding: 0 20px">
+            <div class="btn-img" onClick="show('{$new_info.name}',{$new_info.process_id})">
+                {$new_info.name}
+            </div>
+        </div>-->
+        <div class="ui-content">
+            <div class="ui-step">
+      <?php if($airradio_info['is_show']=='1'){ ?>
+            <div class="ui-step-item ui-flex">
+                    <span class="time-title" style='width: 14px;'></span>
+                    <div class="ui-flex-1">
+                    <a target="_blank" href="index.php?g=admin&m=project&a=airradio&project_id={$project_id}&member_id={$member_id} " > 
+
+                        <div class="text">
+                           
+                          <i class="icon" style='background-color: #1db3cb'></i>查看环境数据 <i class='blue'>查看</i>
+
+                        </div>
+                    </a>
+                    
+                    </div>
+                </div>
+                <?php } ?>
+            <?php $i=0?>
+            <foreach name="new_list" key="k" item="v">
+                <div class="ui-step-item ui-flex">
+                    <span class="time-title">{$k}</span>
+                    <div class="ui-flex-1">
+                     <foreach name="v" item="vv">
+                        <div class="text">
+                        	<?php $i++; if($sub_num==$i){?>
+                            <i class="icon bg-pink"></i>
+                            <?php }else {?>
+                            <i class="icon bg-grey"></i>
+                            <?php }?>
+                            <div class="vertical-line bg-grey"></div>
+                            <?php if($vv['start_time']!='::'){?><b><!--{$vv.start_time}-->{$vv.start_time}~{$vv.end_time}</b><?php }?>
+                            <p>
+                                <font style="width:75%; display:block">
+                                    {$vv.name}
+                                    <!--<?php if(!empty($vv['space_time'])){?><span class="color-sky-blue font-small">间隔上一步<?php echo $vv['space_time']?>分钟后</span><?php }?>-->
+                                    <span style="color:red; margin:0 20px;">{$vv.href_url}</span>
+                                    <?php if(!empty($vv['process_desc'])){?>
+                                    
+                                        <?php if($vv['name']=='现场测试'){  ?>
+                                             <i class="ok">完成</i>
+                                    <?php }else{ ?>
+                                    <i class="ok" onClick="chongzuo('{$vv.process_id}','{$mp_info.mp_id}',this)"><?php if($vv['is_chongzuo']==1){echo '重做中';}else{echo '重做';} }?></i>
+                                    <!--<i class='font color-grey' style="width:120px;"><?php echo date("H:i:s",$vv['process_desc']['mp_time']);?></i>-->
+                                    <?php }?>
+
+                                     <?php if(empty($vv['process_desc']) && $vv['name']=='现场测试'){?>
+                                    <!-- {$vv.href_url}-->
+                                    <i class="ok" onClick="wancheng('{$vv.process_id}','{$mp_info.mp_id}',this)">进行中</i>
+                                    <!--<i class='font color-grey' style="width:120px;"><?php echo date("H:i:s",$vv['process_desc']['mp_time']);?></i>-->
+                                    <?php }?>
+                                    
+                                </font>
+                                
+                            </p>
+                            <?php  if($vv['name']=='照片上传'){?>
+                            <span id='photos' style="color:red; font-size:0.8em; width:66%; display:block"></span>
+                            <?php  }elseif($vv['name']=='视频上传'){?>
+                            <span id='video' style="color:red; font-size:0.8em; width:66%; display:block"></span>
+                            <?php  }else{?>
+                            <span style="color:red; font-size:0.8em; width:66%; display:block"><?php echo $vv[desc];?></span>
+                            <?php }?>
+                        </div>
+                      </foreach>
+                    </div>
+                </div>
+           </foreach>
+                
+            </div>
+        </div>
+    </div>
+<!--         <div class="back-project" id="photos" style="display: none;height:500px; width: 500px;">
+        
+         </div>
+          <div class="back-project" id="video" style="display: none;height:500px; width: 500px;">
+        
+         </div> -->
+
+</body>
+<script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript">
+function chongzuo(process_id,mp_id,e)
+{
+	//alert(process_id+'---'+mp_id);
+	
+	$.ajax({
+		type : "POST",
+		url:"index.php?g=&m=admin&a=chongzuo_ajax&process_id="+process_id+"&mp_id="+mp_id,//+tab,
+		//data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+		dataType: "html",
+		success: function(data){
+			alert(data);
+			if(data=='修改成功'){
+				$(e).html('重做中');
+			}
+
+			//reloadPage(window);
+		}
+	});
+}
+
+function wancheng(process_id,mp_id,e)
+{
+    //alert(process_id+'---'+mp_id);
+    
+    $.ajax({
+        type : "POST",
+        url:"index.php?g=&m=admin&a=wancheng_ajax&process_id="+process_id+"&mp_id="+mp_id+"&member_id={$member_id}&project_id={$project_id}",//+tab,
+        //data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+        
+        dataType: "html",
+        success: function(data){
+            alert(data);
+            if(data=='修改成功'){
+                $(e).html('完成');
+            }
+
+            //reloadPage(window);
+        }
+    });
+}
+
+function is_check(process_id,mp_id,e)
+{
+    //alert(process_id+'---'+mp_id);
+    
+    $.ajax({
+        type : "POST",
+        url:"index.php?g=&m=admin&a=check_ajax&process_id="+process_id+"&mp_id="+mp_id+"&member_id={$member_id}&project_id={$project_id}",//+tab,
+        //data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+        dataType: "html",
+        success: function(data){
+            alert(data);
+            if(data=='修改成功'){
+                $(e).html('完成');
+            }
+
+            //reloadPage(window);
+        }
+    });
+}
+
+function show_photo(member_id,process_id,project_id)
+{
+    $('#cut_off').show();
+    html='';
+    $.ajax({
+        type : "POST",
+        url:"index.php?g=&m=admin&a=show_photos&process_id="+process_id+"&member_id="+member_id+"&project_id="+project_id,//+tab,
+        //data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+        dataType: "json",
+        success: function(data){
+
+           $('#photos').show();
+           
+           for(i=0;i<data.length;i++)
+           {
+            html+='<img style="width:180px;height:180px;" src="'+data[i]+'">';
+           }
+           $('#photos').html(html);
+
+        }
+    });
+}
+function show_video(member_id,process_id,project_id)
+{
+    $('#cut_off_f').show();
+    html='';
+    $.ajax({
+        type : "POST",
+        url:"index.php?g=&m=admin&a=show_videos&process_id="+process_id+"&member_id="+member_id+"&project_id="+project_id,//+tab,
+        //data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+        dataType: "json",
+        success: function(data){
+
+           $('#video').show();
+           
+           for(i=0;i<data.length;i++)
+           {
+
+            html+='<video id="video1" controls="controls" width="300" style="margin-top:15px;"><source src="'+data[i].move+'" type="video/mp4" /></video>';
+           }
+           $('#video').html(html);
+
+        }
+    });
+}
+function cutoff()
+{
+ $('#photos').hide();
+ $('#cut_off').hide();
+}
+function cutoff_f()
+{
+ $('#video').hide();
+ $('#cut_off_f').hide();
+}
+</script>
+</html>

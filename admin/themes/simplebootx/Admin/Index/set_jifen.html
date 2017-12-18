@@ -1,0 +1,59 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		
+		<form class="form-horizontal js-ajax-forms" action="{:U('index/save_jifen')}" method="post">
+			<fieldset>
+				<div class="tabbable">
+					<div class="tab-content">
+						<div class="tab-pane active" id="A">
+							<fieldset>
+								<div class="control-group">
+									<label class="control-label">注册积分</label>
+									<div class="controls">
+										<input type="text" name="register_jifen" value="{$config.register_jifen}"><span class="form-required">*</span>
+									
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">分享积分：</label>
+									<div class="controls">
+										<input type="text" name="fenxiang_jifen" value="{$config.fenxiang_jifen}" id="js-site-admin-url-password"><span class="form-required">*</span>
+										
+									</div>
+								</div>
+									<div class="control-group">
+									<label class="control-label">报名积分</label>
+									<div class="controls">
+										<input type="text" name="baoming_jifen" value="{$config.baoming_jifen}"><span class="form-required">*</span>
+									
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">完善资料积分：</label>
+									<div class="controls">
+										<input type="text" name="wanshan_jifen" value="{$config.wanshan_jifen}" id="js-site-admin-url-password"><span class="form-required">*</span>
+										
+									</div>
+								</div>
+	
+								
+							</fieldset>
+						</div>
+						
+	
+					</div>
+				</div>
+
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary  js-ajax-submit">保存</button>
+				</div>
+			</fieldset>
+		</form>
+
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+
+</body>
+</html>

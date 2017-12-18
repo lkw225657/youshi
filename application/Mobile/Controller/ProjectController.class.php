@@ -32,10 +32,9 @@ class ProjectController extends MobilebaseController {
 	
 	function _initialize() {
 		parent::_initialize();
-		$appid = 'wx71f172895fb20911'; 
-	$secret = '447c05fa58111bc771f35aaf50d90f79';
+		$appid = WX_APP_ID; 
+	$secret = WX_SECRET;
 	$_SESSION['yaoqing']=$_GET['member_id'];
-	define('WX_HOME_URL_HOST', 'm.youshi.ltd');
 	if(empty($_SESSION['user_openid'])||empty($_SESSION['member']['member_id']))
 	{
 			if (!isset($_GET["code"])) {
@@ -54,7 +53,7 @@ class ProjectController extends MobilebaseController {
 			// 	$state='ing';
 			// 	$strl='&state=ing';
 			// }
-			$u1 = "http://m.youshi.ltd/index.php?g=&m=project&a=".$controller.$enrol_state_str;
+			$u1 = "http://".WX_HOME_URL_HOST."/index.php?g=&m=project&a=".$controller.$enrol_state_str;
 			$u1 = urlencode($u1);
 			$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$appid.'&redirect_uri='.$u1.'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
 			// die($url);
@@ -572,7 +571,7 @@ class ProjectController extends MobilebaseController {
 		//jssdk
 		//先注释掉
 		vendor('jssdk.jssdk');//导入类库
-		$jssdk=new \jssdk("wx71f172895fb20911","447c05fa58111bc771f35aaf50d90f79");
+		$jssdk=new \jssdk(WX_APP_ID,WX_SECRET);
 		$signPackage = $jssdk->GetSignPackage();
 		//vv($signPackage);
 		$this->assign("signPackage",$signPackage);
@@ -735,6 +734,8 @@ class ProjectController extends MobilebaseController {
 		if(!empty($_GET['type']))
 		{
 			$where['m.project_type']=$_GET['type'];	//企业类型
+		} else {
+			$where['m.project_type']=array('neq','4');
 		}
 		
 		if(!empty($_GET['enrol_state']))
@@ -745,9 +746,6 @@ class ProjectController extends MobilebaseController {
 				$state='项目进行中';
 			}
 			$where['m.state']=$state;	//企业类型
-		}else{
-			$state='报名完成';
-			$where['m.state']=$state;
 		}
 		
 		$where['member_id']=$_SESSION['member']['member_id'];
@@ -762,9 +760,13 @@ class ProjectController extends MobilebaseController {
 
 		
 		$html='';
+		$options=array();
 		foreach($list as $k=>$v)
 		{
-			$html.='<li class="ui-table-view-cell">';
+			if (!array_key_exists($v['enrol_state'],$options)){
+				$options[$v['enrol_state']]=count($options) + 1;
+			}
+			$html.='<li class="ui-table-view-cell" id="poj_'.$options[$v['enrol_state']].'">';
             $html.='    <a href="'.U('project/project_show',array('id'=>$v['id'])).'">';
             $html.='        <i class="ui-navigate-right"></i>';
             $html.='        <div class="ui-flex">';
@@ -796,6 +798,7 @@ class ProjectController extends MobilebaseController {
 		// $data['msg']=$html;
 		// echo json_encode($data);die;
 
+		$this->assign("options",$options);
 		$this->assign("html",$html);
 		$this->assign("type",$_GET['type']);
 		$this->assign("state",$_GET['state']);

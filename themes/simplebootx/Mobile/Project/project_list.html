@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>项目列表</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/ui.css" />
+    <script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+<!--<div style="position:fixed; z-index:111111" id="show">111</div>-->
+    <div class="ui-header ui-flex bg-pink testing">
+        <div class="ui-flex-1">
+            <span class="header-content" style="width:138px;">
+                <select class="header-xialaxinxi" onchange="window.location=this.value;" style="width:150px;">
+<!--                 	<option value="{:U('project/project_list')}" <?php if(empty($type)){echo 'selected';}?>>所有项目</option>
+                	<option value="{:U('project/project_list',array('type'=>1))}" <?php if($type==1){echo 'selected';}?>>产品测试</option>
+                	<option value="{:U('project/project_list',array('type'=>2))}" <?php if($type==2){echo 'selected';}?>>在线调查</option>
+                	<option value="{:U('project/project_list',array('type'=>3))}" <?php if($type==3){echo 'selected';}?>>试用派发</option>
+                    <option value="{:U('project/project_list',array('type'=>4))}" <?php if($type==4){echo 'selected';}?>>长期项目组</option> -->
+                    <option value="{:U('project/project_list',array('status'=>'all','type'=>$type))}" <?php if(empty($status)){echo 'selected';}?>>全部</option>
+                    <option value="{:U('project/project_list',array('status'=>'start','type'=>$type))}" <?php if($status==start){echo 'selected';}?> >招募中</option>
+                    <option value="{:U('project/project_list',array('status'=>'end','type'=>$type))}" <?php if($status==end){echo 'selected';}?>>招募结束</option>
+                   
+                </select>
+                <i class="ui-icon" style="left:390px;"></i>
+            </span>
+        </div>
+    </div>
+    <script type="text/javascript">
+	$(document).ready(function () {
+            //首先将#back-to-top隐藏
+            //$("#back-to-top").hide();
+            //当滚动条的位置处于距顶部100像素以下时，跳转链接出现，否则消失
+			window.xxx=1;
+            $(function () {
+				//window.xxx=1;
+				//alert(window.xxx);
+                $(window).scroll(function () {
+					
+					//alert(window.xxx);
+					//$("#show").html($(window).scrollTop() + $(window).height() +'----'+ $(document).height())
+                    //当内容滚动到底部时加载新的内容
+                    if ($(window).scrollTop() + $(window).height()+1 >= $(document).height() && window.xxx==1) {
+                        //当前要加载的页码
+						window.xxx=0;
+                        get_project();
+                    }
+                });
+                //当点击跳转链接后，回到页面顶部位置
+                $("#back-to-top").click(function () {
+                    $('body,html').animate({ scrollTop: 0 }, 1000);
+                    return false;
+                });
+            });
+        });
+	</script>
+
+    <div class="ui-container testing-container">
+        <ul class="ui-table-view" id="main_enterprise">
+        	<foreach name="project_lists" item="v">
+            <li class="ui-table-view-cell">
+                <a href="{:U('project/project_show',array('id'=>$v['id']))}">
+                    <i class="ui-navigate-right"></i>
+                    <div class="ui-flex">
+                        <img src="__TMPL__Public/mobile/images/test11x.png" alt="">
+                        <div class="ui-media-body ui-flex-1">
+                            <h4>
+                                <b class="color-pink">{$v.title}</b>
+                                <span class="color-grey"><?php echo date("Ymd",$v['add_time'])?></span>
+                            </h4>
+                            <p class="color-orange">状态&nbsp;招募中&nbsp;&nbsp; 距离截止还剩43天</p>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            </foreach>
+            <!--<li class="ui-table-view-cell">
+                <a href="#">
+                    <i class="ui-navigate-right"></i>
+                    <div class="ui-flex">
+                        <img src="__TMPL__Public/mobile/images/test22x.png" width="74" alt="">
+                        <div class="ui-media-body ui-flex-1">
+                            <h4>
+                                <b class="color-pink">保湿产品体验</b>
+                                <span class="color-grey">20171019</span>
+                            </h4>
+                            <p class="color-orange2">基于黑皮PANEL组201701001</p>
+                            <p class="color-orange">状态&nbsp;招募中&nbsp;&nbsp; 距离截止还剩43天</p>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="ui-table-view-cell">
+                <a href="#">
+                    <i class="ui-navigate-right"></i>
+                    <div class="ui-flex">
+                        <img src="__TMPL__Public/mobile/images/test12x.png" alt="">
+                        <div class="ui-media-body ui-flex-1">
+                            <h4>
+                                <b class="color-pink">保湿产品体验</b>
+                                <span class="color-grey">20171019</span>
+                            </h4>
+                            <p class="color-orange" style="color:#979797">状态&nbsp;招募已结束</p>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="ui-table-view-cell">
+                <a href="#">
+                    <i class="ui-navigate-right"></i>
+                    <div class="ui-flex">
+                        <img src="__TMPL__Public/mobile/images/test12x.png" alt="">
+                        <div class="ui-media-body ui-flex-1">
+                            <h4>
+                                <b class="color-pink">保湿产品体验</b>
+                                <span class="color-grey">20171019</span>
+                            </h4>
+                            <p class="color-orange">状态&nbsp;招募中&nbsp;&nbsp; 距离截止还剩43天</p>
+                        </div>
+                    </div>
+                </a>
+            </li>-->
+        </ul>
+        
+    </div>
+    <div class="dropload-down">
+    	<p style="text-align:center" onClick="get_project()" id="a1">加载更多...</p>
+        <p style="text-align:center" id="a2">没有更多了</p>
+        <p style="text-align:center" id="a3">加载中...</p>
+    </div>
+    <!--<div class="dropload-down">
+    	<div class="dropload-load">
+    	<span class="loading"></span>加载中...</div>
+    </div>-->
+    <input type="hidden" value="1" id="pageindex">
+    <input type="hidden" value="{$type}" id="type">
+    <input type="hidden" value="{$status}" id="status">
+</body>
+<script type="text/javascript">
+project_ajax(1);
+$("#a2").hide()
+$("#a3").hide()
+function get_project()
+{
+	project_ajax($("#pageindex").val());
+}
+
+function project_ajax(objPageIndex)
+{
+	$("#a1").hide()
+	$("#a2").hide()
+	$("#a3").show()
+	$.ajax({
+        type: "post",
+        url: "index.php?g=Mobile&m=project&a=ajax_project&p="+objPageIndex,
+        data: {type:$("#type").val(),status:$("#status").val()},
+        dataType: "json",
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            //请求发送失败
+            alert("请求发送失败");
+        },
+        success: function (data, textStatus) {
+			//alert(window.xxx);
+			//alert(data);
+			if (data.status == 1) {
+				window.xxx=1;
+                //处理成功
+                if (data.msg != "") {
+					$("#a1").show()
+					$("#a3").hide()
+                    $("#main_enterprise").append(data.msg);
+                    $("#pageindex").val(parseInt(objPageIndex) + 1);
+                    $("img").width('74px');
+                    $("img").height('76px');
+                }
+            }
+            else {
+				window.xxx=0;
+                //处理失败
+                if (data.msg != "") {
+					$("#a1").hide()
+					$("#a2").show()
+					$("#a3").hide()
+                    //alert(data.msg);
+                }
+            }
+                    $("img").width('74px');
+                   $("img").height('76px');
+
+        }
+    });
+   
+}
+</script>
+
+
+</html>

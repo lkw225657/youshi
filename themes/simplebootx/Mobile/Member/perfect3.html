@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>个人背景信息填写</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js" ></script>
+</head>
+<body>
+<form name="formUser" method="post" action="" id="submit">
+<div class="member_verification2">
+    <div class="member_wanshandiv2 over">
+    	<div class="member_wanshan1 over">
+        <label>子女人数</label><input type="text" name="child_num" value="{$member_info.child_num}" id="name" class="member_wanshan_input"><div class="member_wanshan_canshu">人</div></div>
+    </div>
+    <div id="add_haizi">
+    <foreach name="child_data" item="v">
+    
+    <div class="member_wanshandiv2 over">
+    	<div class="member_wanshan1 over">
+        <label>子女姓名</label><input type="text" name="child_name[]" value="{$v.child_name}" class="member_wanshan_input"></div>
+    </div>
+    <div class="member_wanshandiv2 over">
+    	<div class="member_wanshan1 over"><label>子女性别</label>
+        	<div class="member_xiala_hidden">
+                <select class="member_xiala" name="child_sex[]">
+                    <option></option>
+                    <option <php>if($v['child_sex']=='男'){echo 'selected';}</php>>男</option>
+                    <option <php>if($v['child_sex']=='女'){echo 'selected';}</php>>女</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="member_wanshandiv2 over" >
+    	<div class="member_wanshan1 over"><label>子女出生年月</label>
+        	
+            	<div class="member_hidden">
+                	<select class="member_nian" name="child_yuar[]">
+                      <option value="">请选择 年</option>
+                      <option value="1987" <php>if($v['child_yuar']=='1987'){echo 'selected';}</php>> 1987 年</option>
+                      <option value="1988" <php>if($v['child_yuar']=='1988'){echo 'selected';}</php>> 1988 年</option>
+                      <option value="1989" <php>if($v['child_yuar']=='1989'){echo 'selected';}</php>> 1989 年</option>
+                      <option value="1990" <php>if($v['child_yuar']=='1990'){echo 'selected';}</php>> 1990 年</option>
+                      <option value="1991" <php>if($v['child_yuar']=='1991'){echo 'selected';}</php>> 1991 年</option>
+                      <option value="1992" <php>if($v['child_yuar']=='1993'){echo 'selected';}</php>> 1992 年</option>
+                      <option value="1993" <php>if($v['child_yuar']=='1993'){echo 'selected';}</php>> 1993 年</option>
+                      <option value="1994" <php>if($v['child_yuar']=='1994'){echo 'selected';}</php>> 1994 年</option>
+                      <option value="1995" <php>if($v['child_yuar']=='1995'){echo 'selected';}</php>> 1995 年</option>
+                      <option value="1996" <php>if($v['child_yuar']=='1996'){echo 'selected';}</php>> 1996 年</option>
+                      <option value="1997" <php>if($v['child_yuar']=='1997'){echo 'selected';}</php>> 1997 年</option>
+                      <option value="1998" <php>if($v['child_yuar']=='1998'){echo 'selected';}</php>> 1998 年</option>
+                      <option value="1999" <php>if($v['child_yuar']=='1999'){echo 'selected';}</php>> 1999 年</option>
+                      <option value="2000" <php>if($v['child_yuar']=='2000'){echo 'selected';}</php>> 2000 年</option>
+                      <option value="2001" <php>if($v['child_yuar']=='2001'){echo 'selected';}</php>> 2001 年</option>
+                      <option value="2002" <php>if($v['child_yuar']=='2002'){echo 'selected';}</php>> 2002 年</option>
+                      <option value="2003" <php>if($v['child_yuar']=='2003'){echo 'selected';}</php>> 2003 年</option>
+                      <option value="2004" <php>if($v['child_yuar']=='2004'){echo 'selected';}</php>> 2004 年</option>
+                      <option value="2005" <php>if($v['child_yuar']=='2005'){echo 'selected';}</php>> 2005 年</option>
+                      <option value="2006" <php>if($v['child_yuar']=='2006'){echo 'selected';}</php>> 2006 年</option>
+                      <option value="2007" <php>if($v['child_yuar']=='2007'){echo 'selected';}</php>> 2007 年</option>
+                      <option value="2008" <php>if($v['child_yuar']=='2008'){echo 'selected';}</php>> 2008 年</option>
+                      <option value="2009" <php>if($v['child_yuar']=='2009'){echo 'selected';}</php>> 2009 年</option>
+                      <option value="2010" <php>if($v['child_yuar']=='2010'){echo 'selected';}</php>> 2010 年</option>
+                      <option value="2011" <php>if($v['child_yuar']=='2011'){echo 'selected';}</php>> 2011 年</option>
+                      <option value="2012" <php>if($v['child_yuar']=='2012'){echo 'selected';}</php>> 2012 年</option>
+                      <option value="2013" <php>if($v['child_yuar']=='2013'){echo 'selected';}</php>> 2013 年</option>
+                      <option value="2014" <php>if($v['child_yuar']=='2014'){echo 'selected';}</php>> 2014 年</option>
+                      <option value="2015" <php>if($v['child_yuar']=='2015'){echo 'selected';}</php>> 2015 年</option>
+                      <option value="2016" <php>if($v['child_yuar']=='2016'){echo 'selected';}</php>> 2016 年</option>
+                      <option value="2017" <php>if($v['child_yuar']=='2018'){echo 'selected';}</php>> 2017 年</option>
+                      <option value="2018" <php>if($v['child_yuar']=='2018'){echo 'selected';}</php>> 2018 年</option>
+                      <option value="2019" <php>if($v['child_yuar']=='2019'){echo 'selected';}</php>> 2019 年</option>
+                      <option value="2020" <php>if($v['child_yuar']=='2020'){echo 'selected';}</php>> 2020 年</option>
+                  </select>
+                </div>
+                <div class="member_hidden2">
+                	<select class="member_yue" name="child_yue[]">
+                      <option value="">选择 月</option>
+                      <option value="1" <php>if($v['child_yue']=='1'){echo 'selected';}</php>> 1 月</option>
+                      <option value="2" <php>if($v['child_yue']=='2'){echo 'selected';}</php>> 2 月</option>
+                      <option value="3" <php>if($v['child_yue']=='3'){echo 'selected';}</php>> 3 月</option>
+                      <option value="4" <php>if($v['child_yue']=='4'){echo 'selected';}</php>> 4 月</option>
+                      <option value="5" <php>if($v['child_yue']=='5'){echo 'selected';}</php>> 5 月</option>
+                      <option value="6" <php>if($v['child_yue']=='6'){echo 'selected';}</php>> 6 月</option>
+                      <option value="7" <php>if($v['child_yue']=='7'){echo 'selected';}</php>> 7 月</option>
+                      <option value="8" <php>if($v['child_yue']=='8'){echo 'selected';}</php>> 8 月</option>
+                      <option value="9" <php>if($v['child_yue']=='9'){echo 'selected';}</php>> 9 月</option>
+                      <option value="10" <php>if($v['child_yue']=='10'){echo 'selected';}</php>> 10 月</option>
+                      <option value="11" <php>if($v['child_yue']=='11'){echo 'selected';}</php>> 11 月</option>
+                      <option value="12" <php>if($v['child_yue']=='12'){echo 'selected';}</php>> 12 月</option>
+                  </select>
+                </div>
+               
+        </div>
+    </div>
+    </foreach>
+    </div>
+    <script type="text/javascript">
+	$("#name").mouseleave(function (){
+		//alert($("#name").val());
+		if($("#name").val()>0)
+		{
+			html='';
+			for(i=1;i<=$("#name").val();i++)
+			{
+				html+=$("#haizhi").html()
+			}
+			$("#add_haizi").html(html);
+		}
+    else{
+      $('#add_haizi').hide();
+    }
+	})
+	</script>
+    <div id="haizhi" style="display:none">
+   
+    <div class="member_wanshandiv2 over">
+    	<div class="member_wanshan1 over">
+        <label>子女姓名</label><input type="text" name="child_name[]" value="" class="member_wanshan_input"></div>
+    </div>
+    <div class="member_wanshandiv2 over">
+    	<div class="member_wanshan1 over"><label>子女性别</label>
+        	<div class="member_xiala_hidden">
+                <select class="member_xiala" name="child_sex[]">
+                    <option></option>
+                    <option>男</option>
+                    <option>女</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="member_wanshandiv2 over" >
+    	<div class="member_wanshan1 over"><label>子女出生年月</label>
+        	
+            	<div class="member_hidden">
+                	<select class="member_nian" name="child_yuar[]">
+                      <option value="">请选择 年</option>
+                      <option value="1987"> 1987 年</option>
+                      <option value="1988"> 1988 年</option>
+                      <option value="1989"> 1989 年</option>
+                      <option value="1990"> 1990 年</option>
+                      <option value="1991"> 1991 年</option>
+                      <option value="1992"> 1992 年</option>
+                      <option value="1993"> 1993 年</option>
+                      <option value="1994"> 1994 年</option>
+                      <option value="1995"> 1995 年</option>
+                      <option value="1996"> 1996 年</option>
+                      <option value="1997"> 1997 年</option>
+                      <option value="1998"> 1998 年</option>
+                      <option value="1999"> 1999 年</option>
+                      <option value="2000"> 2000 年</option>
+                      <option value="2001"> 2001 年</option>
+                      <option value="2002"> 2002 年</option>
+                      <option value="2003"> 2003 年</option>
+                      <option value="2004"> 2004 年</option>
+                      <option value="2005"> 2005 年</option>
+                      <option value="2006"> 2006 年</option>
+                      <option value="2007"> 2007 年</option>
+                      <option value="2008"> 2008 年</option>
+                      <option value="2009"> 2009 年</option>
+                      <option value="2010"> 2010 年</option>
+                      <option value="2011"> 2011 年</option>
+                      <option value="2012"> 2012 年</option>
+                      <option value="2013"> 2013 年</option>
+                      <option value="2014"> 2014 年</option>
+                      <option value="2015"> 2015 年</option>
+                      <option value="2016"> 2016 年</option>
+                      <option value="2017"> 2017 年</option>
+                      <option value="2018"> 2018 年</option>
+                      <option value="2019"> 2019 年</option>
+                      <option value="2020"> 2020 年</option>
+                  </select>
+                </div>
+                <div class="member_hidden2">
+                	<select class="member_yue" name="child_yue[]">
+                      <option value="">选择 月</option>
+                      <option value="1"> 1 月</option>
+                      <option value="2"> 2 月</option>
+                      <option value="3"> 3 月</option>
+                      <option value="4"> 4 月</option>
+                      <option value="5"> 5 月</option>
+                      <option value="6"> 6 月</option>
+                      <option value="7"> 7 月</option>
+                      <option value="8"> 8 月</option>
+                      <option value="9"> 9 月</option>
+                      <option value="10"> 10 月</option>
+                      <option value="11"> 11 月</option>
+                      <option value="12"> 12 月</option>
+                  </select>
+                </div>
+               
+        </div>
+    </div>
+    </div>
+    
+    
+    <!--<div class="member_wanshandiv2 over">
+    	<div class="member_wanshan1 over"><label>子女出生年月</label>
+        	
+            	<div class="member_hidden">
+                	<select class="member_nian" name="YYYY" onChange="YYYYDD(this.value)">
+                      <option value="">请选择 年</option>
+                  </select>
+                </div>
+                <div class="member_hidden2">
+                	<select class="member_yue" name="MM" onChange="MMDD(this.value)">
+                      <option value="">选择 月</option>
+                  </select>
+                </div>
+               
+        </div>
+    </div>-->
+    
+    
+    <div class="member_wanshandiv2 over">
+    	<div class="member_wanshan1 over"><label>过敏史</label>
+        	<div class="member_xiala_hidden">
+                <select class="member_xiala" name="guomin">
+                    <option></option>
+                    <option value="有" <php>if($member_info['guomin']=='有'){echo 'selected';}</php>>有</option>
+                    <option value="无" <php>if($member_info['guomin']=='无'){echo 'selected';}</php>>无</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="member_wanshandiv2 over">
+    	<div class="member_wanshan1 over"><label>慢性疾病史</label>
+        	<div class="member_xiala_hidden">
+                <select class="member_xiala" name="manxing">
+                    <option></option>
+                    <option value="有" <php>if($member_info['manxing']=='有'){echo 'selected';}</php>>有</option>
+                    <option value="无" <php>if($member_info['manxing']=='无'){echo 'selected';}</php>>无</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="member_wanshan_ico"><img src="__TMPL__Public/mobile/images/member-ico9.png">&nbsp;为必填项</div>
+    <div class="verification_button_list over">
+    	<a href="{:U('member/perfect2')}"><span class="verification_Prev l">上一步</span></a>
+		<!--<span class="verification_next2 r">保存并提交</span>-->
+        <a href="javascript:" onclick="tijiao('submit')"><div class="verification_next2 r">保存并提交</div></a>
+    </div>
+</div>
+</form>
+<div class="member_Promptcont" id='member_info' style="display:none;">
+	<div class="member_Prompt">
+    	<div class="member_Prompt_title"></div>
+        <div class="member_Prompt_desc" style="display:none;">
+        	<p>您的背景信息已提交，获得{$jifen_config.wanshan_jifen}个积分。</p>
+            <p>您目前的信息完整度是{$member_info.wanzhengdu}%，恭喜您成为优试会员，您将获得更多权益。</p>
+        </div>
+       
+       <!--  <div class="member_Prompt_button"><a href=""><span style="color:#71acff; border-bottom:1px solid #71acff;">会员权益</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="member_yc" style="color:#d35e7e;">我要报名</span></div> -->
+      <div class="member_Prompt_button" style="display:none;"><a href="{:U('member/guanzhu')}"><span class="member_yc2" style="color:#d35e7e;">确定</span></a></div>
+        <div class="member_Prompt_desc2" style="display:none;">
+        	<p>您的背景信息已提交，获得{$jifen_config.wanshan_jifen}个积分。</p>
+            <p>您目前的信息完整度是{$member_info.wanzhengdu}%，达到90%可升级成为会员，获得双倍积分！<a href="index.php?g=&m=member&a=hyquanyi" style="color:#71acff; border-bottom:1px solid #71acff;">了解会员权益</a></p>
+        </div>
+         <div class="member_Prompt_button2" tyle="display:none;"><a href="{:U('member/guanzhu')}"><span style="color:#a2a2a2;">稍后完善</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="member_yc" style="color:#d35e7e;">继续完善</span></div>
+        
+    </div>
+</div>
+
+<div class="member_Promptcont" id='wanshan' style="display:none;">
+  <div class="member_Prompt">
+      <div class="member_Prompt_title"></div>
+        <div class="member_Prompt_desc" style="display:none;">
+          <p>您的背景信息已提交，获得{$jifen_config.wanshan_jifen}个积分。</p>
+            <p>您目前的信息完整度是{$member_info.wanzhengdu}%，恭喜您成为优试会员，您将获得更多权益。</p>
+        </div>
+       
+       <!--  <div class="member_Prompt_button"><a href=""><span style="color:#71acff; border-bottom:1px solid #71acff;">会员权益</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="member_yc" style="color:#d35e7e;">我要报名</span></div> -->
+      <div class="member_Prompt_button" style="display:none;"><a href="{:U('member/index')}"><span class="member_yc2" style="color:#d35e7e;">确定</span></a></div>
+        <div class="member_Prompt_desc2" style="display:none;">
+          <p>您的背景信息已提交，获得{$jifen_config.wanshan_jifen}个积分。</p>
+            <p>您目前的信息完整度是{$member_info.wanzhengdu}%，达到90%可升级成为会员，获得双倍积分！<a href="index.php?g=&m=member&a=hyquanyi" style="color:#71acff; border-bottom:1px solid #71acff;">了解会员权益</a></p>
+        </div>
+         <div class="member_Prompt_button2" tyle="display:none;"><a href="{:U('member/index')}"><span style="color:#a2a2a2;">稍后完善</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="member_yc" style="color:#d35e7e;">继续完善</span></div>
+        
+    </div>
+</div>
+<script type="text/javascript">
+$(".member_yc").click(function(){
+  $(".member_Promptcont").hide();
+});
+	function tijiao(form){
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Mobile&m=member&a=perfect3_ajax",//+tab,
+			data : $('#'+form).serialize(),// 你的formid
+			dataType: "json",
+			success: function(data){
+				if(data.msg=='操作成功！')
+				{
+          $("#wanshan").show();
+
+          if(data.wanzhengdu>=90)
+          {
+            $(".member_Prompt_desc").show();
+             $(".member_Prompt_button").show();
+          }else{
+            $(".member_Prompt_desc2").show();
+             $(".member_Prompt_button2").show();
+          }
+					//location.href="{:U('member/index')}";
+				}
+				if(data.msg=='操作成功第一次！')
+				{
+					$("#member_info").show();
+					if(data.wanzhengdu>=90)
+          {
+            $(".member_Prompt_desc").show();
+             $(".member_Prompt_button").show();
+          }else{
+            $(".member_Prompt_desc2").show();
+             $(".member_Prompt_button2").show();
+          }
+
+				}
+			}
+		});
+	}
+</script>
+<script language="JavaScript"> 
+/*$(".member_yc2").click(function(){
+	$(".member_Promptcont").hide();
+});
+  
+function YYYYMMDDstart(){   
+	MonHead = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];   
+	
+	//先给年下拉框赋内容   
+	var y  = new Date().getFullYear();  
+	for (var i = (y-30); i < (y+30); i++) //以今年为准，前30年，后30年   
+		   document.reg_testdate.YYYY.options.add(new Option(" "+ i +" 年", i));   
+	
+	//赋月份的下拉框   
+	for (var i = 1; i < 13; i++)   
+		   document.reg_testdate.MM.options.add(new Option(" " + i + " 月", i));   
+	
+	document.reg_testdate.YYYY.value = y;   
+	document.reg_testdate.MM.value = new Date().getMonth() + 1;   
+	var n = MonHead[new Date().getMonth()];   
+	if (new Date().getMonth() ==1 && IsPinYear(YYYYvalue)) n++;   
+		writeDay(n); //赋日期下拉框Author:meizz   
+	document.reg_testdate.DD.value = new Date().getDate();   
+}   
+if(document.attachEvent)   
+	window.attachEvent("onload", YYYYMMDDstart);   
+else   
+window.addEventListener('load', YYYYMMDDstart, false);   
+function YYYYDD(str) //年发生变化时日期发生变化(主要是判断闰平年)   
+{   
+	var MMvalue = document.reg_testdate.MM.options[document.reg_testdate.MM.selectedIndex].value;   
+	if (MMvalue == ""){ var e = document.reg_testdate.DD; optionsClear(e); return;}   
+	var n = MonHead[MMvalue - 1];   
+	if (MMvalue ==2 && IsPinYear(str)) n++;   
+	writeDay(n)   
+}   
+function MMDD(str)   //月发生变化时日期联动   
+{   
+	var YYYYvalue = document.reg_testdate.YYYY.options[document.reg_testdate.YYYY.selectedIndex].value;   
+	if (YYYYvalue == ""){ var e = document.reg_testdate.DD; optionsClear(e); return;}   
+	var n = MonHead[str - 1];   
+	if (str ==2 && IsPinYear(YYYYvalue)) n++;   
+	writeDay(n)   
+}   
+function writeDay(n)   //据条件写日期的下拉框   
+{   
+	var e = document.reg_testdate.DD; optionsClear(e);   
+	for (var i=1; i<(n+1); i++)   
+	e.options.add(new Option(" "+ i + " 日", i));   
+}   
+function IsPinYear(year)//判断是否闰平年   
+{
+	return(0 == year%4 && (year%100 !=0 || year%400 == 0));
+}   
+function optionsClear(e)   
+{   
+	e.options.length = 1;   
+}   */
+</script>
+</body>
+</html>
+   

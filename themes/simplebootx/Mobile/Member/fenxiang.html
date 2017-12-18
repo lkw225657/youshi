@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		
+		<script src="__TMPL__Public/mobile/js/mui.min.js"></script>
+		<link href="__TMPL__Public/mobile/css/mui.min.css" rel="stylesheet" />
+		<title>邀请朋友</title>
+		<script type="text/javascript" charset="utf-8">
+//			mui.init();
+			new function() {
+				var _self = this;
+				_self.width = 750;
+				_self.fontSize = 100;
+				_self.widthProportion = function() {
+					var p = (document.body && document.body.clientWidth || document.getElementsByTagName("html")[0].offsetWidth) / _self.width;
+					return p > 1 ? 1 : p < 0.5 ? 0.5 : p;
+				};
+				_self.changePage = function() {
+					document.getElementsByTagName("html")[0].setAttribute("style", "font-size:" + _self.widthProportion() * _self.fontSize + "px");
+				}
+				_self.changePage();
+				window.addEventListener('resize', function() {
+					_self.changePage();
+				}, false);
+			};
+		</script>
+	</head>
+
+	<body>
+		<!-- <header class="mui-bar mui-bar-nav" style="background:#1C1B1F;line-height:0.88rem;">
+			
+			<h1 class="mui-title" style="color:#fff;">邀请朋友</h1>
+		</header> -->
+		<div class="mui-content" style="background:#FFF2E5;height:100vh;">
+			<div style="text-align: center;padding-top:1.2rem;">
+				<div style="line-height: 0.25rem;">
+					<p style="color:#4c4c4c;font-size: 0.32rem;">加入优试 </p>
+					<p style="color:#4c4c4c;font-size: 0.32rem;">免费体验国际知名 </p>
+					<p style="color:#4c4c4c;font-size: 0.32rem;">护肤品牌最新产品 </p>
+					<p style="color:#4c4c4c;font-size: 0.32rem;">还可以赚钱 赚钱 赚钱</p>
+
+				</div>
+				<div style="color:#64bc01;text-align: center;font-size:0.2rem;margin-top:0.65rem">
+					<span style="font-size: 0.28rem">长按下方二维码</span><br />
+					<span style="font-size: 0.28rem">关注优试</span>
+				</div>
+				<div style="margin:0.15rem auto;width:2.48rem;height:2,48rem;">
+					<img src="{$imgsrc}" alt="" style="width:100%;height:100%;" />
+				</div>
+				<div style="margin-top:0.45rem;">
+					<span>完成注册</span><br />
+					<span>一切，唾手可得</span>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+   

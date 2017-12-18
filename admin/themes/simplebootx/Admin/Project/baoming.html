@@ -1,0 +1,855 @@
+<admintpl file="header" />
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap js-check-wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#">报名列表</a></li>
+		<!--<li><a href="{:U('quespaper/quespaper_info')}">项目列表</a>-->
+	</ul>
+	<div class="search_type cc mb10">
+		
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<table style='margin:0 auto'>
+				<tr ><td width="200px;" height='50px;' >项目编号</td><td width="200px;" >{$project_info.project_no}</td>
+				<td width="200px;">项目名称</td><td width="200px;" >{$project_info.title}</td>
+				<td width="200px;" >项目类型</td><td width="200px;">{$project_info.type}</td>
+				</tr>
+				<tr height='50px;'><td>项目分类</td><td>{$project_info.class}</td>
+				<td>隶属长期项目组</td><td>{$project_info.longterm}</td>
+				<td>是否对外发布</td><td>{$project_info.is_fabu}</td>
+				</tr>
+				<tr height='50px;'><td>负责人</td><td>{$project_info.user_name}</td>
+				<td>创建人</td><td>{$project_info.creat_name}</td>
+				<td>创建时间</td><td>{$project_info.add_time}</td>
+				</tr>
+				<tr height='50px;'><td>招募起止时间</td><td>{$project_info.start_time}至<br>{$project_info.end_time}</td>
+				<td>项目开始时间</td><td>{$project_info.project_start_time}</td>
+				<td>项目结束事件</td><td>{$project_info.project_end_time}</td>
+				</tr>
+				<tr height='50px;'><td>通过/报名人数</td><td>{$tongguo}/{$baoming}</td>
+				<td>参与/招募人数</td><td>{$baoming}/{$project_info.demand_num}</td>
+				<td>感谢金</td><td>{$project_info.price}元</td>
+				</tr>
+				<tr height='50px;'><td>感谢金详情</td><td>{$project_info.price_desc}</td>
+				<td>积分</td><td>{$project_info.integral}个</td>
+				<td>项目状态</td><td>{$project_info.state}</td>
+				</tr>
+				<tr height='50px;'><td>审批状态</td><td>{$project_info.project_status}</td>
+				<td>项目介绍</td><td>{$project_info.project_desc}</td>
+				<td>性别</td><td>{$project_info.sex}</td>
+				</tr>
+				<tr height='50px;'><td>出生年月</td><td>{$project_info.demand_birthday}</td>
+				<td>身高</td><td>{$project_info.demand_height}</td>
+				<td>体重</td><td>{$project_info.demand_weight}</td>
+				</tr>
+				<tr height='50px;'><td>教育程度</td><td>{$project_info.demand_educa}</td>
+				<td>婚姻情况</td><td>{$project_info.demand_marriage}</td>
+				<td>职业</td><td>{$project_info.demand_profession}</td>
+				</tr>
+				<tr height='50px;'><td>工作环境</td><td>{$project_info.demand_work}</td>
+				<td>个人月收入</td><td>{$project_info.demand_month_income}</td>
+				<td>家庭月收入</td><td>{$project_info.demand_family_income}</td>
+				</tr>
+				<tr height='50px;'><td>招募详细说明</td><td>{$project_info.demand}</td>
+				<td>到访地点</td><td>{$project_info.project_address}</td>
+				<td>联系方式</td><td>{$project_info.project_phone}</td>
+				</tr>
+			</table>
+		</div>
+	</form>
+	<form class="well form-search" method="post" action="{:U('project/baoming')}&id={$project_info.id}">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">搜索：
+                    <select class="select_2" style="width:100px;" name="sex">f_admin_baoming
+						<option value=''>性别</option>
+                        <option value='男' <php>if($sex=='男'){echo 'selected';}</php>>男</option>
+                        <option value='女' <php>if($sex=='女'){echo 'selected';}</php>>女</option>
+                    </select>
+                    &nbsp;&nbsp;
+                    <select class="select_2" style="width:100px;" name="state">
+						<option value=''>报名状态</option>
+						<foreach name="f_admin_baoming" item='v'>
+                        <option value="{$v}" <php>if($state==$v){echo 'selected';}</php>>{$v}</option>
+                       </foreach>
+                    </select>
+                     年龄：<input type="text" name="min_age" style="width: 100px;" value="{$min_age}" placeholder="最小年龄">-
+                   
+                    <input type="text" name="max_age" style="width: 100px;" value="{$max_age}" placeholder="最大年龄">
+                    &nbsp;&nbsp;
+                    时间：
+                        <select class="select_2" name="time_type" id="jav_time_str" style=" width: 111px">
+                       
+                        	<option value="enrol_start_time" <php>if($time_type=='enrol_start_time'){echo 'selected';}</php>>开始时间</option>
+                           <!--  <option value="end_time" <php>if($time_type=='end_time'){echo 'selected';}</php>>结束时间</option> -->
+                            <option value="add_time" <php>if($time_type=='add_time'){echo 'selected';}</php>>报名时间</option>
+                           <!--  <option value="project_end_time" <php>if($time_type=='project_end_time'){echo 'selected';}</php>>项目结束时间</option>
+							<option value="add_time" <php>if($time_type=='add_time' && !empty($formget)){echo 'selected';}</php>>添加时间</option>
+							 -->
+						</select> &nbsp;&nbsp;
+						<input type="text" name="start_time" class="js-date" value="{$formget.start_time|default=''}" style="width: 80px;" autocomplete="off">-
+						<input type="text" class="js-date" name="end_time" value="{$formget.end_time}" style="width: 80px;" autocomplete="off"> &nbsp; &nbsp;
+                    &nbsp;&nbsp;
+                    &nbsp;&nbsp;
+					姓名：<input type="text" name="user_name" style="width: 100px;" value="{$user_name}" placeholder="请输入姓名">
+                    &nbsp;&nbsp;
+                    &nbsp;&nbsp;
+                    手机号：<input type="text" name="mobile" style="width: 100px;" value="{$mobile}" placeholder="请输入姓名">
+                    &nbsp;&nbsp;
+                    &nbsp;&nbsp;
+                    搜索：
+						<input type="text" name="keyword" style="width: 200px;" value="{$keyword}" placeholder="请输入关键字...">
+						<input type="submit" class="btn btn-primary" value="搜索" />
+					</span>
+			</div>
+			<hr>
+			<div class="mb10">
+				<form class="well form-search" method="post" action="">
+					添加会员进组&nbsp;&nbsp;&nbsp;&nbsp;姓名：<input type="text" name="add_name" style="width: 100px;" value="" placeholder="请输入姓名">
+                    &nbsp;&nbsp;
+                    &nbsp;&nbsp;
+                    手机号：<input type="text" name="add_mobile" style="width: 100px;" value="" placeholder="请输入姓名">
+                    <input type="button" onclick="search_add()" class="btn btn-primary" value="搜索" />
+                    <div id="member_msg" style="display: none;color:#1abc9c;font-size:16px;">&nbsp;&nbsp;会员编号：<span id="member_id"></span>&nbsp;&nbsp;&nbsp;会员姓名：<span id="member_name"></span>&nbsp;&nbsp;&nbsp;会员联系方式：<span id="member_mobile"></span>&nbsp;&nbsp;&nbsp;<input type="button" onclick="search_add_save()" class="btn btn-primary" value="添加进项目组" /></div>
+                    <div id="erro_msg" style="display: none;color:red;"></div>
+			</div>
+		</div>
+	</form>
+	<form class="js-ajax-form" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="15"><label><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></label></th>
+				<th width="50">id</th>
+				<th>报名时间</th>
+                <!-- <th>用户编号</th> -->
+                <th>姓名</th>
+                <th>性别</th>
+				<th>年龄</th>
+                <th>电话</th>
+				<th>地区</th>
+                <!-- <th>注册来源</th> -->
+                <th>甄别问卷</th>
+                <th>查看过程</th>
+                <th>反馈问卷</th>
+                <th>开始日期</th>
+                <th>结束日期</th>
+				<th>状态</th>
+                <th>报酬</th>
+                <?php  if($type=='3'){ ?> 
+                <th>收货人/电话</th>
+                 <th>收货地址</th>      
+				 <th>快递/单号</th>
+				 <?php } ?>
+				<th width="120">操作</th>
+			</tr>
+			</thead>
+			<foreach name="list" item="v">
+				<tr>
+					<td><input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]" value="{$v.enrol_id}" title="ID:{$v.enrol_id}"></td>
+					<td>{$v.member_id}</td>
+					<td width="122"><php>if(!empty($v['add_time'])){echo date("Y-m-d H:i:s",$v['add_time']);}</php></td>
+                    <!-- <td width="66"></td> -->
+                    <td>{$v.name}</td>
+                    <td>{$v.sex}</td>
+                    <td><?php echo birthday_age(date("Y-m-d",$v['birthday']))?></td>
+                    <td>{$v.mobile}</td>
+                    <td>{$v.area_name}</td>
+                   <!--  <td></td> -->
+                    <td><a href="{:U('project/zhenbie_show',array('member_id'=>$v['member_id'],'project_id'=>$v['project_id'],'type'=>1))}" target="_blank">甄别问卷</a></td>
+                    <td><a href="javascript:" onClick="guocheng({$v.project_id},{$v.member_id});">查看过程</a></td>
+                    <td><a href="{:U('project/zhenbie_show',array('member_id'=>$v['member_id'],'project_id'=>$v['project_id'],'type'=>4))}" target="_blank">反馈问卷</a></td>
+                    <td width="122"><input type="text" onblur="ajax_start_time({$v.enrol_id})" name="enrol_start_time_{$v.enrol_id}" id="start_time_{$v.enrol_id}" class="js-date" value="{$v.enrol_start_time|default=''}" style="width: 90px;" autocomplete="off"></td>
+                    <td width="122">{$v.enrol_end_time}</td>
+                    <td>{$v.state}</td>
+                    <td width="88">
+                    	<a class="btn" href="javascript:" onClick="select_block_apply('<?php echo $v['enrol_id']?>')">申请</a>
+                    </td>
+                   <?php  if($type=='3'){ ?>  
+                   <td width="88">
+                    	{$v.order_name}<br>{$v.order_phone}
+                    </td>
+                    <td width="88">
+                    	{$v.address}
+                    </td>              
+				 	<td width="88">
+                    	{$v.kuaidi}<br>{$v.kuaidi_no}
+                    </td>
+				 <?php } ?>
+					
+                <td width="88">
+                    	<a href="javascript:" onClick="select_block({$v.enrol_id})">修改</a> |<a href="{:U('project/enrol_del')}&tid={$v.enrol_id}">删除</a> <?php  if($type=='3'){ ?>  <a href="javascript:" onClick="select_block_f('<?php echo $v['enrol_id']?>')">发货</a> <?php } ?>
+                    	<a href="javascript:" onClick="select_block_bangding({$v.enrol_id})">绑定设备</a>
+                    </td>
+				 
+                    
+					
+				</tr>
+			</foreach>
+
+		</table>
+		<div class="table-actions">
+					<button class="btn btn-danger btn-small " type="button" onclick='show_change()'>批量修改报名状态</button>
+			<select name='change_baoming_status' id='change_baoming_status' onchange="change_baoming_state()" style='display:none;width:100px;'>
+			<foreach name='f_admin_baoming' item='v' >
+				<option value='{$v}'>{$v}</option>
+			</foreach>
+			</select>
+			<button class="btn btn-danger btn-small " type="button" data-subcheck="true" onclick="ajax_download()" ><a href="javascript:">导出</a></button>
+			<button class="btn btn-danger btn-small " type="button" data-subcheck="true" onclick="zhenbie_download()" ><a href="javascript:">导出甄别问卷</a></button>
+			<button class="btn btn-danger btn-small " type="button" data-subcheck="true" onclick="fankui_download()" ><a href="javascript:">导出反馈问卷</a></button>
+			<button class="btn btn-danger btn-small " type="button" data-subcheck="true" onclick="img_download()" ><a href="javascript:">下载图片</a></button>
+			<button class="btn btn-danger btn-small " type="button" data-subcheck="true" onclick="video_download()" ><a href="javascript:">下载视频</a></button>
+			<!--<button class="btn btn-primary btn-small J_ajax_submit_btn" type="submit" data-action="{:U('Phone/yes_d')}" data-subcheck="true" data-msg="你确定复原吗？">未下载</button>
+            <button class="btn btn-primary btn-small J_ajax_submit_btn" type="submit" data-action="{:U('Phone/no_d')}" data-subcheck="true" data-msg="你确定标记吗？">已下载</button>-->
+	<button class="btn btn-danger btn-small " type="button" data-subcheck="true" onclick="airradio_download()" ><a href="javascript:">导出环境监测数据</a></button>
+	<button class="btn btn-danger btn-small " type="button" data-subcheck="true" onclick="liucheng_download()" ><a href="javascript:">导出流程状态</a></button>
+			
+<span style="float:right; margin:0 20px 0 0">共<span style="color:#F93"> {$count} </span>条记录</span>
+		</div>
+		<div class="pagination">{$page}</div>
+
+	</form>
+</div>
+
+
+<div style="height:auto; width:450px; border:1px #CCCCCC solid; background:#FFF; padding:5px;position: fixed; top:50%; left:50%; margin:-325px 0px 0px -200px; display:none" id="vv">
+    
+    <div style=" border-bottom:1px solid #CCC; height:36px; line-height:36px; text-indent:15px;"><span style="font-size:16px; font-weight:bold">修改报名状态</span><a class="aui_close" onClick="select_none()" href="javascript:;">×</a></div>
+    	<div style="margin:20px 20px 0 20px;">
+        		
+                <span style="width:100px; display:inline-block">修改报名状态：</span> 
+                            <select class="select_2" name="post[demand_month_income]" id="enrol_state" style="width:122px;">
+							<!--<option value="">请选择</option>-->
+                            <foreach name="f_admin_baoming" item="v">
+                            <option value="{$v}" <php>if($row['demand_month_income']==$v){echo 'selected';}</php>>{$v}</option> 
+                            </foreach>
+                            </select>
+                            
+                            <input type="hidden" value="" id="enrol_id">
+                    
+                    <div class="form-actions">
+                        <!--<input type="hidden" name="ques_id" value="{$row.ques_id}" />-->
+                        <a href="javascript:select_save('select')" class="btn btn-primary js-ajax-submit">修改</a>
+                        <!--<button class="btn btn-primary js-ajax-submit" type="submit">提交</button>-->
+                        <a class="btn" href="javascript:select_none()">关闭</a>
+                    </div>
+</div>
+</div>
+
+<div style="height:auto; width:550px; border:1px #CCCCCC solid; background:#FFF; padding:5px;position: fixed; top:50%; left:50%; margin:-200px 0px 0px -375px; display:none" id="ff">
+    
+    <div style=" border-bottom:1px solid #CCC; height:36px; line-height:36px; text-indent:15px;"><span style="font-size:16px; font-weight:bold">商品发货</span><a class="aui_close" onClick="select_none_f()" href="javascript:;">×</a></div>
+    	<div style="margin:20px 20px 0 20px;">
+        <form action="" id="select_f" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">快递名</label>
+					<div class="controls">
+                    <select class="select_2" style="width:150px;" name="kuaidi">
+						<option value='线下-0'>线下</option>
+                        <foreach name="express_list" item="v">
+                        <option value='{$v.name}-{$v.code}' >{$v.name}</option>
+                        </foreach>
+                    </select>
+					</div>
+				</div>
+                <div class="control-group">
+					<label class="control-label">快递编号</label>
+					<div class="controls">
+						<input type="text" name="post[kuaidi_no]" value="{$type_info.type_sort}">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+                
+               
+                <input type="hidden" value="" name="enrol_id_f" id="enrol_id_f">
+				<div class="form-actions">
+                    <a href="javascript:select_save_f('select_f')" class="btn btn-primary js-ajax-submit">确认发货</a>
+                    <!--<button class="btn btn-primary js-ajax-submit" type="submit">提交</button>-->
+                    <a class="btn" href="javascript:select_none_f()">关闭</a>
+                </div>
+		</form>
+	</div>
+</div>
+
+<div style="height:auto; width:550px; border:1px #CCCCCC solid; background:#FFF; padding:5px;position: fixed; top:50%; left:50%; margin:-200px 0px 0px -375px; display:none" id="apply">
+    
+    <div style=" border-bottom:1px solid #CCC; height:36px; line-height:36px; text-indent:15px;"><span style="font-size:16px; font-weight:bold">申请报酬</span><a class="aui_close" onClick="select_none_apply()" href="javascript:;">×</a></div>
+    	<div style="margin:20px 20px 0 20px;">
+        <form action="" id="select_apply" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+
+                <div class="control-group">
+					<label class="control-label">申请金额</label>
+					<div class="controls">
+						<input type="text" name="post[apply_money]" value="">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+
+                <input type="hidden" value="" name="enrol_id_apply" id="enrol_id_apply">
+				<div class="form-actions">
+                    <a href="javascript:select_save_apply('select_apply')" class="btn btn-primary js-ajax-submit">申请</a>
+                    <!--<button class="btn btn-primary js-ajax-submit" type="submit">提交</button>-->
+                    <a class="btn" href="javascript:select_none_apply()">关闭</a>
+                </div>
+		</form>
+	</div>
+</div>
+<!-- 绑定设备号 -->
+<div style="height:auto; width:550px; border:1px #CCCCCC solid; background:#FFF; padding:5px;position: fixed; top:50%; left:50%; margin:-200px 0px 0px -375px; display:none" id="bangding">
+    
+    <div style=" border-bottom:1px solid #CCC; height:36px; line-height:36px; text-indent:15px;"><span style="font-size:16px; font-weight:bold">绑定设备</span><a class="aui_close" onClick="select_none_bangding()" href="javascript:;">×</a></div>
+    	<div style="margin:20px 20px 0 20px;">
+        <form action="" id="select_bangding" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+
+                <div class="control-group">
+					<label class="control-label">设备号</label>
+					<div class="controls">
+						<input type="text" id='device_id' name="post[device_id]" value="">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+
+                <input type="hidden" value="" name="post[enrol_id_bangding]" id="enrol_id_bangding">
+				<div class="form-actions">
+                    <a href="javascript:select_save_bangding('select_bangding')" class="btn btn-primary js-ajax-submit">绑定</a>
+                    <!--<button class="btn btn-primary js-ajax-submit" type="submit">提交</button>-->
+                    <a class="btn" href="javascript:select_none_bangding()">关闭</a>
+                </div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+	function search_add()
+	{
+		var add_name=$("input[name='add_name']").val();
+		var add_mobile=$("input[name='add_mobile']").val();
+			$.ajax({
+				type : "POST",
+				url:"index.php?g=Admin&m=project&a=search_add",//+tab,
+				//data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+				data :{add_name:add_name,add_mobile:add_mobile},
+				dataType: "json",
+				success: function(data){
+					if(data.msg)
+					{
+						$('#erro_msg').show();
+						$('#member_msg').hide();
+						$('#erro_msg').html(data.msg);
+					}else{
+						$('#member_msg').show();
+						$('#erro_msg').hide();
+						$('#member_id').html(data.member_id);
+						$('#member_name').html(data.name);
+						$('#member_mobile').html(data.mobile);
+					}
+					
+
+				}
+			});
+
+	}
+	//将人员添加进项目组
+	function search_add_save(){
+		var member_id=$('#member_id').html();
+		var member_name=$('#member_name').html();
+		var member_mobile=$('#member_mobile').html();
+		$.ajax({
+				type : "POST",
+				url:"index.php?g=Admin&m=project&a=search_add_save&project_id="+<?php echo $project_info['id'];?>,//+tab,
+				//data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+				data :{member_id:member_id,member_name:member_name,member_mobile:member_mobile},
+				dataType: "json",
+				success: function(data){
+
+					alert(data.msg);
+					if(data.erro=='0')
+					{
+						reloadPage(window);	
+					}
+					
+				}
+			});
+
+	}
+
+	function img_download()
+	{
+		
+		location.href="index.php?g=Admin&m=phpzip&a=downimgzip&project_id={$project_info.id}";
+
+	} 
+		function video_download()
+	{
+		
+		location.href="index.php?g=Admin&m=phpzip&a=downmovezip&project_id={$project_info.id}";
+
+	} 
+
+
+	function ajax_download()
+	{
+		var sex=$("select[name='sex']").val();
+		var state=$("select[name='state']").val();
+		var time_type=$("select[name='time_type']").val();
+		var start_time=$("input[name='start_time']").val();
+		var end_time=$("input[name='end_time']").val();
+		var mobile=$("input[name='mobile']").val();
+		var user_name=$("input[name='user_name']").val();
+		var keyword=$("input[name='keyword']").val();
+		var url="&sex="+sex+"&state="+state+"&mobile="+mobile+"&user_name="+user_name+"&time_type="+time_type+"&start_time="+start_time+"&end_time="+end_time+"&keyword="+keyword;
+		location.href="index.php?g=Admin&m=download&a=downExcel&mod=member_enrol&type={$type}&project_id={$project_info.id}"+url;
+
+
+	} 
+	
+	function zhenbie_download()
+	{
+		var ids=jqchk('ids[]');
+		var sex=$("select[name='sex']").val();
+		var state=$("select[name='state']").val();
+		var time_type=$("select[name='time_type']").val();
+		var start_time=$("input[name='start_time']").val();
+		var end_time=$("input[name='end_time']").val();
+		var mobile=$("input[name='mobile']").val();
+		var user_name=$("input[name='user_name']").val();
+		var keyword=$("input[name='keyword']").val();
+		var url="&sex="+sex+"&state="+state+"&mobile="+mobile+"&user_name="+user_name+"&time_type="+time_type+"&start_time="+start_time+"&end_time="+end_time+"&keyword="+keyword+"&ids="+ids;
+		location.href="index.php?g=Admin&m=download&a=downExcel&mod=zhenbie&type={$type}&project_id={$project_info.id}"+url;
+
+	} 
+
+	function fankui_download()
+	{	
+		var ids=jqchk('ids[]');
+		var sex=$("select[name='sex']").val();
+		var state=$("select[name='state']").val();
+		var time_type=$("select[name='time_type']").val();
+		var start_time=$("input[name='start_time']").val();
+		var end_time=$("input[name='end_time']").val();
+		var mobile=$("input[name='mobile']").val();
+		var user_name=$("input[name='user_name']").val();
+		var keyword=$("input[name='keyword']").val();
+		var url="&sex="+sex+"&state="+state+"&mobile="+mobile+"&user_name="+user_name+"&time_type="+time_type+"&start_time="+start_time+"&end_time="+end_time+"&keyword="+keyword+"&ids="+ids;
+		// var url="&ids="+ids;
+		location.href="index.php?g=Admin&m=download&a=downExcel&mod=fankui&type={$type}&project_id={$project_info.id}"+url;
+
+	} 
+
+	function liucheng_download()
+	{	
+		var ids=jqchk('ids[]');
+		var sex=$("select[name='sex']").val();
+		var state=$("select[name='state']").val();
+		var time_type=$("select[name='time_type']").val();
+		var start_time=$("input[name='start_time']").val();
+		var end_time=$("input[name='end_time']").val();
+		var mobile=$("input[name='mobile']").val();
+		var user_name=$("input[name='user_name']").val();
+		var keyword=$("input[name='keyword']").val();
+		var url="&sex="+sex+"&state="+state+"&mobile="+mobile+"&user_name="+user_name+"&time_type="+time_type+"&start_time="+start_time+"&end_time="+end_time+"&keyword="+keyword+"&ids="+ids;
+		// var url="&ids="+ids;
+		location.href="index.php?g=Admin&m=download&a=downExcel&mod=liucheng&type={$type}&project_id={$project_info.id}"+url;
+
+	} 
+
+
+		function airradio_download()
+	{
+		// var sex=$("select[name='sex']").val();
+		// var state=$("select[name='state']").val();
+		// var time_type=$("select[name='time_type']").val();
+		// var start_time=$("input[name='start_time']").val();
+		// var end_time=$("input[name='end_time']").val();
+		// var mobile=$("input[name='mobile']").val();
+		// var user_name=$("input[name='user_name']").val();
+		// var keyword=$("input[name='keyword']").val();
+		var ids=jqchk('ids[]');
+		if(ids)
+		{
+			 var url="&ids="+ids;
+	 	location.href="index.php?g=Admin&m=download&a=downExcel&mod=airradio&project_id={$project_info.id}"+url;
+		}else{
+			alert('您还没选择任何数据');
+		}
+		// var url="&sex="+sex+"&state="+state+"&mobile="+mobile+"&user_name="+user_name+"&time_type="+time_type+"&start_time="+start_time+"&end_time="+end_time+"&keyword="+keyword;
+	}
+		
+
+	
+
+	function jqchk(name){  //jquery获取复选框值    
+	  var chk_value ='';    
+	  $('input[name="'+name+'"]:checked').each(function(){    
+	   chk_value+=$(this).val()+',';    
+	  });    
+	  if(chk_value.length==0)
+		{
+			return false;
+		}else{
+			 return chk_value; 
+		}
+	 
+	 
+	}
+
+
+
+//申请报酬
+function select_save_apply(form)
+	{
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=project&a=apply_money",//+tab,
+			data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+			dataType: "json",
+			success: function(data){
+				//alert(data);return true;
+				if(data.erro==1)
+				{
+					alert(data.msg);
+					
+				}else{
+					alert(data.msg);
+					reloadPage(window);
+					select_none_apply();
+				}
+				
+				
+				
+			}
+		});
+		//alert($("#v_select").html());
+		//.alert(form);
+	}
+	
+	function select_none_apply()
+	{
+		/*window.test = '';
+		$('[name="select_id"]').attr("value",'');  
+		$('#select_name').attr("value",'');  
+		$("#ss_select").html('');*/
+		//alert(window.test);
+		//$(window.test).parent().parent().parent().show();
+		$("#apply").css('display','none');
+	}
+	function select_block_apply(id)
+	{
+		
+		$("#enrol_id_apply").val(id);
+		$("#apply").css('display','block');
+	}
+
+	//绑定设备号
+function select_save_bangding(form)
+	{
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=project&a=bangding",//+tab,
+			data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+			dataType: "json",
+			success: function(data){
+				//alert(data);return true;
+				if(data.erro==1)
+				{
+					alert(data.msg);
+					
+				}else{
+					alert(data.msg);
+					reloadPage(window);
+					select_none_bangding();
+				}
+				
+				
+				
+			}
+		});
+		//alert($("#v_select").html());
+		//.alert(form);
+	}
+	
+	function select_none_bangding()
+	{
+		
+		$("#bangding").css('display','none');
+	}
+	function select_block_bangding(id)
+	{
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=project&a=bind_device_id&enrol_id="+id,//+tab,
+			//data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+			dataType: "json",
+			success: function(data){
+				//alert(data);return true;
+				if(data.status==1 || true)
+				{
+					$("#device_id").val(data.device_id);
+				}
+
+			}
+		});
+		
+		$("#enrol_id_bangding").val(id);
+		$("#bangding").css('display','block');
+	}
+
+
+
+function select_save_f(form)
+	{
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=project&a=order_fahuo",//+tab,
+			data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+			dataType: "json",
+			success: function(data){
+				//alert(data);return true;
+				if(data.status==1 || true)
+				{
+					
+					alert(data.info);
+					reloadPage(window);
+					select_none_f();
+				}
+				
+				
+				
+			}
+		});
+		//alert($("#v_select").html());
+		//.alert(form);
+	}
+	
+	function select_none_f()
+	{
+		/*window.test = '';
+		$('[name="select_id"]').attr("value",'');  
+		$('#select_name').attr("value",'');  
+		$("#ss_select").html('');*/
+		//alert(window.test);
+		//$(window.test).parent().parent().parent().show();
+		$("#ff").css('display','none');
+	}
+	function select_block_f(id)
+	{
+		
+		$("#enrol_id_f").val(id);
+		$("#ff").css('display','block');
+	}
+
+
+
+function show_change(){
+		if($('#change_baoming_status').css('display')!='none')
+		{
+			$('#change_baoming_status').hide();
+		}else{
+				$('#change_baoming_status').show();
+		}
+
+	}
+	//批量修改
+	function change_baoming_state()
+	{
+		var ids=document.getElementsByName('ids[]');
+		var status=$("#change_baoming_status").val();
+		var check_val='';
+			for(k in ids){
+        	if(ids[k].checked)
+            check_val+=ids[k].value+',';
+    		}
+    	if(check_val=='')
+    	{
+    		alert('您没有勾选信息，无法进行操作！');
+    	}
+    	if(check_val)
+    	{
+    		if(confirm('确定要批量修改吗？'))
+    		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=project&a=project_baoming_state&status="+status,//+tab,
+			data : {'check_val':check_val},// 你的formid//data : $('#'+form).serialize(),// 你的formi
+			dataType: "html",
+			success: function(data){
+			reloadPage(window);			
+		}	
+			
+		});
+    	}
+
+
+    }
+
+
+
+	function guocheng(project_id,member_id)
+	{
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=&m=admin&a=admin&project_id="+project_id+"&member_id="+member_id,//+tab,
+			//data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+			dataType: "html",
+			success: function(data){
+				$("#guocheng_ss").html(data);
+				$("#guocheng").show();
+				$("body").css('background','#FFF');
+				//alert(data);
+				//reloadPage(window);
+			}
+		});
+	}
+	
+	function guocheng_none()
+	{
+		$("#guocheng").css('display','none');
+	}
+</script>
+
+<script type="text/javascript">
+
+	function select_save()
+	{
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=project&a=enrol_state&enrol_id="+$("#enrol_id").val()+"&enrol_state="+$("#enrol_state").val(),//+tab,
+			//data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+			dataType: "html",
+			success: function(data){
+				//alert(data);
+				reloadPage(window);
+			}
+		});
+	}
+	
+	function select_none()
+	{
+		$("#vv").css('display','none');
+	}
+	
+	function select_block(id)
+	{
+		$("#enrol_id").val(id);
+		$("#vv").css('display','block');
+	}
+</script>
+
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+	function refersh_window() {
+		var refersh_time = getCookie('refersh_time');
+		if (refersh_time == 1) {
+			window.location = "{:U('AdminPost/index',$formget)}";
+		}
+	}
+	setInterval(function() {
+		refersh_window();
+	}, 2000);
+	$(function() {
+		setCookie("refersh_time", 0);
+		Wind.use('ajaxForm', 'artDialog', 'iframeTools', function() {
+			//批量移动
+			$('.js-articles-move').click(function(e) {
+				var str = 0;
+				var id = tag = '';
+				$("input[name='ids[]']").each(function() {
+					if ($(this).attr('checked')) {
+						str = 1;
+						id += tag + $(this).val();
+						tag = ',';
+					}
+				});
+				if (str == 0) {
+					art.dialog.through({
+						id : 'error',
+						icon : 'error',
+						content : '您没有勾选信息，无法进行操作！',
+						cancelVal : '关闭',
+						cancel : true
+					});
+					return false;
+				}
+				var $this = $(this);
+				art.dialog.open("__ROOT__/index.php?g=portal&m=AdminPost&a=move&ids="+ id, {
+					title : "批量移动",
+					width : "80%"
+				});
+			});
+		});
+	});
+
+
+	// function show_shouhuo(enrol_id){
+	// 	var shou_id='shouhuo_'+enrol_id;
+	// 	var show_id='show_e_'+enrol_id;
+	// 	var hide_id='hide_e_'+enrol_id;
+	// 		var sh =document.getElementById(shou_id);
+	// 		var show_e =document.getElementById(show_id);
+	// 		var hide_e =document.getElementById(hide_id);
+	// 			url="http://host/index.php?g=Mobile&m=process&a=shouhuo_ajax&enrol_id="+enrol_id;
+	// 			$.ajax({
+	// 						type : "POST",
+	// 						url:"index.php?g=Admin&m=project&a=erweima&enrol_id="+enrol_id,//+tab,
+	// 						data : {'url':url},// 你的formid//data : $('#'+form).serialize(),// 你的formi
+	// 						dataType: "html",
+	// 						success: function(data){
+	// 							//alert(data);
+	// 							//reloadPage(window);
+	// 							sh.src=data;
+	// 							//$('#shouhuo').attr('src',data);
+	// 							show_e.style.display='none';
+	// 							sh.style.display='block';
+	// 							hide_e.style.display='block';
+
+	// 						}
+	// 					});
+				
+	// 		}
+		// function hide_shouhuo(enrol_id)
+		// {
+		// 	var shou_id='shouhuo_'+enrol_id;
+		// 	var show_id='show_e_'+enrol_id;
+		// 	var hide_id='hide_e_'+enrol_id;
+		// 	var sh =document.getElementById(shou_id);
+		// 	var show_e =document.getElementById(show_id);
+		// 	var hide_e =document.getElementById(hide_id);
+		// 	show_e.style.display='block';
+		// 	sh.style.display='none';
+		// 	hide_e.style.display='none';
+		// }	
+
+
+		function ajax_start_time(enrol_id)
+		{
+			var time_id='start_time_'+enrol_id;
+			var tt=document.getElementById(time_id);
+			if(tt.value)
+			{
+				
+					$.ajax({
+							type : "POST",
+							url:"index.php?g=Admin&m=project&a=ajax_start_time&enrol_id="+enrol_id,//+tab,
+							data : {'enrol_start_time':tt.value},// 你的formid//data : $('#'+form).serialize(),// 你的formi
+							dataType: "html",
+							success: function(data){
+									if(data=='成功')
+										tt.value=tt.value;
+							}
+						});
+			}
+		}
+
+</script>
+</body>
+</html>
+
+<div style="height:auto; width:30%; border:1px #CCCCCC solid; background:#FFF; padding:5px;position: fixed; top:50%; left:50%; margin:-22% 0px 0px -15%; display:none" id="guocheng">
+    
+    <div style=" border-bottom:1px solid #CCC; height:36px; line-height:36px; text-indent:15px;"><span style="font-size:16px; font-weight:bold">查看过程</span><a class="aui_close" onClick="guocheng_none()" href="javascript:;">×</a></div>
+    	<div style="margin:20px 20px 0 20px; height:500px; overflow: scroll" id="guocheng_ss">
+        
+        </div>
+        </div>

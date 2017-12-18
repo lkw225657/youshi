@@ -1,0 +1,68 @@
+<admintpl file="header" />
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap js-check-wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="###">用户问卷</a></li>
+		<!--<li><a href="{:U('selectques/selectques_info')}">添加选择题</a>-->
+	</ul>
+    <script type="text/javascript">
+	$(".set_is").click(function(){
+		if($(".set_is").attr('checked')=='checked')
+		{
+			is=1;
+		}else
+		{
+			is=0;
+		}
+		//alert(is);
+		id='{$project_info.id}'
+		id_name='id'
+		from='project';
+		name='is_zhenbie';
+		
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=ajax&a=set_is",//+tab,
+			data : {id:id,from:from,is:is,name:name,id_name:id_name},// 你的formid//data : $('#'+form).serialize(),// 你的formi
+			dataType: "HTML",
+			success: function(data){
+				//alert(data);
+			}
+		});
+		
+	})
+	</script>
+    
+	<form class="js-ajax-form" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="50">序号</th>
+				<th>题目</th>
+                <th>类型</th>
+				<th>备选答案</th>
+				<th>符合答案</th>
+                <th>用户答案</th>
+			</tr>
+			</thead>
+			<foreach name="ques_list" key="k" item="v">
+				<tr>
+					<td>{$k+1}</td>
+					<td>{$v.ques_id}{$v.name}</td>
+                    <td width="66">{$v.class}</td>
+					<td style="width:42%">{$v.answer_str}</td>
+                    <td width="100">{$v.daan}</td>
+                     <td width="100">{$ques_arr.$k.daan}</td>
+
+				</tr>
+			</foreach>
+
+		</table>
+
+	</form>
+</div>
+
+</body>
+</html>

@@ -9,6 +9,7 @@ class ProjectController extends AdminbaseController{
 	
 	public function erweima($url)
 	{
+		sleep(1);
 		if($_POST['url'])
 		{
 			$url=$_POST['url'];
@@ -895,7 +896,6 @@ class ProjectController extends AdminbaseController{
 			$answer_arr=array();
 			foreach($zimu as $k=>$v)
 			{
-				//echo $v.'111';
 				if(!empty($vv[$v]))
 				{
 					$answer_arr[]=strtoupper($v).":".$vv[$v];
@@ -918,7 +918,7 @@ class ProjectController extends AdminbaseController{
 		$process=M('project_process');
 		$project=M('project');
 		$id = intval(I("get.project_id"));
-		$url="http://m.youshi.ltd/index.php?g=&m=Project&a=project_qiandao&project_id=".$id;
+		$url=U('Mobile/process/project_qiandao@'.WX_HOME_URL_HOST,'project_id='.$id);
 		$erweima= $this->geterweima($url,time());
 		$this->assign("erweima",$erweima);
 		$project_info=$project->where(array('id'=>$id))->find();
@@ -1148,6 +1148,10 @@ class ProjectController extends AdminbaseController{
 		$id = intval(I("get.project_id"));
 		$type = intval(I("get.type"));
 		$num = intval(I("get.num"));
+		if($num < 1)
+		{
+		    $num = 1;
+		}
 		
 		$project_info=$project->where(array('id'=>$id))->find();
 		$project_info['ques_type']=$type;
@@ -1385,7 +1389,7 @@ class ProjectController extends AdminbaseController{
 		$this->assign("tongguo",$tongguo);
 		//二维码
 		
-		$url="http://m.youshi.ltd/index.php?g=Mobile&m=process&a=shouhuo_ajax&project_id=".$project_id;
+		$url=U('Mobile/process/shouhuo_ajax@'.WX_HOME_URL_HOST,'project_id='.$project_id);
 		$erweima= $this->geterweima($url,time());
 		$this->assign("erweima",$erweima);
 		$this->assign("page", $page->show('Admin'));

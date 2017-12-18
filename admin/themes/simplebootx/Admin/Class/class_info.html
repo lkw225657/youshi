@@ -1,0 +1,242 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('class/index')}">分类列表</a></li>
+			<li class="active"><a href="{:U('class/class_info')}">添加分类</a></li>
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form" action="{:U('class/class_save')}">
+			<fieldset>
+            
+                <div class="control-group">
+					<label class="control-label">选择分类</label>
+					<div class="controls">
+                        <select class="select_2" name="post[parent_id]">
+                            <foreach name="parent_list" item="vo">
+                                <option value="{$vo.class_id}"<?php if($vo['class_id']==$row['parent_id'] || $vo['class_id']==$type_id){echo 'selected';}?>>{$vo.name}</option>
+                            </foreach>		
+                        </select>
+					</div>
+				</div>
+                
+                <div class="control-group">
+					<label class="control-label">分类名</label>
+					<div class="controls">
+						<input type="text" value="{$row.name}" name="post[name]">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+                    
+                <div class="control-group">
+					<label class="control-label">分类编码</label>
+					<div class="controls">
+						<input type="text" value="{$row.code}" name="post[code]">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+                
+                <div class="control-group">
+					<label class="control-label">广告位简介</label>
+					<div class="controls">
+						<textarea name="post[desc]" rows="5" cols="57">{$row.desc}</textarea>
+					</div>
+				</div>
+                
+                <div class="control-group">
+					<label class="control-label">分类排序</label>
+					<div class="controls">
+						<input type="text" value="{$row.sort}" name="post[sort]">
+						<span class="form-required">*默认为0</span>
+					</div>
+				</div>
+   
+			</fieldset>
+			<div class="form-actions">
+                <input type="hidden" value="{$row.class_id}" name="class_id">
+				<button class="btn btn-primary js-ajax-submit" type="submit">提交</button>
+				<a class="btn" href="{:U('class/index')}">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+	<script type="text/javascript">
+		//编辑器路径定义
+		var editorURL = GV.DIMAUB;
+	</script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			
+			$(".js-ajax-close-btn").on('click', function(e) {
+				
+				e.preventDefault();
+				Wind.use("artDialog", function() {
+					
+					art.dialog({
+						id : "question",
+						icon : "question",
+						fixed : true,
+						lock : true,
+						background : "#CCCCCC",
+						opacity : 0,
+						content : "您确定需要关闭当前页面嘛？",
+						ok : function() {
+							setCookie("refersh_time", 1);
+							window.close();
+							return true;
+						}
+					});
+				});
+			});
+			/////---------------------
+			Wind.use('validate', 'ajaxForm', 'artDialog', function() {
+				//javascript
+				
+				try {
+					editorcontent.sync();
+				} catch (err) {
+				}
+				//增加编辑器验证规则
+				jQuery.validator.addMethod('editorcontent', function() {
+					try {
+						editorcontent.sync();
+					} catch (err) {
+					}
+					return editorcontent.hasContents();
+				});
+				var form = $('form.js-ajax-forms');
+				//ie处理placeholder提交问题
+				if ($.browser.msie) {
+					form.find('[placeholder]').each(function() {
+						var input = $(this);
+						if (input.val() == input.attr('placeholder')) {
+							input.val('');
+						}
+					});
+				}
+
+				var formloading = false;
+				//表单验证开始
+				form.validate({
+					
+					//是否在获取焦点时验证
+					onfocusout : false,
+					//是否在敲击键盘时验证
+					onkeyup : false,
+					//当鼠标掉级时验证
+					onclick : false,
+					//验证错误
+					showErrors : function(errorMap, errorArr) {
+						
+						//errorMap {'name':'错误信息'}
+						//errorArr [{'message':'错误信息',element:({})}]
+						try {
+							$(errorArr[0].element).focus();
+							art.dialog({
+								id : 'error',
+								icon : 'error',
+								lock : true,
+								fixed : true,
+								background : "#CCCCCC",
+								opacity : 0,
+								content : errorArr[0].message,
+								cancelVal : '确定',
+								cancel : function() {
+									$(errorArr[0].element).focus();
+								}
+							});
+						} catch (err) {
+						}
+					},
+					//验证规则
+					rules : {
+	
+						'post[ok_price]' : {
+							required : 1,
+							number : 1
+						},
+						'post[num]' : {
+							required : 1,
+							digits : 1
+						},
+						'post[post_content]' : {
+							editorcontent : true
+						}
+					},
+					//验证未通过提示消息
+					messages : {
+						'post[price]' : {
+							
+							number : '请输入合法的数字！'
+						},
+						'post[ok_price]' : {
+							number : '请输入合法的数字！'
+						},
+						'post[num]' : {
+		
+						},
+						'post[post_content]' : {
+							editorcontent : '内容不能为空'
+						}
+					},
+					//给未通过验证的元素加效果,闪烁等
+					highlight : false,
+					//是否在获取焦点时验证
+					onfocusout : false,
+					//验证通过，提交表单
+					submitHandler : function(forms) {
+						//return true; //-----v-------
+						if (formloading)
+							return;
+						$(forms).ajaxSubmit({
+							url : form.attr('action'), //按钮上是否自定义提交地址(多按钮情况)
+							dataType : 'json',
+							beforeSubmit : function(arr, $form, options) {
+								formloading = true;
+							},
+							success : function(data, statusText, xhr, $form) {
+								formloading = false;
+								if (data.status) {
+									setCookie("refersh_time", 1);
+									//添加成功
+									Wind.use("artDialog", function() {
+										art.dialog({
+											id : "succeed",
+											icon : "succeed",
+											fixed : true,
+											lock : true,
+											background : "#CCCCCC",
+											opacity : 0,
+											content : data.info,
+											button : [ {
+												name : '继续添加？',
+												callback : function() {
+													reloadPage(window);
+													return true;
+												},
+												focus : true
+											}, {
+												name : '返回列表页',
+												callback : function() {
+													location = "{$typedata.list_url}";
+													return true;
+												}
+											} ]
+										});
+									});
+								} else {
+									isalert(data.info);
+								}
+							}
+						});
+					}
+				});
+			});
+			////-------------------------
+		});
+	</script>
+</body>
+</html>

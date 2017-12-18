@@ -1,0 +1,580 @@
+<admintpl file="header" />
+<style type="text/css">
+.pic-list li {
+	margin-bottom: 5px;
+}
+#worke_content{ margin-top:15px;}
+</style>
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+		<li><a href="{:U('member/member_list')}">会员列表</a></li>
+		<li class="active"><a href="{:U('member/member_info')}">添加会员</a>
+	</ul>
+		<form action="{:U('member/member_save')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<div class="row-fluid">
+				<div class="span9">
+					<table class="table table-bordered">
+
+						<tr>
+							<th width="80">姓名</th>
+							<td>
+								<input type="text" style="width:400px;" name="post[name]" id="title" required value="{$row.name}" placeholder="请输入个人姓名"/>
+								<span class="form-required" style="color:red">*</span>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">身份证号</th>
+							<td>
+								<input type="text" name="post[id_number]" value="{$row.id_number}" class="zimu_input" placeholder="请输入身份证号" style="width: 180px;">
+								<span class="form-required" style="color:red">*</span>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">性别</th>
+							<td>
+								<select class="select_2" name="post[sex]" style="width:122px;">
+                                	<option value="男" <php>if($row['sex']=='男'){echo 'selected';}</php>>男</option>
+                                	<option value="女" <php>if($row['sex']=='女'){echo 'selected';}</php>>女</option>
+                                </select>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">出生年月</th>
+							<td>
+								<input type="text" name="birthday" value="{$row.birthday}" class="js-datetime" style="width: 160px;">
+								<span class="form-required" style="color:red">*</span>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">手机号</th>
+							<td>
+								<input type="text" name="post[mobile]" value="{$row.mobile}" class="zimu_input" placeholder="请输入手机号" style="width: 180px;">
+								<span class="form-required" style="color:red">*</span>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">所在地区</th>
+							<td>
+                            <input type="hidden" id="area1" style="width:30px" value="{$row.area_id.0}">
+                            <input type="hidden" id="area2" style="width:30px" value="{$row.area_id.1}">
+                            <input type="hidden" id="area3" style="width:30px" value="{$row.area_id.2}">
+                                省：
+                                <select class="select_2" name="area_id[]" id="sheng" style=" width: 111px">
+                                    <option value=''>请选择</option>
+                                </select>
+                                市：
+                                <select class="select_2" name="area_id[]" id="shi" style=" width: 111px">
+                                    <option value=''>请选择</option>
+                                </select>
+                                区：
+                                <select class="select_2" name="area_id[]" id="qu" style=" width: 111px">
+                                    <option value=''>请选择</option>
+                                </select> &nbsp;&nbsp;
+                                <input type="hidden" value="{$row.area_name}" name="post[area_name]" id="area_name">
+                            
+    <!--省 市 区-->
+<script type="text/javascript">
+	
+	//1--36--37
+	$("#area1").val();
+	//alert(111);
+	area(0,$("#area1").val(),'sheng');
+	if($("#area1").val()>0)
+	{
+		area($("#area1").val(),$("#area2").val(),'shi');
+	}
+	if($("#area1").val()>0 &&$("#area1").val()>0)
+	{
+		area($("#area2").val(),$("#area3").val(),'qu');
+		
+	}
+	
+	
+	
+	$("#sheng").change(function(){
+		//alert($("#sheng").val());
+		area($("#sheng").val(),'','shi')
+		$("#area_name").val($("#sheng option:selected").text());
+	})
+	
+	$("#shi").change(function(){
+		//alert($("#shi").val());
+		area($("#shi").val(),'','qu')
+		//alert($("#shi option:selected").text());;
+		$("#area_name").val($("#sheng option:selected").text()+','+$("#shi option:selected").text());
+		
+	})
+	$("#qu").change(function(){
+		//alert($("#sheng option:selected").text()+','+$("#shi option:selected").text()+','+$("#qu option:selected").text());
+		$("#area_name").val($("#sheng option:selected").text()+','+$("#shi option:selected").text()+','+$("#qu option:selected").text());
+	})
+	function area(area_parent_id,area_id,id)
+	{
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=ajax&a=ajax_area",//+tab,
+			data : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+			dataType: "html",
+			success: function(data){
+				$("#"+id).html(data);
+				//alert(data);
+			}
+		});
+	}
+	</script>   
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">地址详情</th>
+							<td>
+								<textarea name="post[address]" id="description" style="width: 50%; height: 50px;" placeholder="请填写地址详情（现在所在地址）">{$row.address}</textarea>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">身高</th>
+							<td>
+								<input type="text" name="post[height]" value="{$row.height}" class="zimu_input" placeholder="请输入身高（CM）" style="width: 180px;">
+								<span class="form-required" style="color:red">*</span>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">体重</th>
+							<td>
+								<input type="text" name="post[weight]" value="{$row.weight}" class="zimu_input" placeholder="请输入体重（KG）" style="width: 180px;">
+								<span class="form-required" style="color:red">*</span>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">教育程度</th>
+							<td>
+								<select class="select_2" name="post[educa]" style="width:122px;">
+                                <option value="">请选择</option>
+                                
+                                <foreach name="educa" item="v">
+                                <option value="{$v}" <php>if($row['educa']==$v){echo 'selected';}</php>>{$v}</option> 
+                                </foreach>
+                                </select>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">婚姻状况</th>
+							<td>
+								<select class="select_2" name="post[marriage]" style="width:122px;">
+                                <option value="">请选择</option>
+                                <foreach name="marriage" item="v">
+                                <option value="{$v}" <php>if($row['marriage']==$v){echo 'selected';}</php>>{$v}</option> 
+                                </foreach>
+                                </select>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">职业</th>
+							<td>
+								<select class="select_2" name="post[profession]" style="width:122px;">
+                                <option value="">请选择</option>
+                                <foreach name="profession" item="v">
+                                <option value="{$v}" <php>if($row['profession']==$v){echo 'selected';}</php>>{$v}</option> 
+                                </foreach>
+                                </select>  
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">工作环境</th>
+							<td>
+								<select class="select_2" name="post[work]" style="width:122px;">
+                                <option value="">请选择</option>
+                                <foreach name="work" item="v">
+                                <option value="{$v}" <php>if($row['work']==$v){echo 'selected';}</php>>{$v}</option> 
+                                </foreach>
+                                </select>   
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">血型</th>
+							<td>
+								<select class="select_2" name="post[blood]" style="width:122px;">
+                                <option value="">请选择</option>
+                                <foreach name="blood" item="v">
+                                <option value="{$v}" <php>if($row['blood']==$v){echo 'selected';}</php>>{$v}型</option> 
+                                </foreach>
+                                </select>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">个人月收入</th>
+							<td>
+                                <input type="text" name="post[month_income]" value="{$row.month_income}"  style="width: 88px;">
+                                <b style=" padding:0 0 0 7px; font-size:16px; color:red">元</b>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">家庭月收入</th>
+							<td> 
+                                <input type="text" name="post[family_income]" value="{$row.family_income}"  style="width: 88px;">
+                                <b style=" padding:0 0 0 7px; font-size:16px; color:red">元</b>
+							</td>
+						</tr>
+                        
+                        
+                        
+                        <tr>
+							<th width="80">邮箱</th>
+							<td>
+								<input type="text" name="post[email]" value="{$row.email}" class="zimu_input" placeholder="请输入电子邮箱" style="width: 180px;">
+								<span class="form-required" style="color:red">*</span>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">籍贯</th>
+							<td>
+								<input type="text" name="post[jiguan]" value="{$row.jiguan}" class="zimu_input" placeholder="请输入个人籍贯" style="width: 180px;">
+								<span class="form-required" style="color:red">*</span>
+							</td>
+						</tr>
+                        
+                        
+                        
+                        <tr>
+							<th width="80">家庭住址</th>
+							<td>
+								<textarea name="post[new_address]" id="description" style="width: 50%; height: 50px;" placeholder="请填写家庭住址详情（身份证地址）">{$row.new_address}</textarea>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">住房类型</th>
+							<td>
+								<select class="select_2" name="post[housing]" style="width:122px;">
+                                <option value="">请选择</option>
+                                <foreach name="housing" item="v">
+                                <option value="{$v}" <php>if($row['housing']==$v){echo 'selected';}</php>>{$v}型</option> 
+                                </foreach>
+                                </select>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">过敏史</th>
+							<td>
+								<select class="select_2" name="post[guomin]" style="width:122px;">
+                                	<option value="无" <php>if($row['guomin']=='无'){echo 'selected';}</php>>无</option>
+                                	<option value="有" <php>if($row['guomin']=='有'){echo 'selected';}</php>>有</option>
+                                </select>   
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">慢性病史</th>
+							<td>
+								<select class="select_2" name="post[manxing]" style="width:122px;">
+                                	<option value="无" <php>if($row['manxing']=='无'){echo 'selected';}</php>>无</option>
+                                	<option value="有" <php>if($row['manxing']=='有'){echo 'selected';}</php>>有</option>
+                                </select>   
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th>子女选项</th>
+							<td style="line-height:45px;" >
+                            
+                            <div id="ss">
+                                <?php foreach($row['child_data'] as $k=>$v){?>
+                               		<div>
+                                    <b style=" font-size:14px !important;width: 60px; display: inline-block; text-align:center" class="zimu_b">性别</b>
+                                    <select class="select_2" name="child_sex[]" style="width:122px;">
+                                            <option value="男" <php>if($v->child_sex=='男'){echo 'selected';}</php>>男</option>
+                                            <option value="女" <php>if($v->child_sex=='女'){echo 'selected';}</php>>女</option>
+                                    </select>   
+                                    <br>
+                                    <b style=" font-size:14px !important;width: 60px; display: inline-block; text-align:center" class="zimu_b">姓名</b>
+                                    <input type="text" name="child_name[]" value="<?php echo $v->child_name?>" class="zimu_input" placeholder="请输入孩子姓名" style="width: 180px;">
+                                    <br>
+                                    <b style=" font-size:14px !important;width: 60px; display: inline-block; text-align:center" class="zimu_b">生日</b>
+                                    <input type="text" name="child_birthday[]" value="<?php echo $v->child_birthday?>" class="js-date1" style="width: 160px;">
+                                    <a class="btn" onClick="del(this)" href="javascript:">移除</a>
+                                    </div>
+                                    <br>
+                                <?php }?>
+                            </div>
+                            
+                            <a class="btn btn-primary" id="aa" href="javascript:">添加子女信息</a>
+                            <div id="vv" style="display:none">
+                            <div>
+                            <b style=" font-size:14px !important;width: 60px; display: inline-block; text-align:center" class="zimu_b">性别</b>
+                            <select class="select_2" name="child_sex[]" style="width:122px;">
+                                	<option value="男" <php>if($row['class']=='男'){echo 'selected';}</php>>男</option>
+                                	<option value="女" <php>if($row['class']=='女'){echo 'selected';}</php>>女</option>
+                            </select>   
+                            <br>
+                            <b style=" font-size:14px !important;width: 60px; display: inline-block; text-align:center" class="zimu_b">姓名</b>
+                            <input type="text" name="child_name[]" value="" class="zimu_input" placeholder="请输入孩子姓名" style="width: 180px;">
+                            <br>
+                            <b style=" font-size:14px !important;width: 60px; display: inline-block; text-align:center" class="zimu_b">生日</b>
+                            <input type="text" name="child_birthday[]" value="" class="js-date1" style="width: 160px;">
+                            <a class="btn" onClick="del(this)" href="javascript:">移除</a>
+                            </div>
+                            <br>
+                            </div>
+                            </td>
+						</tr>
+                        
+					</table>
+                    <script type="text/javascript">
+							
+						function del(e)
+						{
+							$(e).parent('div').remove();
+
+						}
+						
+						$("#ss").on("mouseover",".js-date1",function(){
+							var dateInput = $("input.js-date1")
+							if (dateInput.length) {
+								Wind.use('datePicker', function () {
+									dateInput.datePicker();
+								});
+							}
+						})
+
+						
+						$("#aa").click(function(){ 
+							//alert(getChar($("#ss").children('div').length));
+							zimu=getChar($("#ss").children('div').length);
+							
+							//$("#vv .zimu_b").html(zimu)
+							//$("#vv .zimu_input").attr("name",'post['+zimu+']');
+							//$("#vv .zimu_input").attr("value",zimu);
+							//alert($("#vv .zimu_input").val());
+							//alert($("#vv div").html());
+							$("#ss").append($("#vv").html());
+							$("#vv .zimu_input").removeAttr("name");	//移除复制源name防止提交时出错
+							//alert($("#vv div").html());
+							//$("#vv div").clone(true).appendTo("#ss"); // 复制当前点击的节点，并将它追加到<ul>元素 
+						}) 
+						
+						//获取字母
+						function getChar(i){
+
+							if(i >= 0 && i <= 26){
+					
+								return String.fromCharCode(65 + i);
+					
+							} else {
+					
+								alert('请输入合适数字');
+					
+							}
+					
+						}
+					</script>
+
+				</div>
+				
+			</div>
+			<div class="form-actions">
+                <input type="hidden" name="id" value="{$row.member_id}" />
+				<button class="btn btn-primary js-ajax-submit" type="submit">提交</button>
+				<a class="btn" href="{:U('member/member_list')}">返回</a>
+			</div>
+		</form>
+	</div>
+    
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+	<script type="text/javascript">
+		//编辑器路径定义
+		var editorURL = GV.DIMAUB;
+	</script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			
+			$(".js-ajax-close-btn").on('click', function(e) {
+				
+				e.preventDefault();
+				Wind.use("artDialog", function() {
+					
+					art.dialog({
+						id : "question",
+						icon : "question",
+						fixed : true,
+						lock : true,
+						background : "#CCCCCC",
+						opacity : 0,
+						content : "您确定需要关闭当前页面嘛？",
+						ok : function() {
+							setCookie("refersh_time", 1);
+							window.close();
+							return true;
+						}
+					});
+				});
+			});
+			/////---------------------
+			Wind.use('validate', 'ajaxForm', 'artDialog', function() {
+				//javascript
+				
+				try {
+					editorcontent.sync();
+				} catch (err) {
+				}
+				//增加编辑器验证规则
+				jQuery.validator.addMethod('editorcontent', function() {
+					try {
+						editorcontent.sync();
+					} catch (err) {
+					}
+					return editorcontent.hasContents();
+				});
+				var form = $('form.js-ajax-forms');
+				//ie处理placeholder提交问题
+				if ($.browser.msie) {
+					form.find('[placeholder]').each(function() {
+						var input = $(this);
+						if (input.val() == input.attr('placeholder')) {
+							input.val('');
+						}
+					});
+				}
+
+				var formloading = false;
+				//表单验证开始
+				form.validate({
+					
+					//是否在获取焦点时验证
+					onfocusout : false,
+					//是否在敲击键盘时验证
+					onkeyup : false,
+					//当鼠标掉级时验证
+					onclick : false,
+					//验证错误
+					showErrors : function(errorMap, errorArr) {
+						
+						//errorMap {'name':'错误信息'}
+						//errorArr [{'message':'错误信息',element:({})}]
+						try {
+							$(errorArr[0].element).focus();
+							art.dialog({
+								id : 'error',
+								icon : 'error',
+								lock : true,
+								fixed : true,
+								background : "#CCCCCC",
+								opacity : 0,
+								content : errorArr[0].message,
+								cancelVal : '确定',
+								cancel : function() {
+									$(errorArr[0].element).focus();
+								}
+							});
+						} catch (err) {
+						}
+					},
+					//验证规则
+					rules : {
+	
+						'post[ok_price]' : {
+							required : 1,
+							number : 1
+						},
+						'post[num]' : {
+							required : 1,
+							digits : 1
+						},
+						'post[post_content]' : {
+							editorcontent : true
+						}
+					},
+					//验证未通过提示消息
+					messages : {
+						'post[price]' : {
+							
+							number : '请输入合法的数字！'
+						},
+						'post[ok_price]' : {
+							number : '请输入合法的数字！'
+						},
+						'post[num]' : {
+		
+						},
+						'post[post_content]' : {
+							editorcontent : '内容不能为空'
+						}
+					},
+					//给未通过验证的元素加效果,闪烁等
+					highlight : false,
+					//是否在获取焦点时验证
+					onfocusout : false,
+					//验证通过，提交表单
+					submitHandler : function(forms) {
+						//return true; //-----v-------
+						if (formloading)
+							return;
+						$(forms).ajaxSubmit({
+							url : form.attr('action'), //按钮上是否自定义提交地址(多按钮情况)
+							dataType : 'json',
+							beforeSubmit : function(arr, $form, options) {
+								formloading = true;
+							},
+							success : function(data, statusText, xhr, $form) {
+								formloading = false;
+								if (data.status) {
+									setCookie("refersh_time", 1);
+									//添加成功
+									Wind.use("artDialog", function() {
+										art.dialog({
+											id : "succeed",
+											icon : "succeed",
+											fixed : true,
+											lock : true,
+											background : "#CCCCCC",
+											opacity : 0,
+											content : data.info,
+											button : [ {
+												name : '继续添加？',
+												callback : function() {
+													reloadPage(window);
+													return true;
+												},
+												focus : true
+											}, {
+												name : '返回列表页',
+												callback : function() {
+													location = "{:U('member/member_list')}";
+													return true;
+												}
+											} ]
+										});
+									});
+								} else {
+									isalert(data.info);
+								}
+							}
+						});
+					}
+				});
+			});
+			////-------------------------
+		});
+	</script>
+</body>
+</html>

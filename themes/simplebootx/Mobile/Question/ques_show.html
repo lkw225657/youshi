@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>问卷</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/ui.css" />
+    <script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>
+</head>
+
+<body>
+
+    <div class="screening">
+        <div class="title5">
+            <h3 class="color-sky-blue">{$ques_info.ques_nam}</h3>
+            <small class="color-grey">报名问卷填写</small>
+        </div>
+        <div class="ui-container">
+            <div class="ui-form-wrapper">
+            	<foreach name="ques_arr" key="k" item="v">
+                <div class="qu-item">
+                    <h4 class="color-pink">Q{$k+1}.{$v.title}</h4>
+                    <label>
+                        <span>{$v.daan}</span>
+                    </label>
+                </div>
+             	</foreach>
+                <!--<div class="qu-item">
+                    <h4 class="color-pink">Q1.您的脸部有多少色斑？</h4>
+                    <label>
+                        <span>油性肌肤</span>
+                    </label>
+                </div>
+                <div class="qu-item">
+                    <h4 class="color-pink">Q1.您使用爽肤水的频率是？</h4>
+                    <label>
+                        <span>油性肌肤</span>
+                    </label>
+                </div>-->
+            </div>
+            <div class="ui-flex">
+                 <php>if($ques_info['type']!='1'){</php>
+                <div class="ui-btn ui-btn-one ui-flex-1">
+                    <a href="{:U('question/ques',array('project_id'=>$ques_info['project_id'],'sort'=>1))}">返回修改</a>           
+                </div>
+                <php>}</php>
+                <div class="ui-btn ui-btn-two ui-flex-1">
+                	<a href="javascript:" id='sub_a' onclick="tijiao('submit')">确认提交</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--未通过报名-->
+<div class="member_Promptcont baoming_err" style="display:none;">
+	<div class="member_Prompt">
+    	<div class="member_Prompt_title">项目报名</div>
+        <div class="member_Prompt_desc">
+        	<p>抱歉，您未通过此次项目甄别问答筛选！可以试试其他项目哦！</p>
+        </div>
+        <div class="member_Prompt_button"><a href="{:U('project/project_list')}"><span style="color:#d35e7e;">确定</span></a></div>
+    </div>
+</div>
+
+<!--未通过报名-->
+<div class="member_Promptcont baoming_err_agin" style="display:none;">
+    <div class="member_Prompt">
+        <div class="member_Prompt_title">项目报名</div>
+        <div class="member_Prompt_desc">
+            <p>抱歉，您已经提交过甄别问卷，请勿重复提交！</p>
+        </div>
+        <div class="member_Prompt_button"><a href="{:U('project/project_list')}"><span style="color:#d35e7e;">确定</span></a></div>
+    </div>
+</div>
+
+<!--报名成功-->
+<div class="member_Promptcont baoming_ok" style="display:none;">
+	<div class="member_Prompt">
+    	<div class="member_Prompt_title">项目报名</div>
+        <div class="member_Prompt_desc">
+        	<p>恭喜您报名成功，获得10个积分。</p>
+            <p>{$msg_info.content}</p>
+        </div>
+        <div class="member_Prompt_button"><a  href="{$msg_info.url}"><span style="color:#d35e7e;">确定</span></a></div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+	function tijiao(form){
+         $('#sub_a').removeAttr('onclick');
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Mobile&m=question&a=quesok_ajax&project_id="+"{$ques_info.project_id}&ques_type="+"{$ques_info.type}",//+tab,
+			data : $('#'+form).serialize(),// 你的formid
+			dataType: "html",
+			success: function(data){
+				//alert(data);return true;
+				if(data=='报名成功')
+				{
+					$(".baoming_ok").show();
+				}
+                if(data=='报名失败')
+				{
+					$(".baoming_err").show();
+				}
+                 if(data=='报名重复')
+                {
+                   $(".baoming_err_agin").show();
+                }
+                
+			}
+		});
+	}
+</script>
+
+
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>{$name} {$seo_title} {$site_name}--上传头像</title>
+<style>*,html,body{padding:0px;margin:0px;}header{ display:none}</style>
+<script src="__TMPL__Public/mobile/head_thumb/js/jquery-2.0.3.min.js"></script>
+<script src="__TMPL__Public/mobile/head_thumb/js/layer.m.js"></script>
+<script src="__TMPL__Public/mobile/head_thumb/js/touch-0.2.14.min.js"></script>
+<script src="__TMPL__Public/mobile/head_thumb/js/jquery.crop.js"></script>
+
+<script>
+		$(function(){
+			var w = $(window).width();
+			var h = $(window).height();
+			$('.cutbox').crop({
+				w:w>h?h:w,
+				h:h,
+				r:(w-30)*0.5,
+				res:'',
+				callback:function(ret){
+					//alert(ret);
+					//localStorage.setItem("new_avatar",ret);
+					//sessionStorage.setItem('edit_baby_avatar',true);
+					
+					$.ajax({  
+						type : "POST",  
+						url : "{:U('upload/tobase')}",  
+						data : {  
+							'base' : ret,  
+						},  
+						dataType: 'html', //返回值类型 一般设置为json
+						success : function(data) { 
+							//alert(data);
+						    window.location.replace("index.php?g=mobile&m=member&a=index");
+							//alert(data);
+						}  
+					});
+					//window.location.replace("/index.php?g=mobile&m=upload&a=tobase&base="+ret);
+				}
+			});
+		});
+		
+</script>
+</head>
+
+<body style=" ">
+
+<div class="cutbox"></div>
+</body>
+</html>

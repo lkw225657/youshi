@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>我的邀请</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+</head>
+<body style="background:#fff;">
+<div class="member_yaoqinglist">
+	<div class="member_yaoqinglist_title">共<span>1</span>位好友</div>
+    <table class="member_yaoqinglist_cont" cellpadding="0" cellspacing="0">
+    	<tr>
+        <th>姓名</th>
+    	<th>电话</th>
+        </tr>
+        <foreach name='member_list' item='v'>
+        <tr>
+        <td>{$v.name}</td>
+        <td>{$v.mobile}</td>
+        </tr>
+        </foreach>
+        <!-- <tr>
+    	<td>张三丰</td>
+    	<td>1564564654564</td>
+        </tr> -->
+    </table>
+</div>
+</body>
+</html>

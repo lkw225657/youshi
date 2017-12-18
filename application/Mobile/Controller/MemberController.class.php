@@ -33,15 +33,15 @@ class MemberController extends MobilebaseController {
 	function _initialize() {
 		parent::_initialize();
 		//$this->assign("active",'member');
-	$appid = 'wx71f172895fb20911'; 
-	$secret = '447c05fa58111bc771f35aaf50d90f79';
+		$appid = WX_APP_ID; 
+		$secret = WX_SECRET;
 	$_SESSION['yaoqing']=$_GET['member_id'];
-	define('WX_HOME_URL_HOST', 'm.youshi.ltd');
+
 	if(empty($_SESSION['user_openid'])||empty($_SESSION['member']['member_id']))
 	{
 			if (!isset($_GET["code"])) {
 			//echo $_SESSION['page'];
-			$u1 = "http://m.youshi.ltd/index.php?g=&m=member&a=index&member_id=".$_GET['member_id'];
+			$u1 = "http://".WX_HOME_URL_HOST."/index.php?g=&m=member&a=index&member_id=".$_GET['member_id'];
 			$u1 = urlencode($u1);
 			$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$appid.'&redirect_uri='.$u1.'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
 			// die($url);
@@ -149,7 +149,6 @@ class MemberController extends MobilebaseController {
 				$this->assign("member_info",$member_info);
 			
 		}
-		
 	}
 	
 	
@@ -372,7 +371,7 @@ class MemberController extends MobilebaseController {
 		
 		vendor('erweima.erweima');//导入类库
 		$aa=new \erweima();
-		$url="http://m.youshi.ltd/index.php?g=Mobile&m=member&a=index&member_id=".$_SESSION['member']['member_id'];
+		$url="http://".WX_HOME_URL_HOST."/index.php?g=Mobile&m=member&a=index&member_id=".$_SESSION['member']['member_id'];
 		$filename=$aa->png($url,md5($name).'.jpg','','10');
 		$this->assign('imgsrc',$filename);
 		$this->display();
@@ -383,7 +382,7 @@ class MemberController extends MobilebaseController {
 		
 		// vendor('erweima.erweima');//导入类库
 		// $aa=new \erweima();
-		// $url="http://m.youshi.ltd/index.php?g=Mobile&m=member&a=index&member_id=".$_SESSION['member']['member_id'];
+		// $url="http://".WX_HOME_URL_HOST."/index.php?g=Mobile&m=member&a=index&member_id=".$_SESSION['member']['member_id'];
 		// $filename=$aa->png($url,md5($name).'.jpg','','10');
 		// $this->assign('imgsrc',$filename);
 		$this->display();
@@ -731,7 +730,7 @@ class MemberController extends MobilebaseController {
 		$shouhuo_info['name']=$member_info['name'];
 		}
 		$this->assign("shouhuo_info",$shouhuo_info);
-		print_r($shouhuo_info);
+		//print_r($shouhuo_info);
 	
 		$this->display();
 	}

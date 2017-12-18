@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>我的项目</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/ui.css" />
+    <script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+<!--<div style="position:fixed; z-index:111111" id="show">111</div>-->
+    <div class="ui-header ui-flex bg-pink testing">
+        <div class="ui-flex-1">
+            <span class="header-content" id="select_text" style="width: 100%;">全部<i class="ui-icon" style="left:450px;"></i></span>
+                <select class="header-xialaxinxi" style="position: absolute; left: 0px; top: 0px; width: 100%; height: 3em; opacity: 0;">
+                    <option value='0'>全部</option>
+                    <foreach name="options" item="v" key="k">
+                        <option value="{$v}">{$k}</option>
+                    </foreach>
+                </select>
+        </div>
+    </div>
+    <script type="text/javascript">
+	</script>
+
+    <div class="ui-container testing-container">
+        <ul class="ui-table-view" id="main_enterprise">
+        {$html}
+        </ul>
+    </div>
+
+</body>
+<script type="text/javascript">
+    $(function() {
+        $('img').width('74px');
+        $('img').height('76px');
+    });
+    (function(window, undefined){
+        $('.header-xialaxinxi').on('change', function(){
+            var idx = $(this).val();
+            if (idx == 0) {
+                $('li[id^="poj_"]').css("display","block");
+            } else {
+                $('li[id^="poj_"]').css("display","none");
+                $('li[id$="j_'+ idx +'"]').css("display","block");
+            }
+            $('#select_text').text($('.ui-flex-1 option:selected').text());
+            $('#select_text').append('<i class="ui-icon" style="left:450px;"></i>');
+        })
+    })(window);
+</script>
+</html>

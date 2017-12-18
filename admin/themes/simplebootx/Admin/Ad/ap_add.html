@@ -1,0 +1,51 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+        <ul class="nav nav-tabs">
+			<li><a href="{:U('ad/positionList')}">广告位管理</a></li>
+			<li class="active"><a href="{:U('ad/ap_add')}">添加广告位</a></li>
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form" action="{:U('ad/ap_post')}">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">广告位名称</label>
+					<div class="controls">
+						<input type="text" value="{$ap_info.ap_name}" name="ap_name">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+                
+                <div class="control-group">
+					<label class="control-label">广告位宽度</label>
+					<div class="controls">
+						<input type="text" value="{$ap_info.ap_width}" name="ap_width">
+						<span class="form-required">*px</span>
+					</div>
+				</div>
+                
+                <div class="control-group">
+					<label class="control-label">广告位高度</label>
+					<div class="controls">
+						<input type="text" value="{$ap_info.ap_height}" name="ap_height">
+						<span class="form-required">*px</span>
+					</div>
+				</div>
+                
+				<div class="control-group">
+					<label class="control-label">广告位简介</label>
+					<div class="controls">
+						<textarea name="ap_intro" rows="5" cols="57">{$ap_info.ap_intro}</textarea>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+                <input type="hidden" value="{$ap_info.id}" name="id">
+				<button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+				<a class="btn" href="{:U('ad/index')}">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	
+</body>
+</html>

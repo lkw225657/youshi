@@ -1,0 +1,815 @@
+<admintpl file="header" />
+<style type="text/css">
+.pic-list li {
+	margin-bottom: 5px;
+}
+#worke_content{ margin-top:15px;}
+</style>
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+		<li><a href="{$typedata.list_url}">{$typedata.list}</a></li>
+		<li class="active"><a href="{$typedata.add_url}">{$typedata.add}</a>
+	</ul>
+    <div style="font-size:18px; color:red; line-height:38px;">{$typedata.title}</div>
+		<form action="{:U('project/project_save')}" id="submit_form" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<div class="row-fluid">
+				<div class="span9">
+					<table class="table table-bordered">
+                    <if condition="($typedata.type neq 4)">
+                    	<tr>
+                    		<th>项目类型</th>
+							<td>
+                                <php>$active_true_checked=($row['project_type'] ==传统 || empty($row))?"checked":"";</php>
+                                  <label class="radio inline" for="active_true">
+                                        <input type="radio" name="post[project_type]" value="传统" {$active_true_checked} id="active_true"/>传统
+                                </label>
+                                <php>$active_false_checked=($row['project_type'] ==创新 && !empty($row))?"checked":"";</php>
+                                <label class="radio inline" for="active_false">
+                                        <input type="radio" name="post[project_type]" value="创新" id="active_false" {$active_false_checked}>创新
+                                </label>
+								
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th>隶属客户</th>
+							<td><select class="select_2" id="kehu" name="post[kehu]">
+							<option value="">请选择隶属客户</option>
+                            <foreach name="kehu_list" item="v">
+                            <option value="{$v.name}" <php>if($row['kehu']==$v['name']){echo 'selected';}</php>>{$v.name}</option> <!---->
+                            </foreach>
+     
+						</select> &nbsp;&nbsp;<span class="must_red"></span></td>
+						</tr>
+                        
+                        <tr>
+							<th>长期项目组</th>
+                            <!--修改  如果没有归属项目组，则组内发布无法点击或不出现-->
+							<td><select class="select_2" name="post[longterm]" onclick=" if(this.value !=''){document.getElementById('is_zw').disabled='';}  if(this.value ==''){document.getElementById('is_zw').disabled='disabled';}">
+							<option value="">请选择</option>
+                            <foreach name="project_list" item="v">
+                            <option value="{$v.id}"   <php>if($row['longterm']==$v['id']){echo 'selected';}</php>>{$v.title}</option> 
+                            </foreach>
+     
+						</select> &nbsp;&nbsp;<span class="must_red"></span><label class="radio inline">
+                                <!--修改将checkbox 设置为没有项目组的时候无法选择-->
+                                        <input type="checkbox" id='is_zw' name="is_zw" value="1" <?php if($row && $row['is_zw']==0){echo 'checked';}?><?php if(empty($row)){echo 'disabled';}?> />组内发布
+                            </label></td>
+						</tr>
+                        </if>
+                        
+                        <tr>
+							<th>项目分类</th>
+							<td><select class="select_2" name="post[class]" id="project_class">
+							<option value="">请选择项目分类</option>
+                            <foreach name="longterm_list" item="v">
+                            <option value="{$v.name}" <php>if($row['class']==$v['name']){echo 'selected';}</php>>{$v.name}</option> <!---->
+                            </foreach>
+     
+						</select> &nbsp;&nbsp;<span class="must_red"></span></td>
+						</tr>
+                        
+                        <tr>
+                    		<th>是否对外发布</th>
+							<td>
+                                <php>$active_true_checked=($row['is_fabu'] ==是 || empty($row))?"checked":"";</php>
+                                  <label class="radio inline" for="active_true">
+                                        <input type="radio" name="post[is_fabu]" value="是" {$active_true_checked} id="active_true"/>是
+                                </label>
+                                <php>$active_false_checked=($row['is_fabu'] ==否 && !empty($row))?"checked":"";</php>
+                                <label class="radio inline" for="active_false">
+                                        <input type="radio" name="post[is_fabu]" value="否" id="active_false" {$active_false_checked}>否
+                                </label>
+								
+							</td>
+						</tr>
+                        
+                        <tr>
+                    		<th>关联工作人员</th>
+							<td>
+                            	<div><b>研究员:</b>
+                                <foreach name="yanjiu_list" item="v">
+                                <label class="radio inline">
+                                        <input type="checkbox" name="user_yj[]" value="{$v.id}" <?php if(in_array($v['id'], explode(',',$row['user_yj']))){echo 'checked';}?> />{$v.user_nicename}
+                                </label>
+                                </foreach>
+                                
+                                </div>
+                                <hr>
+                                <div><b>兼职:</b>
+                                <foreach name="jianzhi_list" item="v">
+                                <label class="radio inline">
+                                        <input type="checkbox" name="user_jz[]" value="{$v.id}" <?php if(in_array($v['id'], explode(',',$row['user_jz']))){echo 'checked';}?> />{$v.user_nicename}
+                                </label>
+                                </foreach>
+                                </div>
+								<hr>
+                                <div><b>项目经理:</b>
+                                <foreach name="jingli_list" item="v">
+                                <label class="radio inline">
+                                        <input type="checkbox" name="user_jl[]" value="{$v.id}" <?php if(in_array($v['id'], explode(',',$row['user_jl']))){echo 'checked';}?> />{$v.user_nicename}
+                                </label>
+                                </foreach>
+                                </div>
+							</td>
+						</tr>
+                        
+                        
+                        <tr>
+							<th>项目编号</th>
+							<td><input type="text" name="post[project_no]" id="project_no" value="{$row.project_no}" style="width: 250px" placeholder="请输入项目序号"> <a class="btn" <?php if(!$row[project_no]){ ?> onClick="creatno(this)" <?php }?> href="javascript:">生成编号</a>&nbsp;&nbsp;<span class="must_red"></span></td>
+						</tr>
+                        <script type="text/javascript">
+						function creatno(e)
+						{
+							project_type=$("input[name='post[project_type]']:checked").val()
+							project_class=$("#project_class").val();
+							kehu=$("#kehu").val();
+                            type="{$typedata.type}";
+							if(type==4){
+								kehu='99';
+							}
+                            if(kehu)
+                            {
+                                $.ajax({
+                                    type : "POST",
+                                    url:"index.php?g=Admin&m=ajax&a=ajax_project_no",//+tab,
+                                    data : {type:type,project_class:project_class,project_type:project_type,kehu:kehu},// 你的formid
+                                    dataType: "html",
+                                    success: function(data){
+                                        $("#project_no").val(data);
+                                        //$("#"+id).html(data);
+                                        //alert(data);
+                                    }
+                                }); 
+                            }else{
+                                alert('请先选择所属客户');
+                            }
+
+						}
+						</script>
+
+						<tr>
+							<th width="80">项目名称</th>
+							<td>
+								<input type="text" style="width:400px;" name="post[title]" id="title" required value="{$row.title}" placeholder="请输入项目名称"/>
+								<span class="form-required" style="color:red">*</span>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th>负责人</th>
+							<td><select class="select_2" name="post[user_id]">
+                            <option value="">请选择</option>
+                            <foreach name="jingli_list" item="v">
+                            <option value="{$v.id}" <php>if($row['user_id']==$v['id']){echo 'selected';}</php>>{$v.user_nicename}</option> <!---->
+                            </foreach>
+     
+						</select> &nbsp;&nbsp;<span class="must_red"></span></td>
+						</tr>
+                        
+                        <tr>
+							<th>招募起止时间</th>
+                            <td>
+                            开始时间：<input type="text" name="start_time" value="{$row.start_time}" class="js-datetime" style="width: 160px;"> -- 
+                            结束时间：<input type="text" name="end_time" value="{$row.end_time}" class="js-datetime" style="width: 160px;">
+                            </td>
+						</tr>
+                        <if condition="($typedata.type neq 2 and $typedata.type neq 3 and $typedata.type neq 4)">
+                        <tr>
+							<th>预计项目起止时间</th>
+                            <td>
+                            开始时间：<input type="text" name="project_start_time" value="{$row.project_start_time}" class="js-datetime" style="width: 160px;"> -- 
+                            结束时间：<input type="text" name="project_end_time" value="{$row.project_end_time}" class="js-datetime" style="width: 160px;">
+                            </td>
+						</tr>
+                        </if>
+                        <tr>
+                            <th width="80">项目介绍</th>
+                            <td>
+                             <span style="width:80px; display:inline-block; font-size:16px; font-weight:bold;">项目介绍：</span> 
+                            <div id='content_tip'></div>
+                               <textarea name='post[project_desc]' id='price_content' style='width:98%;height:100px;' placeholder='项目介绍！'>{$row.project_desc}</textarea>
+                              <script type="text/javascript">
+                              //编辑器路径定义
+                              var editorURL = GV.DIMAUB;
+                              </script>
+                              <if condition="($typedata.type neq 2 and $typedata.type neq 3 and $typedata.type neq 4)">
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">到访次数：</span> 
+                            <textarea name="post[project_num]" id="description" style="width: 50%; height: 50px;" placeholder="请填写到访次数">{$row.project_num}</textarea>
+                            </if>
+                            
+                            <if condition="($typedata.type neq  2 and $typedata.type neq 3 and $typedata.type neq 4)">
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">项目时长：</span> 
+                            <textarea name="post[project_time]" id="description" style="width: 50%; height: 50px;" placeholder="请填写项目时长">{$row.project_time}</textarea>
+                            </if>
+                            
+                            <if condition="($typedata.type neq 2)">
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">到访地点：</span> 
+                            <textarea name="post[project_address]" id="description" style="width: 50%; height: 50px;" placeholder="请填写到访地点">{$row.project_address}</textarea>
+                            </if>
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">工作人员联系方式：</span> 
+                            <textarea name="post[project_phone]" id="description" style="width: 50%; height: 50px;" placeholder="请填写工作人员联系方式">{$row.project_phone}</textarea>
+                            
+                              </td>
+                        </tr>
+                        
+                        
+                        <tr>
+                            <th width="80">招募需求</th>
+                            <td id="shengri">
+                            <span style="width:80px; display:inline-block">出生年月：</span> 
+                            <input type="text" name="demand_age[]" class="js-date1 date" value="{$row.demand_age.0}" style="width: 120px;"> -- 
+                            <input type="text" name="demand_age[]" class="js-date1 date" value="{$row.demand_age.1}" style="width: 120px;">
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">性别：</span> 
+                            <select class="select_2" name="post[demand_sex]" style="width:122px;">
+							<option value="">请选择</option>
+                            <foreach name="sexs" item="v">
+                            <option value="{$v}" <php>if($row['demand_sex']==$v){echo 'selected';}</php>>{$v}</option> 
+                            </foreach>
+                            </select>
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">地区：</span> 
+                            <input type="hidden" id="area1" style="width:30px" value="{$row.demand_area_id.0}">
+                            <input type="hidden" id="area2" style="width:30px" value="{$row.demand_area_id.1}">
+                            <input type="hidden" id="area3" style="width:30px" value="{$row.demand_area_id.2}">
+                                省：
+                                <select class="select_2" name="demand_area_id[]" id="sheng" style=" width: 111px">
+                                    <option value=''>请选择</option>
+                                </select>
+                                市：
+                                <select class="select_2" name="demand_area_id[]" id="shi" style=" width: 111px">
+                                    <option value=''>请选择</option>
+                                </select>
+                                区：
+                                <select class="select_2" name="demand_area_id[]" id="qu" style=" width: 111px">
+                                    <option value=''>请选择</option>
+                                </select> &nbsp;&nbsp;
+                                <input type="hidden" value="{$row.demand_area}" name="post[demand_area]" id="area_name">
+                            
+    <!--省 市 区-->
+<script type="text/javascript">
+	
+	//1--36--37
+	$("#area1").val();
+	//alert(111);
+	area(0,$("#area1").val(),'sheng');
+	if($("#area1").val()>0)
+	{
+		area($("#area1").val(),$("#area2").val(),'shi');
+	}
+	if($("#area1").val()>0 &&$("#area1").val()>0)
+	{
+		area($("#area2").val(),$("#area3").val(),'qu');
+		
+	}
+	
+	
+	
+	$("#sheng").change(function(){
+		//alert($("#sheng").val());
+		area($("#sheng").val(),'','shi')
+		$("#area_name").val($("#sheng option:selected").text());
+	})
+	
+	$("#shi").change(function(){
+		//alert($("#shi").val());
+		area($("#shi").val(),'','qu')
+		//alert($("#shi option:selected").text());;
+		$("#area_name").val($("#sheng option:selected").text()+','+$("#shi option:selected").text());
+		
+	})
+	$("#qu").change(function(){
+		//alert($("#sheng option:selected").text()+','+$("#shi option:selected").text()+','+$("#qu option:selected").text());
+		$("#area_name").val($("#sheng option:selected").text()+','+$("#shi option:selected").text()+','+$("#qu option:selected").text());
+	})
+	function area(area_parent_id,area_id,id)
+	{
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=ajax&a=ajax_area",//+tab,
+			data : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+			dataType: "html",
+			success: function(data){
+				$("#"+id).html(data);
+				//alert(data);
+			}
+		});
+	}
+	</script>
+                            
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">身高：</span> 
+                            <input type="text" name="demand_height[]" value="{$row.demand_height.0}"  style="width: 88px;"><b style=" padding:0 0 0 7px; font-size:14px; color:red">CM</b>  ~ 
+                            <input type="text" name="demand_height[]" value="{$row.demand_height.1}"  style="width: 88px;">
+                            <b style=" padding:0 0 0 7px; font-size:14px; color:red">CM</b>
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">体重：</span> 
+                            <input type="text" name="demand_weight[]" value="{$row.demand_weight.0}"  style="width: 88px;"><b style=" padding:0 0 0 7px; font-size:14px; color:red">KG</b>  ~ 
+                            <input type="text" name="demand_weight[]" value="{$row.demand_weight.1}"  style="width: 88px;">
+                            <b style=" padding:0 0 0 7px; font-size:14px; color:red">KG</b>
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">教育程度：</span> 
+                            <select class="select_2" name="post[demand_educa]" style="width:122px;">
+							<option value="">请选择</option>
+                            
+                            <foreach name="educa" item="v">
+                            <option value="{$v}" <php>if($row['demand_educa']==$v){echo 'selected';}</php>>{$v}</option> 
+                            </foreach>
+                            </select>
+                            
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">婚姻状况：</span> 
+                            <select class="select_2" name="post[demand_marriage]" style="width:122px;">
+							<option value="">请选择</option>
+                            <foreach name="marriage" item="v">
+                            <option value="{$v}" <php>if($row['demand_marriage']==$v){echo 'selected';}</php>>{$v}</option> 
+                            </foreach>
+                            </select>
+                            
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">职业：</span> 
+                            <select class="select_2" name="post[demand_profession]" style="width:122px;">
+							<option value="">请选择</option>
+                            <foreach name="profession" item="v">
+                            <option value="{$v}" <php>if($row['demand_profession']==$v){echo 'selected';}</php>>{$v}</option> 
+                            </foreach>
+                            </select>
+                            
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">工作环境：</span> 
+                            <select class="select_2" name="post[demand_work]" style="width:122px;">
+							<option value="">请选择</option>
+                            <foreach name="work" item="v">
+                            <option value="{$v}" <php>if($row['demand_work']==$v){echo 'selected';}</php>>{$v}</option> 
+                            </foreach>
+                            </select>
+                            
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">个人月收入：</span> 
+                            <select class="select_2" name="post[demand_month_income]" style="width:122px;">
+							<option value="">请选择</option>
+                            <foreach name="f_demand_month_income" item="v">
+                            <option value="{$v}" <php>if($row['demand_month_income']==$v){echo 'selected';}</php>>{$v}</option> 
+                            </foreach>
+                            </select>
+                            <b style=" padding:0 0 0 7px; font-size:16px; color:red">元</b>
+                            
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">家庭月收入：</span> 
+                            <select class="select_2" name="post[demand_family_income]" style="width:122px;">
+							<option value="">请选择</option>
+                            <foreach name="f_demand_family_income" item="v">
+                            <option value="{$v}" <php>if($row['demand_family_income']==$v){echo 'selected';}</php>>{$v}</option> 
+                            </foreach>
+                            </select>
+                            <b style=" padding:0 0 0 7px; font-size:16px; color:red">元</b>
+                            <br>
+                            <br>
+                            <span style="width:80px; display:inline-block">招募人数：</span> 
+                            <input type="number" name="post[demand_num]" id="source" value="{$row.demand_num}" style="width: 250px" placeholder="请输入招募人数">
+                            <label class="radio inline">
+                                        <input type="checkbox" name="demand_num_show" value="1" <?php if(empty($row) || $row['demand_num_show']==1){echo 'checked';}?> />对外显示
+                            </label>
+                            
+                            <div id='content_tip'></div>
+                               <textarea name='post[demand]' id='worke_content' style='width:98%;height:100px;' placeholder='请填招募需求详情！'>{$row.demand}</textarea>
+                              <script type="text/javascript">
+                              //编辑器路径定义
+                              var editorURL = GV.DIMAUB;
+                              </script>
+                              
+                             
+                              </td>
+                        </tr>
+                        
+                        <!-- <tr>
+							<th>其他需求</th>
+							<td style="line-height:45px;" >
+                            
+                            <div id="ss">
+                                <?php foreach($row['demand_other'] as $k=>$v){?>
+                                <div>
+                                需求类型：<input type="text" name="other_name[]" value="<?php echo $v->other_name?>" style="width: 120px;"> -- 
+                            	需求值：<input type="text" name="other_value[]" value="<?php echo $v->other_value?>" style="width: 180px;">
+                                <a class="btn" onClick="del(this)" href="javascript:">移除</a>
+                                 <br>
+                                </div>
+                                <?php }?>
+                            </div>
+                            
+                            <a class="btn btn-primary" id="aa" href="javascript:">追加其他需求</a>
+                            <div id="vv" style="display:none">
+                            <div>
+                            需求类型：<input type="text" name="other_name[]" value="" style="width: 120px;"> -- 
+                            需求值：<input type="text" name="other_value[]" value="" style="width: 180px;">
+                            <a class="btn" onClick="del(this)" href="javascript:">移除</a>
+                            </div>
+                            </div>
+                            </td>
+						</tr> -->
+                        
+                        
+                        
+                       <!-- <tr>
+							<th>联络员</th>
+							<td><select class="select_2" name="post[liaison]">
+							<option value="">工资</option>
+                            <foreach name="wages" item="v">
+                            <option value="{$v}" <php>if($row['price']==$v){echo 'selected';}</php>>{$v}</option> <!- --- >
+                            </foreach>
+     
+						</select> &nbsp;&nbsp;<span class="must_red"></span></td>
+						</tr>-->
+                        
+                        
+                        
+                        <tr>
+                            <th width="80">产品说明</th>
+                            <td><div id='content_tip'></div>
+                               <textarea name='post[product_desc]' id='content2' style='width:98%;height:100px;' placeholder='请填产品说明详情！'>{$row.product_desc}</textarea>
+                              <script type="text/javascript">
+                              //编辑器路径定义
+                              var editorURL = GV.DIMAUB;
+                              </script>
+                              </td>
+                        </tr>
+                        
+                        <tr>
+							<th>感谢金</th>
+							<td><input type="text" name="post[price]" id="source" value="{$row.price}" style="width: 250px" placeholder="请输入报酬"> <b style=" padding:0 0 0 7px; font-size:16px; color:red">元</b>
+                            <br>
+                            <br>
+                            <textarea name="post[price_desc]" id="description" style="width: 98%; height: 50px;" placeholder="请填写报酬简介">{$row.price_desc}</textarea>
+                            </td>
+						</tr>
+                        
+                        <tr>
+							<th>积分</th>
+							<td><input type="text" name="post[integral]" id="source" value="{$row.integral}" style="width: 250px" placeholder="请输入积分"> <b style=" padding:0 0 0 7px; font-size:16px; color:red">个</b>
+                            <br>
+                            <br>
+                            <textarea name="post[integral_desc]" id="description" style="width: 98%; height: 50px;" placeholder="请填写积分简介">{$row.integral_desc}</textarea>
+                            </td>
+						</tr>
+                        
+                        <tr>
+							<th>通知所有联络员</th>
+							<td>
+                           		 <label class="radio inline">
+                                        <input type="checkbox" name="is_tongzhi" value="1" <?php if($row['is_tongzhi']==1 || empty($row)){echo 'checked';}?> />通知所有联络员
+                                </label>
+                            </td>
+						</tr>
+                        
+                        
+                        <!--<tr>
+                        <th>状态</th>
+							<td>
+                            <?php foreach($project_state as $k=>$v){?>
+                                <php>$active_true_checked=($row['state'] =="$v" || empty($row))?"checked":"";</php>
+                                  <label class="radio inline">
+                                        <input type="radio" name="post[state]" value="<?php echo $v;?>" <?php echo $active_true_checked?> id="active_true"/><?php echo $v;?>
+                                </label>
+                            <?php }?>
+                               <!-- <php>$active_false_checked=($row['state'] ==招募结束 && !empty($row))?"checked":"";</php>
+                                <label class="radio inline">
+                                        <input type="radio" name="post[state]" value="招募结束" id="active_false" {$active_false_checked}>招募结束
+                                </label>- ->
+								
+							</td>
+						</tr>-->
+                        
+					</table>
+                    <script type="text/javascript">
+					/*$(".info").on("click",".delete",function(){
+console.log("进来了Delete！");
+$(this).remove();
+});*/
+						$("#shengri").on("mouseover",".js-date1",function(){
+							var dateInput = $("input.js-date1")
+							if (dateInput.length) {
+								Wind.use('datePicker', function () {
+									dateInput.datePicker();
+								});
+							}
+						})
+						/*//日期选择器
+						var dateInput = $("input.js-date1")
+						if (dateInput.length) {
+							alert(123);
+							Wind.use('datePicker', function () {
+								dateInput.datePicker();
+							});
+						}
+					
+						//日期+时间选择器
+						var dateTimeInput = $("input.js-datetime1");
+						if (dateTimeInput.length) {
+							Wind.use('datePicker', function () {
+								dateTimeInput.datePicker({
+									time: true
+								});
+							});
+						}*/
+						
+						function del(e)
+						{
+							$(e).parent('div').remove();
+
+						}
+						
+						$("#aa").click(function(){ 
+							//alert($("#vv div").html());
+							$("#ss").append($("#vv").html());
+							//alert($("#vv div").html());
+							//$("#vv div").clone(true).appendTo("#ss"); // 复制当前点击的节点，并将它追加到<ul>元素 
+						}) 
+					</script>
+
+				</div>
+				
+			</div>
+			<div class="form-actions">
+            	<input type="hidden" name="post[type]" value="{$typedata.type}" />
+                <input type="hidden" name="id" value="{$row.id}" />
+				<button class="btn btn-primary js-ajax-submit" type="submit">保存草稿</button>
+				<a class="btn" href="{$typedata.list_url}">返回</a>
+                <?php if(!empty($row)){?>
+                <!-- <a class="btn btn-danger" style=" margin:0 0px 0 10px" href="index.php?g=Admin&m=project&a=project_info_step3&type=1&project_id=<?php echo $row['id'];?>">下一步</a> -->
+                <a class="btn btn-danger" style=" margin:0 0px 0 10px" href="javascript:" onclick="tijiao('submit_form')">下一步</a>
+                <?php }?>
+			</div>
+		</form>
+	</div>
+    <script type="text/javascript">
+
+    function tijiao(form){
+        $.ajax({
+            type : "POST",
+            url:"index.php?g=admin&m=project&a=project_save&project_id={$row.id}&ajax=ajax",//+tab,
+            data : $('#'+form).serialize(),// 你的formid
+            dataType: "html",
+            success: function(data){
+                //alert(data);return true;
+                location.href="index.php?g=Admin&m=project&a=project_info_step3&type=1&project_id=<?php echo $row['id'];?>";
+                
+            }
+        });
+
+    }
+	
+	function replace_image1(uploadid, returnid) {
+		var d = uploadid.iframe.contentWindow;
+		var in_content = d.$("#att-status").html().substring(1);
+		var in_filename = d.$("#att-name").html().substring(1);
+		var str = $('#' + returnid).html();
+		var contents = in_content.split('|');
+		var filenames = in_filename.split('|');
+		$('#' + returnid + '_tips').css('display', 'none');
+		if (contents == '') return true;
+		
+		$("#"+returnid).find(".image-url-input").attr('src', in_content);
+		var filename = filenames[0].substr(0, filenames[0].indexOf('.'));
+		$("#"+returnid).find(".image-alt-input").val(filename);
+	}
+
+	//多图上传，SWF回调函数
+	function change_images1(uploadid, returnid) {
+		var d = uploadid.iframe.contentWindow;
+		var in_content = d.$("#att-status").html().substring(1);
+		var in_filename = d.$("#att-name").html().substring(1);
+		var str = $('#' + returnid).html();
+		var contents = in_content.split('|');
+		var filenames = in_filename.split('|');
+		$('#' + returnid + '_tips').css('display', 'none');
+		if (contents == '') return true;
+		$.each(contents, function(i, n) {
+			var ids = parseInt(Math.random() * 10000 + 10 * i);
+			var filename = filenames[i].substr(0, filenames[i].indexOf('.'));
+			
+			str += "<li id='" + returnid+'_li'+ids + "' style='width:300px; float:left'>";
+			str += '<img src="' + n + '" id="thumb_preview" class="image-url-input" onClick="image_priview(this.src)" width="200" style="cursor: hand; margin-bottom:15px;"/>';
+			str += '<input type="hidden" name="' + returnid + '_url[]" value="' + n + '">';
+			str +=	'<br> ';
+			str += "<input type='text' name='" + returnid + "_alt[]' value='" + filename + "' style='width:160px;' class='input image-alt-input' onfocus=\"if(this.value == this.defaultValue) this.value = ''\" onblur=\"if(this.value.replace(' ','') == '') this.value = this.defaultValue;\"> <a href=\"javascript:flashupload('replace_albums_images', '图片替换','" + returnid+'_li'+ids +"',replace_image1,'10,gif|jpg|jpeg|png|bmp,0','','','')\">替换</a>  <a href=\"javascript:remove_div('" + returnid+'_li'+ids +"')\">移除</a> </li>";
+			
+			/*str += "<li id='image" + ids + "'>";
+			str += "<input title='双击查看' type='text' name='" + returnid + "_url[]' value='" + n + "' style='width:310px;' ondblclick='image_priview(this.value);' class='input image-url-input'> ";
+			str += "<input type='text' name='" + returnid + "_alt[]' value='" + filename + "' style='width:160px;' class='input image-alt-input' onfocus=\"if(this.value == this.defaultValue) this.value = ''\" onblur=\"if(this.value.replace(' ','') == '') this.value = this.defaultValue;\"> <a href=\"javascript:flashupload('replace_albums_images', '图片替换','image"+ids+"',replace_image,'10,gif|jpg|jpeg|png|bmp,0','','','')\">替123换</a>  <a href=\"javascript:remove_div('image" + ids + "')\">移除</a> </li>";*/
+		});
+	
+		$('#' + returnid).html(str);
+	}
+	</script>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+	<script type="text/javascript">
+		//编辑器路径定义
+		var editorURL = GV.DIMAUB;
+	</script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			
+			$(".js-ajax-close-btn").on('click', function(e) {
+				
+				e.preventDefault();
+				Wind.use("artDialog", function() {
+					
+					art.dialog({
+						id : "question",
+						icon : "question",
+						fixed : true,
+						lock : true,
+						background : "#CCCCCC",
+						opacity : 0,
+						content : "您确定需要关闭当前页面嘛？",
+						ok : function() {
+							setCookie("refersh_time", 1);
+							window.close();
+							return true;
+						}
+					});
+				});
+			});
+			/////---------------------
+			Wind.use('validate', 'ajaxForm', 'artDialog', function() {
+				//javascript
+				
+				//编辑器
+				editorcontent = new baidu.editor.ui.Editor();
+				editorcontent.render('price_content');
+				editorcontent1 = new baidu.editor.ui.Editor();
+				editorcontent1.render('worke_content');
+				editorcontent2 = new baidu.editor.ui.Editor();
+				editorcontent2.render('content2');
+				try {
+					editorcontent.sync();
+				} catch (err) {
+				}
+				//增加编辑器验证规则
+				jQuery.validator.addMethod('editorcontent', function() {
+					try {
+						editorcontent.sync();
+					} catch (err) {
+					}
+					return editorcontent.hasContents();
+				});
+				var form = $('form.js-ajax-forms');
+				//ie处理placeholder提交问题
+				if ($.browser.msie) {
+					form.find('[placeholder]').each(function() {
+						var input = $(this);
+						if (input.val() == input.attr('placeholder')) {
+							input.val('');
+						}
+					});
+				}
+
+				var formloading = false;
+				//表单验证开始
+				form.validate({
+					
+					//是否在获取焦点时验证
+					onfocusout : false,
+					//是否在敲击键盘时验证
+					onkeyup : false,
+					//当鼠标掉级时验证
+					onclick : false,
+					//验证错误
+					showErrors : function(errorMap, errorArr) {
+						
+						//errorMap {'name':'错误信息'}
+						//errorArr [{'message':'错误信息',element:({})}]
+						try {
+							$(errorArr[0].element).focus();
+							art.dialog({
+								id : 'error',
+								icon : 'error',
+								lock : true,
+								fixed : true,
+								background : "#CCCCCC",
+								opacity : 0,
+								content : errorArr[0].message,
+								cancelVal : '确定',
+								cancel : function() {
+									$(errorArr[0].element).focus();
+								}
+							});
+						} catch (err) {
+						}
+					},
+					//验证规则
+					rules : {
+	
+						'post[ok_price]' : {
+							required : 1,
+							number : 1
+						},
+						'post[num]' : {
+							required : 1,
+							digits : 1
+						},
+						'post[post_content]' : {
+							editorcontent : true
+						}
+					},
+					//验证未通过提示消息
+					messages : {
+						'post[price]' : {
+							
+							number : '请输入合法的数字！'
+						},
+						'post[ok_price]' : {
+							number : '请输入合法的数字！'
+						},
+						'post[num]' : {
+		
+						},
+						'post[post_content]' : {
+							editorcontent : '内容不能为空'
+						}
+					},
+					//给未通过验证的元素加效果,闪烁等
+					highlight : false,
+					//是否在获取焦点时验证
+					onfocusout : false,
+					//验证通过，提交表单
+					submitHandler : function(forms) {
+						//return true; //-----v-------
+						if (formloading)
+							return;
+						$(forms).ajaxSubmit({
+							url : form.attr('action'), //按钮上是否自定义提交地址(多按钮情况)
+							dataType : 'json',
+							beforeSubmit : function(arr, $form, options) {
+								formloading = true;
+							},
+							success : function(data, statusText, xhr, $form) {
+								formloading = false;
+								if (data.status) {
+									//alert(data.url);
+									setCookie("refersh_time", 1);
+									//添加成功
+									Wind.use("artDialog", function() {
+										art.dialog({
+											id : "succeed",
+											icon : "succeed",
+											fixed : true,
+											lock : true,
+											background : "#CCCCCC",
+											opacity : 0,
+											content : data.info,
+											button : [ {
+												name : '下一步？',
+												callback : function() {
+													location = data.url;//"index.php?g=Admin&m=project&a=project_info_step3&type=1&project_id={$row.id}";
+													//reloadPage(window);
+													return true;
+												},
+												focus : true
+											}, {
+												name : '返回列表页',
+												callback : function() {
+													location = "{$typedata.list_url}";
+													return true;
+												}
+											} ]
+										});
+									});
+								} else {
+									isalert(data.info);
+								}
+							}
+						});
+					}
+				});
+			});
+			////-------------------------
+		});
+	</script>
+</body>
+</html>

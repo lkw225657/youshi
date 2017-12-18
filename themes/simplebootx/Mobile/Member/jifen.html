@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>我的积分</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+</head>
+<body style="background:#fff;">
+<div class="member_index">
+	<div class="member_index_header over">
+    	<div class="member_index_header_left l">
+        <!-- <img src="<?php if(!empty($member_info['head_pic'])){echo $member_info['head_pic'];}else{echo '__TMPL__Public/mobile/images/touxiang.png';}?>" width="150"> -->
+        <img src="{$member_info.user_header_img}" width="150">
+        </div>
+    	<div class="member_index_header_left3 l">
+        	<p>当前积分</p>
+        	<p>{$member_info.integral}分</p>
+            <p><a href="{:U('member/jifenguize')}">积分规则</a></p>
+        </div>
+    </div>
+    <div class="member_jifenlist">
+    	<ul>
+        	<li><a href="{:U('member/jifenmingxi')}">积分明细</a></li>
+        	<li><a href="{:U('member/jifenjilu')}">兑换记录</a></li>
+        </ul>
+    </div>
+    <a href="{:U('member/shops')}"><div class="verification_next">我要兑换</div></a>
+</div>
+</body>
+</html>

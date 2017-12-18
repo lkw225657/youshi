@@ -1,0 +1,199 @@
+<admintpl file="header" />
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap js-check-wrap">
+	<ul class="nav nav-tabs">
+    	<li  class="active"><a >商品列表</a></li>
+    	<li><a href="{:U('goods/goods_info')}">添加商品</a></li>
+	</ul>
+	<form class="well form-search" method="post" action="{$typedata.list_url}">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">搜索：
+                    商品分类：
+                    
+                    <select class="select_2" style="width:100px;" name="search_class">
+						<option value=''>不限</option>
+                        <foreach name="type_list" item="vo">
+                            <php>$type_selected=$search_class==$vo['type_id']?"selected":"";</php>
+                            <option value="{$vo.type_id}"{$type_selected}>{$vo.type_name}</option>
+                        </foreach>
+                    </select>
+                    <!--&nbsp;&nbsp;
+                    微信绑定：
+                    <select class="select_2" style="width:100px;" name="search_wx">
+						<option value=''>不限</option>
+                        <option value='1' <php>if($search_wx=='1'){echo 'selected';}</php>>已绑定</option>
+                        <option value='2' <php>if($search_wx=='2'){echo 'selected';}</php>>未绑定</option>
+                    </select>
+                    &nbsp;&nbsp;
+                    状态：
+                    <select class="select_2" style="width:100px;" name="search_status">
+						<option value=''>不限</option>
+                        <option value='1' <php>if($search_status=='1'){echo 'selected';}</php>>正常</option>
+                        <option value='2' <php>if($search_status=='2'){echo 'selected';}</php>>禁用</option>
+                    </select>-->
+                    <!--&nbsp;&nbsp;
+                    时间：
+                        <select class="select_2" name="time_type" id="jav_time_str" style=" width: 111px">
+                       
+                        	<option value="start_time" <php>if($time_type=='start_time'){echo 'selected';}</php>>招募开始时间</option>
+                            <option value="end_time" <php>if($time_type=='end_time'){echo 'selected';}</php>>招募结束时间</option>
+                            <option value="project_start_time" <php>if($time_type=='project_start_time'){echo 'selected';}</php>>项目开始时间</option>
+                            <option value="project_end_time" <php>if($time_type=='project_end_time'){echo 'selected';}</php>>项目结束时间</option>
+							<option value="add_time" <php>if($time_type=='add_time' && !empty($formget)){echo 'selected';}</php>>添加时间</option>
+							
+						</select> &nbsp;&nbsp;
+						<input type="text" name="start_time" class="js-date" value="{$formget.start_time|default=''}" style="width: 80px;" autocomplete="off">-
+						<input type="text" class="js-date" name="end_time" value="{$formget.end_time}" style="width: 80px;" autocomplete="off"> &nbsp; &nbsp;
+                    &nbsp;&nbsp;-->
+                    &nbsp;&nbsp;
+                    搜索：
+                    <select class="select_2" style="width:100px;" name="search_type">
+						<!--<option value=''>全部</option>-->
+                        <option value='1' <php>if($search_type==1){echo 'selected';}</php>>商品名称</option>
+                        <!--<option value='2' <php>if($search_type==2){echo 'selected';}</php>>项目名称</option>
+                        <option value='3' <php>if($search_type==3){echo 'selected';}</php>>项目id</option>
+                        <option value='4' <php>if($search_type==4){echo 'selected';}</php>>负责人</option>-->
+
+                    </select>
+						<input type="text" name="keyword" style="width: 200px;" value="{$keyword}" placeholder="请输入关键字...">
+						<input type="submit" class="btn btn-primary" value="搜索" />
+					</span>
+			</div>
+		</div>
+	</form>
+	<form class="js-ajax-form" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="15"><label><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></label></th>
+				<th width="50">id</th>
+                <th width="257">商品名</th>
+				<th width="122">商品分类</th>
+                <th width="57">商品价格</th>
+                <th width="57">商品规格</th>
+                <th width="57">所需积分</th>
+                <th width="57">库存</th>
+                <th width="66">兑换比例</th>
+                <th>商品简介</th>
+                <th width="57">推荐</th>
+                 <th width="57">上架</th>
+				<th width="122">添加时间</th>
+
+				<th width="120">操作</th>
+			</tr>
+			</thead>
+			<foreach name="list" item="v">
+				<tr>
+					<td><input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]" value="{$v.goods_id}" title="ID:{$v.goods_id}"></td>
+					<td>{$v.goods_id}</td>
+                    <td>{$v.goods_name}</td>
+					<td><?php echo $type_list[$v['type_id']]['type_name'];?></td>
+                    <td>{$v.price}</td>
+                     <td>{$v.guige}</td>
+                    <td>{$v.jifen}</td>
+                    <td>{$v.num}</td>
+                    <td>{$v.bili}</td>
+                    <td>{$v.jianjie}</td>
+                    <td>
+                    <if condition="$v['hot'] eq 1">
+                            <a href="{:U('goods/goods_state',array('goods_id'=>$v['goods_id'],'status'=>0,'type'=>'hot'))}" class="js-ajax-dialog-btn" data-msg="你确定要取消推荐吗？"><span style="color:red"><font color="red">√</font>是</span></a>
+                        <else /> 
+                            <a href="{:U('goods/goods_state',array('goods_id'=>$v['goods_id'],'status'=>1,'type'=>'hot'))}" class="js-ajax-dialog-btn" data-msg="你确定要添加推荐吗？"><font color="red">╳</font>否</a>
+                        </if>
+                    </td>
+                                        <td>
+                    <if condition="$v['on_sale'] eq 1">
+                            <a href="{:U('goods/goods_state',array('goods_id'=>$v['goods_id'],'status'=>0,'type'=>'on_sale'))}" class="js-ajax-dialog-btn" data-msg="你确定要下架吗？"><span style="color:red"><font color="red">√</font>上架</span></a>
+                        <else /> 
+                            <a href="{:U('goods/goods_state',array('goods_id'=>$v['goods_id'],'status'=>1,'type'=>'on_sale'))}" class="js-ajax-dialog-btn" data-msg="你确定要上架吗？"><font color="red">╳</font>下架</a>
+                        </if>
+                    </td>
+					<td width="77"><php>if(!empty($v['add_time'])){echo date("Y-m-d H:i:s",$v['add_time']);}</php></td>
+					
+					<!-- <td>{$v.stage}</td>-->
+
+					<td>
+						<a href="{:U('goods/goods_info',array('goods_id'=>$v['goods_id']))}">修改</a> |
+
+						<a href="{:U('goods/goods_del',array('tid'=>$v['goods_id']))}" class="js-ajax-delete">删除</a>
+                         <!--| 
+                        <a href="{:U('quespaper/quespaper_info',array('project_id'=>$v['id']))}">添加试卷</a>-->
+
+					</td>
+				</tr>
+			</foreach>
+
+		</table>
+		<div class="table-actions">
+			<button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('goods/goods_del')}" data-subcheck="true" data-msg="你确定删除吗？">批量删除</button>
+			<button class="btn btn-danger btn-small " type="button" data-subcheck="true" onclick="ajax_download()" ><a href="javascript:">导出商品</a></button>
+			<!--<button class="btn btn-primary btn-small J_ajax_submit_btn" type="submit" data-action="{:U('Phone/yes_d')}" data-subcheck="true" data-msg="你确定复原吗？">未下载</button>
+            <button class="btn btn-primary btn-small J_ajax_submit_btn" type="submit" data-action="{:U('Phone/no_d')}" data-subcheck="true" data-msg="你确定标记吗？">已下载</button>-->
+			<span style="float:right; margin:0 20px 0 0">共<span style="color:#F93"> {$count} </span>条记录</span>
+		</div>
+		<div class="pagination">{$page}</div>
+
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+	function ajax_download()
+	{
+		var search_class=$("select[name='search_class']").val();
+		
+		var keyword=$("input[name='keyword']").val();
+		var url="&search_class="+search_class+"&keyword="+keyword;
+		location.href="index.php?g=Admin&m=download&a=downExcel&mod=goods"+url;
+
+	} 
+
+
+
+
+	function refersh_window() {
+		var refersh_time = getCookie('refersh_time');
+		if (refersh_time == 1) {
+			window.location = "{:U('AdminPost/index',$formget)}";
+		}
+	}
+	setInterval(function() {
+		refersh_window();
+	}, 2000);
+	$(function() {
+		setCookie("refersh_time", 0);
+		Wind.use('ajaxForm', 'artDialog', 'iframeTools', function() {
+			//批量移动
+			$('.js-articles-move').click(function(e) {
+				var str = 0;
+				var id = tag = '';
+				$("input[name='ids[]']").each(function() {
+					if ($(this).attr('checked')) {
+						str = 1;
+						id += tag + $(this).val();
+						tag = ',';
+					}
+				});
+				if (str == 0) {
+					art.dialog.through({
+						id : 'error',
+						icon : 'error',
+						content : '您没有勾选信息，无法进行操作！',
+						cancelVal : '关闭',
+						cancel : true
+					});
+					return false;
+				}
+				var $this = $(this);
+				art.dialog.open("__ROOT__/index.php?g=portal&m=AdminPost&a=move&ids="+ id, {
+					title : "批量移动",
+					width : "80%"
+				});
+			});
+		});
+	});
+</script>
+</body>
+</html>

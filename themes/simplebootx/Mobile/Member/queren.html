@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>填写收货信息</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+	<script type="text/javascript" src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+<div class="member_dhjilubg"></div>
+<div class="member_shopscontent">
+	<form name="formUser" method="post" action="" id="submit">
+	<div class="member_ziliao_list" style="height:auto; padding-bottom:60px;">
+		<div class="member_ziliao over">
+            <span class="member_ziliaospan1"><img src="__TMPL__Public/mobile/images/member-ico4.png"></span>
+            <span class="member_ziliaospan2">{$shouhuo_info.name}</span><input value="{$shouhuo_info.name}" name="name" type="text" class="member_yincang_input">
+            <span class="member_ziliaospan3"><img src="__TMPL__Public/mobile/images/member-ico10.jpg"></span>
+        </div>
+        
+		<div class="member_ziliao over">
+            <span class="member_ziliaospan1"><img style="margin-left:3px;" src="__TMPL__Public/mobile/images/member-ico1.png"></span>
+            <span class="member_ziliaospan2" style="width:200px;">{$shouhuo_info.phone}</span>
+            <input  type="text" name="phone" value="{$shouhuo_info.phone}" style="width:200px;" class="member_yincang_input">
+            <span class="member_ziliaospan3"><img src="__TMPL__Public/mobile/images/member-ico10.jpg"></span>
+        </div>
+        
+        <foreach name="shouhuo_info.address" item="v" key="key">
+		<div class="member_ziliao" id="member_addres_{$key+1}" style="border:1px solid #CCC; padding:10px 10px 55px 10px;">
+            <span class="member_ziliaospan1 radio_img" id="addres1" onClick="radio(this)">
+            <input type="hidden" value="{$v.is_ok}" name="is_ok[]">
+            <img src="__TMPL__Public/mobile/images/xz<?php if($v['is_ok']==1){echo '2';}else{echo '1';}?>.png"></span>
+            <img src="themes/simplebootx/Public/mobile/images/shanchu.png" onclick="del_address(this)" style="float:right">
+            <span class="member_ziliaospan3" style="width:450px;">{$v.address}
+            <img style="margin-left:20px;" class="member_ziliaospan5" src="__TMPL__Public/mobile/images/member-ico10.jpg">
+            </span>
+            
+            <textarea class="member_yincang_text" placeholder="请输入收货地址" name="address[]">{$v.address}</textarea>
+            <div class="clear"></div>
+        </div>
+        </foreach>
+		<!--<div class="member_ziliao">
+            <span class="member_ziliaospan1 radio_img" id="addres2" onClick="radio(this)">
+            <input type="hidden" value="" name="is_ok[]">
+            <img src="__TMPL__Public/mobile/images/xz1.png"></span>
+            <span class="member_ziliaospan6" style="width:450px;">上海市静安区灵石路697号健康智谷8動403
+            <img style="margin-left:20px;" class="member_ziliaospan7" src="__TMPL__Public/mobile/images/member-ico10.jpg"></span>
+            <textarea class="member_yincang_text2" name="address[]">上海市静安区灵石路697号健康智谷8動403</textarea><div class="clear"></div>
+        </div>-->
+        <div id="vv">
+        
+        </div>
+        
+		<!--<div class="member_ziliao2"><span class="member_ziliaospan1"><img src="__TMPL__Public/mobile/images/xz3.png"></span>
+        <textarea class="member_yincang_text3">上海市静安区灵石路697号健康智谷8動403</textarea><div class="clear">
+        </div></div>-->
+    	
+        
+        <div class="member_baocunaddress">
+            <img src="__TMPL__Public/mobile/images/xz3.png" onClick="add()" style="float:left;margin-top:-10px;">
+            <span id='add_shouhuo_save' onClick="add_shouhuo('submit')" style="margin:20px 0 0 0; display:none">确定</span>
+        </div>
+    </div>
+    </form>
+    <div id="ss" style="display:none">
+        <div class="member_ziliao" style="border:1px solid #CCC; padding:10px 10px 55px 10px;">
+            <span class="member_ziliaospan1 radio_img" id="addres1" onClick="radio(this)">
+            <input type="hidden" value="" name="is_ok[]">
+            <img src="__TMPL__Public/mobile/images/xz1.png"></span>
+            <img src="themes/simplebootx/Public/mobile/images/shanchu.png" onclick="del_address(this)" style="float:right">
+            
+            <textarea class="member_yincang_text sos" placeholder="请输入收货地址" name="address[]"></textarea>
+            <div class="clear"></div>
+        </div>
+        </div>
+        
+    <div class="verification_next">确认收货信息</div>
+</div>
+<div class="member_Promptcont">
+	<div class="member_Prompt">
+    	<div class="member_Prompt_title"></div>
+        <div class="member_Prompt_desc">
+        	<p>是否确认选择当前收货地址？</p>
+        </div>
+        <div class="member_Prompt_button"><span style="color:#9b9b93;" class="member_yc">取消</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="javascript:" onClick="add_order('submit')"><span style="color:#d35e7e;">确定</span></a></div>
+    </div>
+</div>
+<div id='address_empty' class="member_Promptcont">
+	<div class="member_Prompt">
+    	<div class="member_Prompt_title"></div>
+        <div class="member_Prompt_desc">
+        	<center><p>请勾选地址。</p></center>
+        </div>
+        <div class="member_Prompt_button"><span style="color:#9b9b93;" class="member_yc">返回</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="javascript:" class="member_yc" onClick=""><span style="color:#d35e7e;">确定</span></a></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+	function add_order(form)
+	{
+		
+			$.ajax({
+			type : "POST",
+			url:"index.php?g=Mobile&m=member&a=add_order&project_id=<?php echo $_GET['project_id']?>&type=<?php echo $_GET['type']?>",//&type=2&project_id="+p_id,//+tab,
+			data : $('#'+form).serialize(),// 你的formid
+			dataType: "html",
+			success: function(data){
+				window.location=data;
+				//location.replace(location.href);
+				//alert(data);return true;
+			}
+		});
+		
+	}
+
+	function del_address(e)
+	{
+		$(e).parent('div').remove();
+	}
+	function add()
+	{
+		$("#vv").append($("#ss").html());
+	}
+
+	function add_shouhuo(form)
+	{
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Mobile&m=member&a=add_shouhuo",//&type=2&project_id="+p_id,//+tab,
+			data : $('#'+form).serialize(),// 你的formid
+			dataType: "html",
+			success: function(data){
+				$(".member_ziliaospan2").show();
+				$(".member_yincang_input").hide();
+				$(".member_ziliaospan3").show();
+				$(".member_yincang_text").hide();
+				$("#add_shouhuo_save").hide();
+				$("div[id^='member_addres_']").each(function(){
+					$(this).find(".member_ziliaospan3").html($(this).find(".member_yincang_text").val());
+				});
+				alert(data);return true;
+			}
+		});
+	}
+	
+</script>
+
+<script type="text/javascript">
+$(".sos").show();
+$(".member_ziliaospan3").click(function(){
+	$(".member_ziliaospan2").hide();
+	$(".member_yincang_input").show();
+	$(".member_ziliaospan3").hide();
+	$(".member_yincang_text").show();
+	$("#add_shouhuo_save").show();
+});
+$(".member_ziliaospan5").click(function(){
+	$(this).hide();
+	$(".member_ziliaospan3").hide();
+	$(".member_yincang_text").show();
+	$("#add_shouhuo_save").show();
+});
+$(".member_ziliaospan6").click(function(){
+	$(this).hide();
+	$(".member_ziliaospan7").hide();
+	$(".member_yincang_text2").show();
+	$("#add_shouhuo_save").show();
+});
+$(".member_yc").click(function(){
+	$(".member_Promptcont").hide();
+});
+$(".verification_next").click(function(){
+	ok_status=0;
+		is_ok = document.getElementsByName('is_ok[]');
+		for(i=0;i<is_ok.length;i++)
+		{
+			if(is_ok[i].value=='1')
+			{
+				ok_status=1;			
+			}	
+		}
+		if(ok_status=='1')
+		{
+		$(".member_Promptcont").show();
+		$("#address_empty").hide();
+		}
+		else{
+			$(".member_Promptcont").hide();
+		$("#address_empty").show();
+
+		}
+	
+});
+
+//选择默认收货地址
+function radio(e)
+{
+	$(".radio_img input").val(0);
+	$(".radio_img img").attr('src','__TMPL__Public/mobile/images/xz1.png');
+	$(e).find('img').attr('src','__TMPL__Public/mobile/images/xz2.png');
+	$(e).find('input').val(1);
+}
+
+/*$("#addres1").click(function(){
+	
+	$("#addres1 img").attr('src','__TMPL__Public/mobile/images/xz2.png');
+	$("#addres2 img").attr('src','__TMPL__Public/mobile/images/xz1.png');
+});
+$("#addres2").click(function(){
+	$("#addres2 img").attr('src','__TMPL__Public/mobile/images/xz2.png');
+	$("#addres1 img").attr('src','__TMPL__Public/mobile/images/xz1.png');
+})*/;
+
+
+</script>
+</body>
+</html>

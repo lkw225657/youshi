@@ -1,0 +1,52 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('ad/positionList')}">广告位管理</a></li>
+			<li><a href="{:U('ad/ap_add')}">添加广告位</a></li>
+		</ul>
+		<form method="post" class="js-ajax-form">
+			<!--<div class="table-actions">
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('ad/toggle',array('display'=>1))}" data-subcheck="true">{:L('DISPLAY')}</button>
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('ad/toggle',array('hide'=>1))}" data-subcheck="true">{:L('HIDE')}</button>
+			</div>-->
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+					<tr>
+						<th width="16"><label><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></label></th>
+						<th width="50">ID</th>
+						<th>广告位名</th>
+						<th>广告位简介</th>
+						<th width="120">广告位宽度</th>
+						<th width="120">广告位高度</th>
+                        <th width="120">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="ap_list" item="vo">
+					<tr>
+						<td><input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]" value="{$vo.ad_id}"></td>
+						<td>{$vo.id}</td>
+						<td>{$vo.ap_name}</td>
+						<td>{$vo.ap_intro}</td>
+						<td>{$vo.ap_width}</td>
+                        <td>{$vo.ap_height}</td>
+						<td>
+                            <a href="{:U('ad/add',array('type_id'=>$vo['id']))}">添加广告</a> |
+							<a href="{:U('ad/ap_add',array('id'=>$vo['id']))}">修改</a> |
+							<a href="{:U('ad/ap_delete',array('id'=>$vo['id']))}" class="js-ajax-delete">删除</a>
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<!--<div class="table-actions">
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('ad/toggle',array('display'=>1))}" data-subcheck="true">{:L('DISPLAY')}</button>
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('ad/toggle',array('hide'=>1))}" data-subcheck="true">{:L('HIDE')}</button>
+			</div>-->
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

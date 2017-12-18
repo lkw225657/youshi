@@ -1,0 +1,71 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li ><a href="{:U('goods/goods_type')}">分类列表</a></li>
+			<li class="active"><a >添加分类</a></li>
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form" action="{:U('goods/type_save')}">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">分类名称</label>
+					<div class="controls">
+						<input type="text" name="post[type_name]" value="{$type_info.type_name}">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+                <div class="control-group">
+					<label class="control-label">排序</label>
+					<div class="controls">
+						<input type="text" name="post[type_sort]" value="{$type_info.type_sort}">
+						<span class="form-required">*越小越靠前</span>
+					</div>
+				</div>
+                
+                <div class="control-group">
+					<label class="control-label">介绍</label>
+					<div class="controls">
+						<textarea name="post[type_desc]" rows="5" cols="57">{$type_info.type_desc}</textarea>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+                
+				<div class="control-group">
+					<label class="control-label">是否显示</label>
+					<div class="controls">
+						<label class="radio inline" for="type_0"><input type="radio" name="post[type_state]" value="1" <if condition="$type_info['type_state'] eq '1'">checked</if> id="type_0" checked >显示</label>
+						<label class="radio inline" for="type_1"><input type="radio" name="post[type_state]" value="2" <if condition="$type_info['type_state'] eq '2'">checked</if> id="type_1"  >隐藏</label>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+                
+				<div class="control-group">
+					<label class="control-label">图片</label>
+					<div class="controls">
+								<div >
+									<input type="hidden" name="post[type_thumb]" id="thumb2" value="{$type_info.type_thumb}">
+									<a href="javascript:upload_one_image('图片上传','#thumb2');">
+											<if condition="$type_info['type_thumb'] neq ''">
+														<img src="{:sp_get_asset_upload_path($type_info['type_thumb'])}" id="thumb2-preview" width="135" style="cursor: hand" />
+												<else/>
+														<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb2-preview" width="135" style="cursor: hand" />
+												</if>
+									</a>
+									<input type="button" class="btn btn-small" onClick="$('#thumb2-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb2').val('');return false;" value="取消图片">
+								</div>
+						<span class="form-required"></span>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+            	<input type="hidden" value="{$type_info.type_id}" name="type_id">
+				<button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+				<a class="btn" href="{:U('goods/goods_type')}">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+
+</body>
+</html>

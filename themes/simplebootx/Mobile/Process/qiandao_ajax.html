@@ -18,7 +18,11 @@
         	<center><p>{$data.msg}</p></center>
         
         </div>
+        <if condition="$data.url neq 'back'">
         <div class="member_Prompt_button"><a href="{$data.url}"><span style="color:#d35e7e;">确定</span></a></div>
+        <else />
+        <div class="member_Prompt_button"><a onClick="javascript:window.history.back();return false;"><span style="color:#d35e7e;">确定</span></a></div>
+        </if>
     </div>
 </div>
 <script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js"></script>

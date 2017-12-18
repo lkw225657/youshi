@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>我的信息</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js" ></script>
+</head>
+<body style="background:#fff;">
+<div class="member_index">
+	<div class="member_index_header over">
+    	<a href="{:U('member/set_thumb')}">
+            <div class="member_index_header_left l">
+                <!-- <img src="<?php if(!empty($member_info['head_pic'])){echo $member_info['head_pic'];}else{echo '__TMPL__Public\mobile\images\touxiang.png';}?>" width="150"> -->
+                <img src="{$member_info.user_header_img}" width="150">
+            </div>
+        </a>
+        
+    	<div class="member_index_header_left2 l">{$member_info.name}<?php if($member_info['type']==2){?><span>会员</span><?php }?></div>
+    	<div class="member_index_header_right r"><a href="{:U('member/hyquanyi')}">了解会员权益</a></div>
+    </div>
+    <div class="member_index_fllist">
+    	<ul>
+        	<li><span>性别</span><span>{$member_info.sex}</span></li>
+        	<li><span>出生年月</span><span><?php echo date("Y-m-d",$member_info['birthday'])?></span></li>
+        	<li><span>手机号码</span><span>{$member_info.mobile}</span></li>
+        	<li><span>地区</span><span>{$member_info.area_name}</span></li>
+        </ul>
+    </div>
+    <a href="{:U('member/perfect1')}">
+    <div class="member_index_message over">
+    	<div class="member_Personal_information l">个人信息背景</div>
+    	<div class="member_Personal_informationstrip l"><span style="width:<?php echo $member_info['wanzhengdu']*1.25?>px"></span></div>
+    	<div class="member_Personal_informationstrip_number l">{$member_info.wanzhengdu}%</div>
+    	<div class="member_Personal_informationstrip_img r"><img src="__TMPL__Public/mobile/images/member-ico10.jpg"></div>
+    </div>
+    </a>
+    
+    <a href="{:U('member/jifen')}">
+    <div class="member_index_message2 over">
+    	<div class="member_Personal_information l">我的积分</div>
+    	<div class="member_Personal_informationstrip_img r"><img src="__TMPL__Public/mobile/images/select-arrow2.png"></div>
+    </div>
+    </a>
+    
+    <a href="{:U('member/shoucang')}">
+    <div class="member_index_message3 over">
+    	<div class="member_Personal_information l">我的收藏</div>
+    	<div class="member_Personal_informationstrip_img r"><img src="__TMPL__Public/mobile/images/select-arrow2.png"></div>
+    </div>
+    </a>
+    
+   <a href="{:U('member/fenxiang')}">
+    <div class="member_index_message3 over">
+    	<div class="member_Personal_information l">邀请好友加入</div>
+    	<div class="member_Personal_informationstrip_img r"><img src="__TMPL__Public/mobile/images/invite2x.png"></div>
+    </div>
+    </a>
+    
+    <a href="{:U('member/yaoqing')}">
+    <div class="member_index_message3 over">
+    	<div class="member_Personal_information l">我邀请的朋友</div>
+    	<div class="member_Personal_informationstrip_img r"><img src="__TMPL__Public/mobile/images/select-arrow2.png"></div>
+    </div>
+    </a>
+    <div class="member_index_message4">每邀请并成功注册一人，可获得30个积分（会员60个积分）</div>
+</div>
+
+<div class="member_fenxingcont" style="display:none" id="fenxiang">
+	<p><img src="__TMPL__Public/mobile/images/arrow2x.png" height="410"></p>
+	<p><img src="__TMPL__Public/mobile/images/fenxiangwenzi.png" height="165"></p>
+</div>
+<script type="text/javascript">
+function fenxiang()
+{
+	$("#fenxiang").show();
+}
+$("#fenxiang").click(function(){
+	$("#fenxiang").hide();
+})
+</script>
+</body>
+</html>

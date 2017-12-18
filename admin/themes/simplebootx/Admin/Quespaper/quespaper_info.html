@@ -1,0 +1,687 @@
+<admintpl file="header" />
+<style type="text/css">
+.pic-list li {
+	margin-bottom: 5px;
+}
+.aui_close{ right:20px !important; top:10px !important; text-align:center; margin:0px; width:45px;}
+#worke_content{ margin-top:15px;}
+</style>
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+		<li><a href="{:U('quespaper/quespaper_list')}">试卷列表</a></li>
+		<li class="active"><a href="{:U('quespaper/quespaper_info')}">添加试卷</a>
+	</ul>
+    <p style="color:red; font-size:16px">提示：请选择正确答案然后保存！</p>
+		<form action="{:U('quespaper/quespaper_save')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<div class="row-fluid">
+				<div class="span9">
+					<table class="table table-bordered">
+
+						<tr>
+							<th width="80">试卷名</th>
+							<td>
+								<input type="text" style="width:400px;" name="post[name]" id="title" required value="{$project_info.title}" placeholder="请输入试卷名称"/>
+								<span class="form-required" style="color:red">*</span>
+							</td>
+						</tr>
+                        
+                        <tr>
+							<th width="80">试卷类型</th>
+							<td>
+								<select class="select_2" name="post[type]" style="width:122px;">
+                                	<option value="1" <php>if($row['type']=='1'){echo 'selected';}</php>>甄别问卷</option>
+                                	<option value="2" <php>if($row['type']=='2'){echo 'selected';}</php>>反馈问卷</option>
+                                </select>   
+							</td>
+						</tr>
+                       </table> 
+                     <table class="table table-bordered"  id="v_select">
+                     <?php $i=0;foreach($selectques as $k=>$v){ $i++?>
+                     <i>
+                        <tr>
+							<th width="80">选择题<?php echo $i;?></th>
+							<td style="line-height:45px;" >
+                            <b style="font-size:18px; font-weight:bold"><span style=" width:66%; display:inline-block;">S<?php echo $v['select_id'];?>.<?php echo $v['name']?></span>
+                            <a class="btn btn-danger" style="float:right; margin:0 0px 0 0" onClick="del(this)" href="javascript:">移除</a>
+                            <a class="btn btn-danger" style="float:right; margin:0 10px 0 0" onClick="select_edit(this,<?php echo $v['select_id'];?>)" href="javascript:">修改</a>
+                            <a class="btn btn-danger" style="float:right; margin:0 10px 0 0" onClick="select_up(this)" href="javascript:">上移</a>
+                            <a class="btn btn-danger" style="float:right; margin:0 10px 0 0" onClick="select_down(this)" href="javascript:">下移</a>
+                            </b>
+                            <div id="ss">
+                            <?php foreach($selectzimu as $kk=>$vv){
+                            		if(!empty($v[$vv])){
+                            ?>
+                            	<div>
+                                <label style="display:inline-block;">
+                                	<input type="checkbox" name="paper[s-<?php echo $v['select_id'];?>][]" <?php if(strstr($v['selectques_ok'],strtoupper($vv))){echo 'checked';}?> value="<?php echo strtoupper($vv);?>" data-direction="x" data-checklist="js-check-x" style="margin:0px;">
+                                </label>
+                                <b style=" font-size:14px !important;width: 15px; display: inline-block; text-align:center" class="zimu_b"><?php echo strtoupper($vv);?></b>
+                           		：<span style="width:333px; display: inline-block"><?php echo $v[$vv]?></span>
+                                
+                                 <br>
+                                </div>
+                           <?php }}?>
+                           
+                            </div>
+                            
+                            </td>
+						</tr>
+                        </i>
+                    <?php }?>
+                    
+                    </table>
+                    <table class="table table-bordered">
+                    
+                    <tr>
+							<th width="80">添加选择题</th>
+							<td>
+								<a class="btn btn-danger" style="float:left; margin:0 0px 0 0" target="_blank" href="javascript:select_block()">添加选择题</a>
+                                <!--<span style="color:red; padding:5px 0 0 10px; display:inline-block">点击选择题列表后面的添加然后回到本页面刷新</span>-->
+							</td>
+						</tr>
+                     </table>   
+                    <table class="table table-bordered"  id="v_answer">
+                        
+                    <?php $i=0;foreach($answerques as $k=>$v){ $i++?>
+                        <tr>
+							<th width="80">问答题<?php echo $i;?></th>
+							<td style="line-height:45px;" >
+                            <b style="font-size:18px; font-weight:bold">S<?php echo $v['answer_id'];?>.<?php echo $v['name']?>
+                            <a class="btn btn-danger" style="float:right; margin:0 10px 0 0" onClick="del(this)" href="javascript:">移除</a>
+                            <a class="btn btn-danger" style="float:right; margin:0 10px 0 0" onClick="answer_up(this)" href="javascript:">上移</a>
+                            <a class="btn btn-danger" style="float:right; margin:0 10px 0 0" onClick="answer_down(this)" href="javascript:">下移</a>
+                            </b>
+                            <div id="ss">
+                            <input type="hidden" name="answer[]" value="<?php echo $v['answer_id']?>">
+                            <textarea name="" id="description" style="width: 50%; height: 100px;" disabled placeholder="请填写备注（备注可以写问答答案提示）"><?php echo $v['answer_desc']?></textarea>
+                            </div>
+                            
+                            </td>
+						</tr>
+                    <?php }?>
+                    </table>
+                    <table class="table table-bordered">
+                    <tr id="select_up">
+							<th width="80">添加问答题</th>
+							<td>
+                            	<a class="btn btn-danger" style="float:left; margin:0 0px 0 0" target="_blank" href="javascript:answer_block()">添加问答题</a>
+                                <!--<span style="color:red; padding:5px 0 0 10px; display:inline-block">点击问答题列表后面的添加然后回到本页面刷新</span>-->
+							</td>
+						</tr>
+                        
+					</table>
+                    <script type="text/javascript">
+							
+						function del(e)
+						{
+							//alert($(e).parent().parent().parent().html());
+							$(e).parent().parent().parent().remove();
+
+						}
+						
+						//修改
+						function select_edit(e,id)
+						{
+							window.test;
+							window.test = e;
+							//$(e).parent().parent().parent().hide();
+							$.ajax({
+								type : "POST",
+								url:"index.php?g=Admin&m=ajax&a=ajax_selectques_info&id="+id,//+tab,
+								//data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+								dataType: "json",
+								success: function(data){
+									$('[name="select_id"]').val(data.select_id);
+									$('#select_name').val(data.name);
+									$("#ss_select").html(data.html);
+									//alert(data.html);return true;
+									select_block();
+									//$("#"+id).html(data);
+									//alert(data);
+								}
+							});
+							//select_block();
+							//alert(id);
+						}
+						
+						function select_none()
+						{
+							window.test = '';
+							$('[name="select_id"]').attr("value",'');  
+							$('#select_name').attr("value",'');  
+							$("#ss_select").html('');
+							//alert(window.test);
+							//$(window.test).parent().parent().parent().show();
+							$("#vv").css('display','none');
+						}
+						function select_block()
+						{
+							
+							$("#vv").css('display','block');
+						}
+						
+						function answer_none()
+						{
+							//window.test = '';
+							//$('[name="select_id"]').attr("value",'');  
+							$('#answe_name').attr("value",'');  
+							$('#answer_desc').attr("value",'');  
+							$("#vv_answer").css('display','none');
+						}
+						function answer_block()
+						{
+							
+							$("#vv_answer").css('display','block');
+						}
+						
+						//选择题上下移动
+						function select_down(obj) { 
+							var objParentTR = $(obj).parent().parent().parent(); 
+							html=objParentTR.next().children("th").html()
+							var nextTR = objParentTR.next(); 
+							if (nextTR.length > 0 && html!='添加问答题') { 
+								nextTR.insertBefore(objParentTR); 
+							} 
+						} 
+						
+						function select_up(obj) { 
+							var objParentTR = $(obj).parent().parent().parent(); 
+							var prevTR = objParentTR.prev(); 
+							html=objParentTR.prev().children("th").html()
+							if (prevTR.length > 0 && html!='添加选择题') { 
+							prevTR.insertAfter(objParentTR); 
+							} 
+						}
+						
+						//问答题上下移动
+						function answer_down(obj) { 
+							var objParentTR = $(obj).parent().parent().parent(); 
+							var nextTR = objParentTR.next(); 
+							if (nextTR.length > 0) { 
+							nextTR.insertBefore(objParentTR); 
+							} 
+						} 
+						
+						function answer_up(obj) { 
+							var objParentTR = $(obj).parent().parent().parent(); 
+							var prevTR = objParentTR.prev(); 
+							html=objParentTR.prev().children("th").html()
+							if (prevTR.length > 0 && html!='添加问答题') { 
+							prevTR.insertAfter(objParentTR); 
+							} 
+						}
+					</script>
+
+				</div>
+				
+			</div>
+			<div class="form-actions">
+                <input type="hidden" name="id" value="{$row.paper_id}" />
+				<button class="btn btn-primary js-ajax-submit" type="submit">提交</button>
+				<a class="btn" href="{:U('selectques/index')}">返回</a>
+			</div>
+		</form>
+	</div>
+    
+    
+    </div>
+    
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+	<script type="text/javascript">
+		//编辑器路径定义
+		var editorURL = GV.DIMAUB;
+	</script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			
+			$(".js-ajax-close-btn").on('click', function(e) {
+				
+				e.preventDefault();
+				Wind.use("artDialog", function() {
+					
+					art.dialog({
+						id : "question",
+						icon : "question",
+						fixed : true,
+						lock : true,
+						background : "#CCCCCC",
+						opacity : 0,
+						content : "您确定需要关闭当前页面嘛？",
+						ok : function() {
+							setCookie("refersh_time", 1);
+							window.close();
+							return true;
+						}
+					});
+				});
+			});
+			/////---------------------
+			Wind.use('validate', 'ajaxForm', 'artDialog', function() {
+				//javascript
+				
+				try {
+					editorcontent.sync();
+				} catch (err) {
+				}
+				//增加编辑器验证规则
+				jQuery.validator.addMethod('editorcontent', function() {
+					try {
+						editorcontent.sync();
+					} catch (err) {
+					}
+					return editorcontent.hasContents();
+				});
+				var form = $('form.js-ajax-forms');
+				//ie处理placeholder提交问题
+				if ($.browser.msie) {
+					form.find('[placeholder]').each(function() {
+						var input = $(this);
+						if (input.val() == input.attr('placeholder')) {
+							input.val('');
+						}
+					});
+				}
+
+				var formloading = false;
+				//表单验证开始
+				form.validate({
+					
+					//是否在获取焦点时验证
+					onfocusout : false,
+					//是否在敲击键盘时验证
+					onkeyup : false,
+					//当鼠标掉级时验证
+					onclick : false,
+					//验证错误
+					showErrors : function(errorMap, errorArr) {
+						
+						//errorMap {'name':'错误信息'}
+						//errorArr [{'message':'错误信息',element:({})}]
+						try {
+							$(errorArr[0].element).focus();
+							art.dialog({
+								id : 'error',
+								icon : 'error',
+								lock : true,
+								fixed : true,
+								background : "#CCCCCC",
+								opacity : 0,
+								content : errorArr[0].message,
+								cancelVal : '确定',
+								cancel : function() {
+									$(errorArr[0].element).focus();
+								}
+							});
+						} catch (err) {
+						}
+					},
+					//验证规则
+					rules : {
+	
+						'post[ok_price]' : {
+							required : 1,
+							number : 1
+						},
+						'post[num]' : {
+							required : 1,
+							digits : 1
+						},
+						'post[post_content]' : {
+							editorcontent : true
+						}
+					},
+					//验证未通过提示消息
+					messages : {
+						'post[price]' : {
+							
+							number : '请输入合法的数字！'
+						},
+						'post[ok_price]' : {
+							number : '请输入合法的数字！'
+						},
+						'post[num]' : {
+		
+						},
+						'post[post_content]' : {
+							editorcontent : '内容不能为空'
+						}
+					},
+					//给未通过验证的元素加效果,闪烁等
+					highlight : false,
+					//是否在获取焦点时验证
+					onfocusout : false,
+					//验证通过，提交表单
+					submitHandler : function(forms) {
+						return true; //-----v-------
+						if (formloading)
+							return;
+						$(forms).ajaxSubmit({
+							url : form.attr('action'), //按钮上是否自定义提交地址(多按钮情况)
+							dataType : 'json',
+							beforeSubmit : function(arr, $form, options) {
+								formloading = true;
+							},
+							success : function(data, statusText, xhr, $form) {
+								formloading = false;
+								if (data.status) {
+									setCookie("refersh_time", 1);
+									//添加成功
+									Wind.use("artDialog", function() {
+										art.dialog({
+											id : "succeed",
+											icon : "succeed",
+											fixed : true,
+											lock : true,
+											background : "#CCCCCC",
+											opacity : 0,
+											content : data.info,
+											button : [ {
+												name : '继续添加？',
+												callback : function() {
+													reloadPage(window);
+													return true;
+												},
+												focus : true
+											}, {
+												name : '返回列表页',
+												callback : function() {
+													location = "{:U('selectques/index')}";
+													return true;
+												}
+											} ]
+										});
+									});
+								} else {
+									isalert(data.info);
+								}
+							}
+						});
+					}
+				});
+			});
+			////-------------------------
+		});
+	</script>
+</body>
+</html>
+<div style="height:auto; width:750px; border:1px #CCCCCC solid; background:#FFF; padding:5px;position: fixed; top:50%; left:50%; margin:-425px 0px 0px -375px; display:none" id="vv_answer">
+    
+    <div style=" border-bottom:1px solid #CCC; height:36px; line-height:36px; text-indent:15px;"><span style="font-size:16px; font-weight:bold">请添加问答题</span><a class="aui_close" onClick="answer_none()" href="javascript:;">×</a></div>
+    	<div style="margin:20px 20px 0 20px;">
+        <!------------------------>
+<body>
+	<div class="wrap js-check-wrap">
+		<!--<ul class="nav nav-tabs">
+		<li><a href="{:U('answerques/index')}">问答题列表</a></li>
+		<li class="active"><a href="{:U('answerques/answerques_info')}">添加问答题</a>
+	</ul>-->
+        <form action="" id="answer" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<div class="row-fluid  row-fluid1">
+				<div class="span9">
+					<table class="table table-bordered">
+
+						<tr>
+							<th width="80">题目</th>
+							<td>
+								<input type="text" style="width:400px;" name="post[name]" id="answe_name" required value="" placeholder="请输入项目名称"/>
+								<span class="form-required" style="color:red">*</span>
+							</td>
+						</tr>
+                        
+                        <!--<tr>
+							<th width="80">适合</th>
+							<td>
+								<select class="select_2" name="post[require]" style="width:122px;">
+                                	<option value="全部" <php>if($row['require']=='全部'){echo 'selected';}</php>>全部</option> 
+                                    <foreach name="sexs" item="v">
+                                    <option value="{$v}" <php>if($row['require']==$v){echo 'selected';}</php>>{$v}</option> 
+                                    </foreach>
+                                </select>
+							</td>
+						</tr>-->
+                        
+                       <!-- <tr>
+							<th width="80">类型</th>
+							<td>
+								<select class="select_2" name="post[class]" style="width:122px;">
+                                	<option value="单选" <php>if($row['class']=='单选'){echo 'selected';}</php>>单选</option>
+                                	<option value="多选" <php>if($row['class']=='多选'){echo 'selected';}</php>>多选</option>
+                                </select>   
+							</td>
+						</tr>-->
+                        
+                        <!--<tr>
+							<th width="80">默认答案</th>
+							<td>
+								<textarea name="post[answer]" id="description" style="width: 50%; height: 50px;" placeholder="请填写默认答案(选填项)">{$row.answer}</textarea>
+							</td>
+						</tr>-->
+                        
+                        <tr>
+							<th width="80">备注</th>
+							<td>
+								<textarea name="post[answer_desc]" id="answe_desc" style="width: 80%; height: 80px;" placeholder="请填写备注（备注可以写问答答案提示）">{$row.answer_desc}</textarea>
+							</td>
+						</tr>
+
+					</table>
+                    <script type="text/javascript">
+					function answer_save(form)
+						{
+							//alert($('#'+form).serialize());
+							$.ajax({
+								type : "POST",
+								url:"index.php?g=Admin&m=ajax&a=ajax_answer",//+tab,
+								data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+								dataType: "html",
+								success: function(data){
+									//alert(data);
+									$("#v_answer").append(data);
+									//$(window.test).parent().parent().parent().hide();
+									answer_none();
+									//$("#"+id).html(data);
+									//alert(data);
+								}
+							});
+							//alert($("#v_select").html());
+							//.alert(form);
+						}
+					</script>
+                    
+				</div>
+				
+			</div>
+			<div class="form-actions">
+                <input type="hidden" name="id" value="{$row.answer_id}" />
+                <a href="javascript:answer_save('answer')" class="btn btn-primary js-ajax-submit">添加</a>
+				<!--<button class="btn btn-primary js-ajax-submit" type="submit">提交</button>-->
+				<a class="btn" href="javascript:answer_none()">关闭</a>
+				<!--<button class="btn btn-primary js-ajax-submit" type="submit">提交</button>
+				<a class="btn" href="{:U('selectques/index')}">返回</a>-->
+			</div>
+		</form>
+	</div>
+    
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>	
+   
+        <!------------------------>        
+        </div>
+</div>
+
+<!--------------------------------------------------------------------------------------------------------------------------------------------------------------> 
+<div style="height:auto; width:750px; border:1px #CCCCCC solid; background:#FFF; padding:5px;position: fixed; top:50%; left:50%; margin:-425px 0px 0px -375px; display:none" id="vv">
+    
+    <div style=" border-bottom:1px solid #CCC; height:36px; line-height:36px; text-indent:15px;"><span style="font-size:16px; font-weight:bold">请添加选择题</span><a class="aui_close" onClick="select_none()" href="javascript:;">×</a></div>
+    	<div style="margin:20px 20px 0 20px;">
+
+        <admintpl file="header" />
+<style type="text/css">
+.pic-list li {
+	margin-bottom: 5px;
+	
+}
+.row-fluid1 .span9{ width:100%;}
+
+#worke_content{ margin-top:15px;}
+</style>
+</head>
+<body>
+		<form action="" id="select" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<div class="row-fluid row-fluid1">
+				<div class="span9">
+					<table class="table table-bordered">
+
+						<tr>
+							<th width="80">题目</th>
+							<td>
+								<input type="text" style="width:400px;" name="post[name]" id="select_name" required value="{$row.name}" placeholder="请输入项目名称"/>
+								<span class="form-required" style="color:red">*</span>
+							</td>
+						</tr>
+                        
+                        <!--<tr>
+							<th width="80">适合</th>
+							<td>
+								<select class="select_2" name="post[require]" style="width:122px;">
+                                	<option value="全部" <php>if($row['require']=='全部'){echo 'selected';}</php>>全部</option> 
+                                    <foreach name="sexs" item="v">
+                                    <option value="{$v}" <php>if($row['require']==$v){echo 'selected';}</php>>{$v}</option> 
+                                    </foreach>
+                                </select>
+							</td>
+						</tr>-->
+                        
+                        <tr>
+							<th width="80">类型</th>
+							<td>
+								<select class="select_2" name="post[class]" style="width:122px;">
+                                	<option value="单选" <php>if($row['class']=='单选'){echo 'selected';}</php>>单选</option>
+                                	<option value="多选" <php>if($row['class']=='多选'){echo 'selected';}</php>>多选</option>
+                                </select>   
+							</td>
+						</tr>
+                        
+                     
+                        
+                        <tr>
+							<th>答案选项</th>
+							<td style="line-height:45px;" >
+                            
+                            <div id="ss_select">
+                                <?php foreach($row['answer'] as $k=>$v){?>
+                                <div>
+                                <b style=" font-size:14px !important;width: 15px; display: inline-block; text-align:center" class="zimu_b"><?php echo strtoupper($k);?></b>
+                           		：<input type="text" name="post[<?php echo strtoupper($k);?>]" value="<?php echo $v?>" class="zimu_input" placeholder="请输入答案内容" style="width: 180px;">
+                                <a class="btn" onClick="del(this)" href="javascript:">移除</a>
+                                 <br>
+                                </div>
+                                <?php }?>
+                            </div>
+                            
+                            <a class="btn btn-primary" id="aa" href="javascript:">追加答案选项</a>
+                            <div id="vv_select" style="display:none">
+                            <div>
+                            <b style=" font-size:14px !important;width: 15px; display: inline-block; text-align:center" class="zimu_b">A</b>
+                            ：<input type="text" name="" value="" class="zimu_input" placeholder="请输入答案内容" style="width: 180px;">
+                            <a class="btn" onClick="del(this)" href="javascript:">移除</a>
+                            </div>
+                            </div>
+                            </td>
+						</tr>
+                        
+					</table>
+                    <script type="text/javascript">
+							
+						function del(e)
+						{
+							$(e).parent('div').remove();
+
+						}
+						
+						$("#aa").click(function(){ 
+						
+							//alert(getChar($("#ss").children('div').length));
+							zimu=getChar($("#ss_select").children('div').length);
+							
+							$("#vv_select .zimu_b").html(zimu)
+							$("#vv_select .zimu_input").attr("name",'post['+zimu+']');
+							//$("#vv .zimu_input").attr("value",zimu);
+							//alert($("#vv .zimu_input").val());
+							//alert($("#vv div").html());
+							$("#ss_select").append($("#vv_select").html());
+							$("#vv_select .zimu_input").removeAttr("name");	//移除复制源name防止提交时出错
+							//alert($("#vv div").html());
+							//$("#vv div").clone(true).appendTo("#ss"); // 复制当前点击的节点，并将它追加到<ul>元素 
+						}) 
+						
+						//获取字母
+						function getChar(i){
+
+							if(i >= 0 && i <= 26){
+					
+								return String.fromCharCode(65 + i);
+					
+							} else {
+					
+								alert('请输入合适数字');
+					
+							}
+					
+						}
+						
+						
+						function select_save(form)
+						{
+							//alert($('#'+form).serialize());
+							$.ajax({
+								type : "POST",
+								url:"index.php?g=Admin&m=ajax&a=ajax_select",//+tab,
+								data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+								dataType: "html",
+								success: function(data){
+									//alert(data);
+									$("#v_select").append(data);
+									$(window.test).parent().parent().parent().hide();
+									select_none();
+									//$("#"+id).html(data);
+									//alert(data);
+								}
+							});
+							//alert($("#v_select").html());
+							//.alert(form);
+						}
+					</script>
+
+				</div>
+				
+			</div>
+			<div class="form-actions">
+                <input type="hidden" name="select_id" value="{$row.select_id}" />
+                <a href="javascript:select_save('select')" class="btn btn-primary js-ajax-submit">添加</a>
+				<!--<button class="btn btn-primary js-ajax-submit" type="submit">提交</button>-->
+				<a class="btn" href="javascript:select_none()">关闭</a>
+			</div>
+		</form>
+	</div>
+    
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+	<script type="text/javascript">
+		//编辑器路径定义
+		var editorURL = GV.DIMAUB;
+	</script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
+	
+</body>
+</html>
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------->        
+        
+        </div>

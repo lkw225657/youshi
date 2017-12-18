@@ -66,25 +66,12 @@ class ProcessController extends MobilebaseController {
 		
 	}
 	
-	public function test()
-	{
-		// vendor('jssdk\jssdk');//导入类库
-		// $jssdk=new \jssdk("wxa44ad73d6fc824c6", "015d1ed8c6aa4c3887642cad57ba81ed");
-		// $signPackage = $jssdk->GetSignPackage();
-		// vv($signPackage);
-		// die;
-		// $jssdk = new JSSDK("wxa44ad73d6fc824c6", "015d1ed8c6aa4c3887642cad57ba81ed");
-		// $signPackage = $jssdk->GetSignPackage();
-		// echo '<pre>';print_r($signPackage);echo '</pre>';
-	}
-	
-	
     //首页
 	public function index() 
 	{
 		//导入类库
 		vendor('jssdk.jssdk');//导入类库
-		$jssdk=new \jssdk("wx71f172895fb20911", "447c05fa58111bc771f35aaf50d90f79");
+		$jssdk=new \jssdk(WX_APP_ID, WX_SECRET);
 		$signPackage = $jssdk->GetSignPackage();
 		$this->assign("signPackage",$signPackage);
 		$project=M('project');
@@ -802,6 +789,24 @@ class ProcessController extends MobilebaseController {
 
 	}
 
+	//二维码校验
+	public function erweima_ajax(){
+		$action = $_GET['action'];
+		switch ($action) {
+			case 'shouhuo':
+			$this->shouhuo_ajax();
+			break;
+		default:
+			//提示扫描正确的二维码
+			$data_retun['title']=$project_info['title'];
+			$data_retun['msg']='请扫描正确的二维码！';
+			$data_retun['url']='back';
+			$this->assign("data",$data_retun);
+			$this->display('qiandao_ajax');
+			break;
+		}
+	}
+
 
 	//使用扫描收货
 	public function shouhuo_ajax()
@@ -854,7 +859,13 @@ class ProcessController extends MobilebaseController {
 			//今天的时间
 			$da['enrol_start_time']=date('Y-m-d',strtotime('+1 day'));
 			$member_enrol->where(array('enrol_id'=>$member_enrol_info['enrol_id']))->save($da);
-			Header("Location: ".U('process/index',array('project_id'=>$member_enrol_info['project_id'],'type'=>$member_enrol_info['project_type']))); 
+			//Header("Location: ".U('process/index',array('project_id'=>$member_enrol_info['project_id'],'type'=>$member_enrol_info['project_type']))); 
+			//提示扫描正确的二维码
+			$data_retun['title']=$project_info['title'];
+			$data_retun['msg']='产品签收成功，请遵照流程试用并反馈。';
+			$data_retun['url']=U('process/index',array('project_id'=>$member_enrol_info['project_id'],'type'=>$member_enrol_info['project_type']));
+			$this->assign("data",$data_retun);
+			$this->display('qiandao_ajax');
 			}else{
 				//提示扫描正确的二维码
 				$data_retun['title']=$project_info['title'];

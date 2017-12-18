@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>关注优试</title>
+		<style>
+			*{
+				margin:0;
+				padding:0;
+			}
+		</style>
+		<script type="text/javascript" charset="utf-8">
+			new function() {
+				var _self = this;
+				_self.width = 750;
+				_self.fontSize = 100;
+				_self.widthProportion = function() {
+					var p = (document.body && document.body.clientWidth || document.getElementsByTagName("html")[0].offsetWidth) / _self.width;
+					return p > 1 ? 1 : p < 0.5 ? 0.5 : p;
+				};
+				_self.changePage = function() {
+					document.getElementsByTagName("html")[0].setAttribute("style", "font-size:" + _self.widthProportion() * _self.fontSize + "px");
+				}
+				_self.changePage();
+				window.addEventListener('resize', function() {
+					_self.changePage();
+				}, false);
+			};
+		</script>
+	</head>
+
+	<body>
+		<div style="background-color:#FFF2E5;height:100vh;">
+			<div style="text-align:center;padding-top:1.2rem;">
+				<div style="line-height: 0.25rem;">
+					<p style="color:#4c4c4c;font-size: 0.4rem;margin-bottom:0.4rem;">如果您还未关注 </p>
+					<p style="color:#64bc01;font-size: 0.4rem;margin-bottom:0.4rem;">长按下方二维码</p>
+					<p style="color:#64bc01;font-size: 0.4rem;margin-bottom:0.4rem;">关注优试</p>
+				</div>
+				<div style="margin:0 auto;width:3.2rem;height:3.2rem;">
+					<img src="__TMPL__Public/mobile/images/guanzhu.jpg" alt="" style="width:100%;height:100%;" />
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+   

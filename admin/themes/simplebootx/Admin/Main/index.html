@@ -1,0 +1,481 @@
+ <admintpl file="header" />
+<style>
+.home_info li em {
+    float: left;
+    width: 120px;
+    font-style: normal;
+}
+li {
+    list-style: none;
+}
+</style> 
+<!-- </head>
+<body> -->
+	<!-- <div class="wrap">
+		<div id="home_toptip"></div>
+		<h4 class="well">{:L('SYSTEM_NOTIFICATIONS')}</h4>
+		<div class="home_info">
+			<ul id="thinkcmf_notices">
+				<li><img src="__TMPL__Public/assets/images/loading.gif"style="vertical-align: middle;" /><span style="display: inline-block; vertical-align: middle;">加载中...</span></li>
+			</ul>
+		</div>
+		<h4 class="well">{:L('SYSTEM_INFORMATIONS')}</h4>
+		<div class="home_info">
+			<ul>
+				<volist name="server_info" id="vo">
+					<li><em>{$key}</em> <span>{$vo}</span></li>
+				</volist>
+			</ul>
+		</div>
+		<h4 class="well">{:L('INITIATE_TEAM')}</h4>
+		<div class="home_info" id="home_devteam">
+			<ul>
+				<li><em>ThinkCMF</em> <a href="http://www.thinkcmf.com" target="_blank">www.thinkcmf.com</a></li>
+				<li><em>核心开发者</em> <span>老猫,Sam,Tuolaji,Codefans,睡不醒的猪,小夏,Powerless</span></li>
+				<li><em>{:L('TEAM_MEMBERS')}</em> <span>老猫,Sam,Tuolaji,Smile,Codefans,睡不醒的猪,Jack,日本那只猫</span></li>
+				<li><em>{:L('CONTACT_EMAIL')}</em> <span>cmf@simplewind.net</span></li>
+			</ul>
+		</div>
+		<h4 class="well">{:L('CONTRIBUTORS')}</h4>
+		<div class="">
+			<ul class="inline" style="margin-left: 25px;">
+				<li>Kin Ho</li>
+				<li><a href="http://wzx.thinkcmf.com" target="_blank">Powerless</a></li>
+				<li>Jess</li>
+				<li>木兰情</li>
+				<li><a href="http://www.91freeweb.com/" target="_blank">Labulaka</a></li>
+				<li><a href="http://www.syousoft.com/" target="_blank">WelKinVan</a></li>
+				<li><a href="http://blog.sina.com.cn/u/1918098881" target="_blank">Jeson</a></li>
+				<li>Yim</li>
+				<li><a href="http://www.jamlee.cn/" target="_blank">Jamlee</a></li>
+				<li><a>香香咸蛋黄</a></li>
+				<li><a>小夏</a></li>
+				<li><a href="http://www.xdmeng.com" target="_blank">小凯</a></li>
+				<li><a href="https://www.devmsg.com" target="_blank">Co</a></li>
+				<li><a href="http://www.rainfer.cn" target="_blank">Rainfer</a></li>
+			</ul>
+		</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<php>
+		$lang_set=defined('LANG_SET')?LANG_SET:'';
+		$thinkcmf_version=defined('THINKCMF_VERSION')?THINKCMF_VERSION:'';
+	</php>
+	<script>
+		//获取官方通知
+		$.getJSON("http://www.thinkcmf.com/service/sms_jsonp.php?lang={$lang_set}&v={$thinkcmf_version}&callback=?",
+		function(data) {
+			var tpl = '<li><em class="title"></em><span class="content"></span></li>';
+			var $thinkcmf_notices = $("#thinkcmf_notices");
+			$thinkcmf_notices.empty();
+			if (data.length > 0) {
+				$.each(data, function(i, n) {
+					var $tpl = $(tpl);
+					$(".title", $tpl).html(n.title);
+					$(".content", $tpl).html(n.content);
+					$thinkcmf_notices.append($tpl);
+				});
+			} else {
+				$thinkcmf_notices.append("<li>^_^,{:L('NO_NOTICE')}~~</li>");
+			}
+	
+		});
+	</script> -->
+<!-- </body>
+</html> -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>jQuery饼状图比例分布数据显示代码</title>
+    <link rel="stylesheet" href="index_drive/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="index_drive/css/index.css">
+<script src="index_drive/js/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="index_drive/js/jsapi.js"></script>
+<script type="text/javascript" src="index_drive/js/corechart.js"></script>      
+<script type="text/javascript" src="index_drive/js/jquery.gvChart-1.0.1.min.js"></script>
+<script type="text/javascript" src="index_drive/js/jquery.ba-resize.min.js"></script>
+<!-- <script type="text/javascript" src="js/jquery-1.12.4.js"></script> -->
+<script type="text/javascript">
+gvChartInit();
+$(document).ready(function(){
+    $('#myTable5').gvChart({
+        chartType: 'PieChart',
+        gvSettings: {
+            vAxis: {title: 'No of players'},
+            hAxis: {title: 'Month'},
+            width: 400,
+            height: 350
+        }
+    });
+    $('#myTable2').gvChart({
+            chartType: 'PieChart',
+            gvSettings: {
+            vAxis: {title: 'No of players'},
+            hAxis: {title: 'Month'},
+            width: 400,
+            height: 350
+        
+        }
+    });
+    $('#myTable4').gvChart({
+            chartType: 'PieChart',
+            gvSettings: {
+            vAxis: {title: 'No of players'},
+            hAxis: {title: 'Month'},
+            width: 400,
+            height: 350
+        
+        }
+    });
+    $('#myTable3').gvChart({
+            chartType: 'PieChart',
+            gvSettings: {
+            vAxis: {title: 'No of players'},
+            hAxis: {title: 'Month'},
+            width: 400,
+            height: 350
+        
+        }
+    });
+    $('#myTable1').gvChart({
+            chartType: 'PieChart',
+            gvSettings: {
+            vAxis: {title: 'No of players'},
+            hAxis: {title: 'Month'},
+            width: 400,
+            height: 350
+        
+        }
+    });
+});
+</script>
+
+<script type="text/javascript">
+gvChartInit();
+$(document).ready(function(){
+        $('#myTable0').gvChart({
+            chartType: 'PieChart',
+            gvSettings: {
+            vAxis: {title: 'No of players'},
+            hAxis: {title: 'Month'},
+            width: 400,
+            height: 350
+        
+        }
+    });
+});
+</script>
+
+</head>
+
+
+<body>
+ <div class="row clearfix  service">
+                    <h1>服务号运营数据及分析</h1>
+                    <div class="col-md-4 column list1">
+                        <div class="about">
+                            <h4>关注人数</h4>
+                            <div class="data-num">
+                                <img src="index_drive/img/guanzhurenshu.png" alt="">
+                                <span>{$config_info.guanzhu}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 column list2">
+                        <div class="about">
+                            <h4>新增关注人数</h4>
+                            <div class="data-num">
+                                <img src="index_drive/img/xinzengguanzhu.png" alt="">
+                                <span>{$config_info.new_add_num}</span>
+                                <p>新增人数</p>
+                            </div>
+                        </div>
+                    </div>
+   </div>
+   <div class="row clearfix  users">
+                    <h1>注册用户数据及分析</h1>
+                    <div class="col-md-4 column list3">
+                        <div class="about">
+                            <h4>注册用户人数</h4>
+                            <div class="data-num">
+                                <img src="index_drive/img/zhuceyonghu.png" alt="" class="fl">
+                                <span class="fr">{$member_info.count}</span>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="bottom-box"></div>
+                        </div>
+                    </div>
+
+     </div>
+
+
+
+
+    <div style="width:400px;margin:0 auto; float:left;">
+
+       <table id='myTable0' style='float: right'>
+            <caption>会员地区分布</caption>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>上海</th>
+                    <th>河南</th>
+                    <th>北京</th>
+                   <!--  <th>湖南</th>
+                    <th>山东</th>
+                    <th>山西</th> -->
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>{$member_info.count}</th>
+                    <td>{$member_info.sh}</td>
+                    <td>{$member_info.hn}</td>
+                    <td>{$member_info.bj}</td>
+                    <!-- <td>180</td>
+                    <td>120</td>
+                    <td>180</td> -->
+                </tr>
+            </tbody>
+        </table>  
+
+      
+    </div>  
+    <div style="width:400px;margin:0 auto; float:left;">
+
+       <table id='myTable2' style='float: right'>
+            <caption>会员年龄分布</caption>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>18岁以下</th>
+                    <th>18~30岁</th>
+                    <th>30~40岁</th>
+                    <th>40~50岁</th>
+                    <th>50~60岁</th>
+                    <th>60岁以上</th>
+                   <!--  <th>湖南</th>
+                    <th>山东</th>
+                    <th>山西</th> -->
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>{$member_info.count}</th>
+                    <td>{$member_info.age_1}</td>
+                    <td>{$member_info.age_2}</td>
+                    <td>{$member_info.age_3}</td>
+                    <td>{$member_info.age_4}</td>
+                    <td>{$member_info.age_5}</td>
+                    <td>{$member_info.age_6}</td>
+                    <!-- <td>180</td>
+                    <td>120</td>
+                    <td>180</td> -->
+                </tr>
+            </tbody>
+        </table>  
+
+      
+    </div>  
+    <div style="width:400px;margin:0 auto; float:left;">
+ <table id='myTable1'>
+            <caption>会员性别分布</caption>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>男</th>
+                    <th>女</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>{$member_info.count}</th>
+                    <td>{$member_info.man_count}</td>
+                    <td>{$member_info.woman_count}</td>
+                    </tr>
+            </tbody>
+        </table>  
+    
+    </div>
+    <div style='clear: both;'></div>
+<div class="row clearfix users">
+                    <h1>项目数据及分析</h1>
+                    <div class="col-md-4 column list3">
+                        <div class="about">
+                            <h4>产品测试项目数量</h4>
+                            <div class="data-num">
+                                <img src="index_drive/img/xiangmu.png" alt="" class="fl">
+                                <span class="fr">{$project_info.test_num}</span>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="bottom-box"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 column list3">
+                        <div class="about">
+                            <h4>在线调查项目数量</h4>
+                            <div class="data-num">
+                                <img src="index_drive/img/xiangmu.png" alt="" class="fl">
+                                <span class="fr">{$project_info.diaocha_num}</span>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="bottom-box"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 column list3">
+                        <div class="about">
+                            <h4>试用品派发项目数量</h4>
+                            <div class="data-num">
+                                <img src="index_drive/img/xiangmu.png" alt="" class="fl">
+                                <span class="fr">{$project_info.shiyong_num}</span>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="bottom-box"></div>
+                        </div>
+                    </div>
+
+  </div>
+
+<div style="width:400px;margin:0 auto; float:left;">
+ <table id='myTable3'>
+            <caption>产品测试</caption>
+            <thead>
+                <tr>
+                    <th></th>
+                    <foreach name="project_test" item="v1">
+                    <th>{$v1.class}</th>
+                    </foreach>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>{$project_info.test_num}</th>
+                    <foreach name="project_test" item="v1">
+                    <td>{$v1.num}</td>
+                    
+                    </foreach>
+                    
+                    </tr>
+            </tbody>
+        </table>  
+    
+    </div>
+    <div style="width:400px;margin:0 auto; float:left;">
+ <table id='myTable4'>
+            <caption>在线调查项目</caption>
+            <thead>
+                <tr>
+                    <th></th>
+                   <foreach name="project_diaocha" item="v2">
+                    <th>{$v2.class}</th>
+                    
+                    </foreach>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>{$project_info.diaocha_num}</th>
+                     <foreach name="project_diaocha" item="v2">
+                    <td>{$v2.num}</td>
+                    
+                    </foreach>
+                    </tr>
+            </tbody>
+        </table>  
+    
+    </div>
+    <div style="width:400px;margin:0 auto; float:left;">
+ <table id='myTable5'>
+            <caption>试用品派发项目</caption>
+            <thead>
+                <tr>
+                    <th></th>
+                     <foreach name="project_shiyong" item="v3"> 
+                    <th>{$v3.class}</th>
+                    
+                    </foreach> 
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>{$project_info.shiyong_num}</th>
+                      <foreach name="project_shiyong" item="v3"> 
+                    <td>{$v3.num}</td>
+                    
+                    </foreach> 
+                    </tr>
+            </tbody>
+        </table>  
+    
+    </div>
+<div style='clear: both;'></div>
+
+                <div class="row clearfix users">
+                    <h1>长期项目组数据及分析</h1>
+                    <div class="col-md-4 column list3">
+                        <div class="about">
+                            <h4>长期项目组数量</h4>
+                            <div class="data-num">
+                                <img src="index_drive/img/xiangmu.png" alt="" class="fl">
+                                <span class="fr">{$project_info.longterm_num}</span>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="bottom-box"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix analysis">
+                    <div class="col-md-12 column tables">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <img src="index_drive/img/xiangmuzu.png" alt="">
+                                        长期项目组
+                                    </th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>项目组编码</td>
+                                <td>项目组名称</td>
+                                <td>创建时间</td>
+                                <td>创建人</td>
+                                <td>项目组简介</td>
+                                <td>组内项目数量</td>
+                                <td>组内用户数量</td>
+                            </tr>
+                            <foreach name='longterm_list' item='v'>
+                                <tr>
+                                <td>{$v.project_no}</td>
+                                <td>{$v.title}</td>
+                                <td>{$v.add_time}</td>
+                                <td>{$v.creat_name}</td>
+                                <td class="desc" title="黑皮项目组就是要皮很黑的人组成一个组大家一起黑皮">{$v.project_desc}</td>
+                                <td>{$v.in_project_num}</td>
+                                <td>{$v.in_baoming_num}</td>
+                            </tr>
+
+                            </foreach>
+                            
+                            
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+</body>
+</html>

@@ -1,0 +1,602 @@
+<admintpl file="header" />
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap js-check-wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:">{$project_info.title}</a></li>
+		<!--<li><a href="{:U('selectques/selectques_info')}">添加选择题</a>-->
+	</ul>
+	<form class="well form-search" method="post" action="{:U('selectques/index')}">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<h3>{$project_info.project_no}-{$project_info.ques_type_name}</h3>
+			</div>
+		</div>
+	</form>
+    <!--<a class="btn btn-primary" id="aa" href="javascript:">添加甄别问卷</a>-->
+    <a class="btn btn-danger" style="float:left; margin:0 15px 0 0" target="_blank" href="javascript:select_block()">添加选择题</a>
+    <a class="btn btn-danger" style="float:left; margin:0 15px 0 0" target="_blank" href="javascript:select_block_add()">从库中选择添加</a>
+    <a class="btn btn-danger" style="float:left; margin:0 15px 0 0" target="_blank" href="javascript:select_block(2)">添加问答题</a>
+    <br><br>
+    <script type="text/javascript">
+							
+						function del(e)
+						{
+							$(e).parent().parent().parent().remove();
+						}
+						//删除
+						function select_del(e,id)
+						{
+							if(confirm('确定要删除?'))
+							{
+							$.ajax({
+								type : "POST",
+								url:"index.php?g=Admin&m=ajax&a=ajax_select_del&ques_id="+id,//+tab,
+								//data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+								dataType: "json",
+								success: function(data){
+									reloadPage(window);return true;
+								}
+							});								
+							}
+						}
+						//修改
+						function select_edit(e,id)
+						{
+							window.test;
+							window.test = e;
+							//$(e).parent().parent().parent().hide();
+							$.ajax({
+								type : "POST",
+								url:"index.php?g=Admin&m=ajax&a=ajax_selectques_info&id="+id,//+tab,
+								//data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+								dataType: "json",
+								success: function(data){
+									$('[name="ques_id"]').val(data.ques_id);
+									$('#select_name').val(data.name);
+									$("#ss_select").html(data.html);
+									//alert(data.html);return true;
+									select_block(data.class);
+									//$("#"+id).html(data);
+									//alert(data);
+								}
+							});
+							//select_block();
+							//alert(id);
+						}
+						
+						function select_none()
+						{
+							window.test = '';
+							$('[name="select_id"]').attr("value",'');  
+							$('#select_name').attr("value",'');  
+							$("#ss_select").html('');
+							//alert(window.test);
+							//$(window.test).parent().parent().parent().show();
+							$("#vv").css('display','none');
+						}
+						function select_block(type)
+						{
+							if(type==2 || type=='问答题')
+							{
+								$("#vs_name").html('请添加问答题');
+								$("#vs_class").html($("#vs_option2").html());
+								
+								$("#vs_answer").hide();
+								
+								//alert(type);
+							}else
+							{
+								$("#vs_name").html('请添加选择题');
+								$("#vs_class").html($("#vs_option1").html());
+								$("#vs_answer").show();
+							}
+							
+							$("#vv").css('display','block');
+							
+							$("#select_add").css('display','none');
+						}
+						//选择甄别问卷
+						function select_block_add()
+						{
+							var type_id=document.getElementById("post_type").value;
+							$("#vv").css('display','block');
+							$("#select").css('display','none');
+							$("#select_add").css('display','block');
+							$.ajax({
+								type : "POST",
+								url:"index.php?g=Admin&m=ajax&a=ajax_select_list&type="+type_id,//+tab,
+								//data :,// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+								dataType: "html",
+								success: function(data){
+									//alert(data);
+									$("#project_select").html(data);
+								}
+							});
+
+						}
+						//问题选取，获得问题列表
+						function select_ques_list(project_id)
+						{
+							var type_id=document.getElementById("post_type").value;
+							
+							$.ajax({
+								type : "POST",
+								url:"index.php?g=Admin&m=ajax&a=ajax_ques_list&type="+type_id+"&project_id="+project_id,//+tab,
+								//data :,// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+								dataType: "html",
+								success: function(data){
+									$("#ques_select").html(data);
+								}
+							});
+						}
+						function answer_none()
+						{
+							//window.test = '';
+							//$('[name="select_id"]').attr("value",'');  
+							$('#answe_name').attr("value",'');  
+							$('#answer_desc').attr("value",'');  
+							$("#vv_answer").css('display','none');
+						}
+						function answer_block()
+						{
+							
+							$("#vv_answer").css('display','block');
+						}
+						
+						//选择题上下移动
+						function select_down(obj,ques_id) { 
+							var objParentTR = $(obj).parent().parent(); 
+							html=objParentTR.next().children("th").html()
+							var nextTR = objParentTR.next(); 
+							if (nextTR.length > 0 && html!='添加问答题') { 
+								nextTR.insertBefore(objParentTR); 
+							} 
+							$.ajax({
+								type : "POST",
+								url:"index.php?g=Admin&m=ajax&a=select_down&ques_id="+ques_id,//+tab,
+								// data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+								dataType: "html",
+								success: function(data){
+									alert(data);
+									
+								}
+							});
+
+
+						} 
+						
+						function select_up(obj,ques_id) { 
+							var objParentTR = $(obj).parent().parent(); 
+							var prevTR = objParentTR.prev(); 
+							html=objParentTR.prev().children("th").html()
+							if (prevTR.length > 0 && html!='添加选择题') { 
+							prevTR.insertAfter(objParentTR); 
+							} 
+							$.ajax({
+								type : "POST",
+								url:"index.php?g=Admin&m=ajax&a=select_up&ques_id="+ques_id,//+tab,
+								// data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+								dataType: "html",
+								success: function(data){
+									alert(data);
+
+								}
+							});
+
+						}
+						
+						//问答题上下移动
+						function answer_down(obj) { 
+							var objParentTR = $(obj).parent().parent().parent(); 
+							var nextTR = objParentTR.next(); 
+							if (nextTR.length > 0) { 
+							nextTR.insertBefore(objParentTR); 
+							} 
+						} 
+						
+						function answer_up(obj) { 
+							var objParentTR = $(obj).parent().parent().parent(); 
+							var prevTR = objParentTR.prev(); 
+							html=objParentTR.prev().children("th").html()
+							if (prevTR.length > 0 && html!='添加问答题') { 
+							prevTR.insertAfter(objParentTR); 
+							} 
+						}
+					</script>
+	<form class="js-ajax-form" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="50">序号</th>
+				<th>题目</th>
+                <th>类型</th>
+				<th>备选答案</th>
+				<th>题序</th>
+				<th>符合答案</th>
+				<th width="320">管理</th>
+			</tr>
+			</thead>
+			<foreach name="ques_list" key="k" item="v">
+				<tr>
+					<td>{$k+1}</td>
+					<td>{$v.name}</td>
+                    <td width="66">{$v.class}</td>
+					<td style="width:42%">{$v.answer_str}</td>
+					<td width="100"><input type='text' style="width:50px;" id="sort_{$v.ques_id}" onblur="change_sort({$v.ques_id})" name='sort' value="{$v.sort}"></td>
+                    <td width="100">{$v.daan}</td>
+                    
+					<td>
+						<a class="btn btn-danger" style="float:right; margin:0 0px 0 0" onClick="select_del(this,<?php echo $v['ques_id'];?>)" href="javascript:">移除</a>
+                            <a class="btn btn-danger" style="float:right; margin:0 10px 0 0" onClick="select_edit(this,<?php echo $v['ques_id'];?>)" href="javascript:">修改</a>
+                            <a class="btn btn-danger" style="float:right; margin:0 10px 0 0" onClick="select_up(this,{$v.ques_id})" href="javascript:">上移</a>
+                            <a class="btn btn-danger" style="float:right; margin:0 10px 0 0" onClick="select_down(this,{$v.ques_id})" href="javascript:">下移</a>
+
+					</td>
+				</tr>
+			</foreach>
+
+		</table>
+		<div class="table-actions">
+        	{$caozuo}
+			<!--<a class="btn btn-danger" style="float:left; margin:0 20px 0 0" href="index.php?g=Admin&m=project&a=project_info_step3&id=6">上一步</a>
+            <a class="btn btn-danger" style="float:left; margin:0 0px 0 0" href="index.php?g=Admin&m=project&a=project_info_step4&id=6">下一步</a>-->
+		</div>
+		<div class="pagination">{$page}</div>
+
+	</form>
+</div>
+
+<!--------------------------------------------------------------------------------------------------------------------------------------------------------------> 
+<div style="height:auto; width:750px; border:1px #CCCCCC solid; background:#FFF; padding:5px;position: fixed; top:50%; left:50%; margin:-425px 0px 0px -375px; display:none" id="vv">
+    
+    <div style=" border-bottom:1px solid #CCC; height:36px; line-height:36px; text-indent:15px;">
+    <span style="font-size:16px; font-weight:bold" id="vs_name">请添加选择题</span><a class="aui_close" onClick="select_none()" href="javascript:;">×</a></div>
+    	<div style="margin:20px 20px 0 20px;">
+
+        <admintpl file="header" />
+<style type="text/css">
+.pic-list li {
+	margin-bottom: 5px;
+	
+}
+.row-fluid1 .span9{ width:100%;}
+
+#worke_content{ margin-top:15px;}
+</style>
+</head>
+<body>
+<div id="vs_option1" style="display:none">
+<select class="select_2" name="post[class]" style="width:122px;">
+    <option value="单选" <php>if($row['class']=='单选'){echo 'selected';}</php>>单选</option>
+    <option value="多选" <php>if($row['class']=='多选'){echo 'selected';}</php>>多选</option>
+    
+</select> 
+</div>
+
+<div id="vs_option2" style="display:none">
+<select class="select_2" name="post[class]" style="width:122px;">
+    <option value="问答题" <php>if($row['class']=='问答题'){echo 'selected';}</php>>问答题</option>
+     <option value="日期和时间" <php>if($row['class']=='问答题'){echo 'selected';}</php>>日期时间</option>
+    <option value="时间" <php>if($row['class']=='问答题'){echo 'selected';}</php>>时间</option>
+</select> 
+</div>
+		<form action="" id="select" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<div class="row-fluid row-fluid1">
+				<div class="span9">
+					<table class="table table-bordered">
+						<input type="hidden" value="{$project_info.id}" name="post[project_id]">
+                        <input type="hidden" value="{$project_info.ques_type}" id='post_type' name="post[type]">
+                        <input type="hidden" value="{$project_info.project_no}-{$project_info.ques_type_name}" name="post[ques_nam]">
+						<tr>
+							<th width="80">题目</th>
+							<td>
+								<input type="text" style="width:400px;" name="post[name]" id="select_name" required value="{$row.name}" placeholder="请输入项目名称"/>
+								<span class="form-required" style="color:red">*</span>
+							</td>
+						</tr>
+                        
+                        <!--<tr>
+							<th width="80">适合</th>
+							<td>
+								<select class="select_2" name="post[require]" style="width:122px;">
+                                	<option value="全部" <php>if($row['require']=='全部'){echo 'selected';}</php>>全部</option> 
+                                    <foreach name="sexs" item="v">
+                                    <option value="{$v}" <php>if($row['require']==$v){echo 'selected';}</php>>{$v}</option> 
+                                    </foreach>
+                                </select>
+							</td>
+						</tr>-->
+                        
+                        <tr >
+							<th width="80">类型</th>
+							<td id="vs_class">
+								  
+							</td>
+						</tr>
+                        
+                     
+                        
+                        <tr id="vs_answer">
+							<th>答案选项</th>
+							<td style="line-height:45px;" >
+                            
+                            <div id="ss_select">
+                                <?php foreach($row['answer'] as $k=>$v){?>
+                                <div>
+                                <b style=" font-size:14px !important;width: 15px; display: inline-block; text-align:center" class="zimu_b"><?php echo strtoupper($k);?></b>
+                           		：<input type="text" name="post[<?php echo strtoupper($k);?>]" value="<?php echo $v?>" class="zimu_input" placeholder="请输入答案内容" style="width: 180px;">
+                                <a class="btn" onClick="del(this)" href="javascript:">移除</a>
+                                 <br>
+                                </div>
+                                <?php }?>
+                            </div>
+                            
+                            <a class="btn btn-primary" id="aa" href="javascript:">追加答案选项</a>
+                            <div id="vv_select" style="display:none">
+                            <div>
+                            <b style=" font-size:14px !important;width: 15px; display: inline-block; text-align:center" class="zimu_b">A</b>
+                            ：<input type="text" name="" value="" class="zimu_input" placeholder="请输入答案内容" style="width: 180px;">
+                            <!--去除符合按钮-->
+                           <!--  <label class="radio inline">
+                                <input type="checkbox" name="post[daan][]" class="daan_input" value="1" />符合
+                            </label> -->
+                            <!--end-->
+                            <a class="btn" onClick="del(this)" href="javascript:">移除</a>
+                            跳转至
+                            <select name='post[turn_to][]' display='inline'  style='width:120px'>
+                            <option value="">请选择</option>
+							<foreach name="ques_list" key="k" item="v">
+							<option value='{$v.ques_id}'>{$v.name}</option>
+							</foreach>
+                            </select>
+                            </div>
+                            </div>
+                            </td>
+						</tr>
+                        
+					</table>
+                    <script type="text/javascript">
+							
+						function del(e)
+						{
+							$(e).parent('div').remove();
+
+						}
+						
+						$("#aa").click(function(){ 
+						
+							//alert(getChar($("#ss").children('div').length));
+							zimu=getChar($("#ss_select").children('div').length);
+							
+							$("#vv_select .zimu_b").html(zimu)
+							$("#vv_select .zimu_input").attr("name",'post['+zimu+']');
+							$("#vv_select .daan_input").attr("value",zimu);
+							//$("#vv_select .daan_input").attr("name",'post[daan'+zimu+']');
+							//$("#vv .zimu_input").attr("value",zimu);
+							//alert($("#vv .zimu_input").val());
+							//alert($("#vv div").html());
+							$("#ss_select").append($("#vv_select").html());
+							$("#vv_select .zimu_input").removeAttr("name");	//移除复制源name防止提交时出错
+							//alert($("#vv div").html());
+							//$("#vv div").clone(true).appendTo("#ss"); // 复制当前点击的节点，并将它追加到<ul>元素 
+						}) 
+						
+						//获取字母
+						function getChar(i){
+
+							if(i >= 0 && i <= 26){
+					
+								return String.fromCharCode(65 + i);
+					
+							} else {
+					
+								alert('请输入合适数字');
+					
+							}
+					
+						}
+						
+						
+						function select_save(form)
+						{
+							$.ajax({
+								type : "POST",
+								url:"index.php?g=Admin&m=ajax&a=ajax_select&num={$num}",//+tab,
+								data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+								dataType: "html",
+								success: function(data){
+									select_none();
+									reloadPage(window);return true;
+									alert(data);return true;
+									$("#v_select").append(data);
+									$(window.test).parent().parent().parent().hide();
+									select_none();
+									//$("#"+id).html(data);
+									//alert(data);
+								}
+							});
+							//alert($("#v_select").html());
+							//.alert(form);
+						}
+					</script>
+
+				</div>
+				
+			</div>
+			<div class="form-actions">
+                <input type="hidden" name="ques_id" value="{$row.ques_id}" />
+                <a href="javascript:select_save('select')" class="btn btn-primary js-ajax-submit">添加</a>
+				<!--<button class="btn btn-primary js-ajax-submit" type="submit">提交</button>-->
+				<a class="btn" href="javascript:select_none()">关闭</a>
+			</div>
+		</form>
+<!--------------------------------------选择问卷-->
+			<form action="" id="select_add" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<div class="row-fluid row-fluid1">
+				<div class="span9">
+					<table class="table table-bordered">
+                    	<input type="hidden" value="{$project_info.id}" name="post[project_id]">
+                        <input type="hidden" value="{$project_info.project_no}-{$project_info.ques_type_name}" name="post[ques_nam]">
+						<input type="hidden" value="{$project_info.id}" name="post[project_id]">
+						<tr>
+							<th width="80">题目</th>
+							<td>
+								<input type="text" style="width:400px;" name="post[name]" id="select_name" required value="" placeholder="请输入项目名称"/>
+								<span class="form-required" style="color:red">*</span>
+							</td>
+						</tr>
+
+                        <tr>
+							<th width="80">项目名称</th>
+							<td id='project_select'>
+								
+							</td>
+						</tr>
+						 <tr>
+							<th width="80">问卷名称</th>
+							<td id='ques_select'>
+								
+							</td>
+						</tr>
+                        
+      
+					</table>
+                    <script type="text/javascript">
+							
+						
+						
+						//获取字母
+						function getChar(i){
+
+							if(i >= 0 && i <= 26){
+					
+								return String.fromCharCode(65 + i);
+					
+							} else {
+					
+								alert('请输入合适数字');
+					
+							}
+					
+						}
+						
+						//从库中选择题目进行添加
+						function select_save_add(form)
+						{
+							var type_id=document.getElementById("post_type").value;
+							$.ajax({
+								type : "POST",
+								url:"index.php?g=Admin&m=ajax&a=ajax_select_add&type="+type_id,//+tab,
+								data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+								dataType: "html",
+								success: function(data){
+									//刷新页面
+									reloadPage(window);return true;
+								}
+							});
+
+						}
+					</script>
+
+				</div>
+				
+			</div>
+			<div class="form-actions">
+               
+                <a href="javascript:select_save_add('select_add')" class="btn btn-primary js-ajax-submit">添加</a>
+				<!--<button class="btn btn-primary js-ajax-submit" type="submit">提交</button>-->
+				<a class="btn" href="javascript:select_none()">关闭</a>
+			</div>
+		</form>
+		<!----选择问卷-->
+
+	</div>
+    
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+	<script type="text/javascript">
+		//编辑器路径定义
+		var editorURL = GV.DIMAUB;
+	</script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
+	
+</body>
+</html>
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------->        
+
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+	function refersh_window() {
+		var refersh_time = getCookie('refersh_time');
+		if (refersh_time == 1) {
+			window.location = "{:U('AdminPost/index',$formget)}";
+		}
+	}
+	setInterval(function() {
+		refersh_window();
+	}, 2000);
+	$(function() {
+		setCookie("refersh_time", 0);
+		Wind.use('ajaxForm', 'artDialog', 'iframeTools', function() {
+			//批量移动
+			$('.js-articles-move').click(function(e) {
+				var str = 0;
+				var id = tag = '';
+				$("input[name='ids[]']").each(function() {
+					if ($(this).attr('checked')) {
+						str = 1;
+						id += tag + $(this).val();
+						tag = ',';
+					}
+				});
+				if (str == 0) {
+					art.dialog.through({
+						id : 'error',
+						icon : 'error',
+						content : '您没有勾选信息，无法进行操作！',
+						cancelVal : '关闭',
+						cancel : true
+					});
+					return false;
+				}
+				var $this = $(this);
+				art.dialog.open("__ROOT__/index.php?g=portal&m=AdminPost&a=move&ids="+ id, {
+					title : "批量移动",
+					width : "80%"
+				});
+			});
+		});
+	});
+
+
+	function change_sort(ques_id){
+		
+		var sort=$('#sort_'+ques_id).val();
+		if(isInteger(sort))
+		{
+			$.ajax({
+					type : "POST",
+					url:"index.php?g=Admin&m=project&a=ajax_change_sort&sort="+sort+"&ques_id="+ques_id,//+tab,
+					//data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+					dataType: "html",
+					success: function(data){
+						if(data=='成功')
+						$('#sort_'+ques_id).val(sort);
+						else
+						alert('修改失败');
+						
+					}
+				
+			});
+		}
+
+	}
+function isInteger(obj) {
+ return obj%1 === 0
+}
+</script>
+</body>
+</html>

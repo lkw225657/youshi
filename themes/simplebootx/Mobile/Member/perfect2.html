@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>个人背景信息填写</title>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="__TMPL__Public/mobile/css/style.css" />
+    <script src="__TMPL__Public/mobile/js/jquery-2.1.1.min.js" ></script>
+    <script src="__TMPL__Public/mobile/js/Area.js" type="text/javascript"></script>
+	<script src="__TMPL__Public/mobile/js/AreaData_min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    $(function (){
+        initComplexArea('seachprov', 'seachcity', 'seachdistrict', area_array, sub_array, '0', '0', '0');
+    });
+    
+    //得到地区码
+    function getAreaID(){
+        var area = 0;          
+        if($("#seachdistrict").val() != "0"){
+            area = $("#seachdistrict").val();                
+        }else if ($("#seachcity").val() != "0"){
+            area = $("#seachcity").val();
+        }else{
+            area = $("#seachprov").val();
+        }
+        return area;
+    }
+    
+    function showAreaID() {
+        //地区码
+        var areaID = getAreaID();
+        //地区名
+        var areaName = getAreaNamebyID(areaID) ;
+        alert("您选择的地区码：" + areaID + "      地区名：" + areaName);            
+    }
+    
+    //根据地区码查询地区名
+    function getAreaNamebyID(areaID){
+        var areaName = "";
+        if(areaID.length == 2){
+            areaName = area_array[areaID];
+        }else if(areaID.length == 4){
+            var index1 = areaID.substring(0, 2);
+            areaName = area_array[index1] + " " + sub_array[index1][areaID];
+        }else if(areaID.length == 6){
+            var index1 = areaID.substring(0, 2);
+            var index2 = areaID.substring(0, 4);
+            areaName = area_array[index1] + " " + sub_array[index1][index2] + " " + sub_arr[index2][areaID];
+        }
+        return areaName;
+    }
+    </script>
+</head>
+<body>
+<div class="member_verification2">
+<form name="formUser" method="post" action="" id="submit">
+    <div class="member_wanshandiv2 over">
+    	<div class="member_wanshan1 over">
+        <label>邮箱</label><input type="text" name="post[email]" value="{$member_info.email}" class="member_wanshan_input"><div class="member_wanshan_canshu"></div></div>
+    </div>
+    <div class="member_wanshandiv2 over">
+    	<div class="member_wanshan1 over">
+        <label>常住地址</label><input type="text" value="{$member_info.new_area_name}" disabled placeholder="下方选择常住地址" class="member_wanshan_input"><div class="member_wanshan_canshu"></div></div>
+    </div>
+	<div class="member_wanshandiv2 over">
+    	<div class="member_wanshan1 over">
+        	<label>常住地址</label>
+        	<div class="member_provinces_cities">
+               <div class="member_hidden2"><select id="seachprov" name="seachprov" onChange="changeComplexProvince(this.value, sub_array, 'seachcity', 'seachdistrict');"></select></div>
+               <div class="member_hidden2"><select id="seachcity" name="homecity" onChange="changeCity(this.value,'seachdistrict','seachdistrict');"></select></div>
+            </div>
+        </div>
+    </div>
+    <div class="member_hidden3"><span id="seachdistrict_div"><select id="seachdistrict" class="seachdistrict" name="seachdistrict"></select></span></div>
+    <div class="member_hidden4">
+    	<textarea class="member_wanshan_address" placeholder="详细地址" name="post[new_address]">{$member_info.new_address}</textarea>
+    </div>
+    <div class="member_wanshandiv2 over">
+    	<div class="member_wanshan1 over"><label>住房类型</label>
+        	<div class="member_xiala_hidden">
+                <select class="member_xiala" name="post[housing]">
+                    <option></option>
+                    <foreach name="housing" item="v">
+                    <option value="{$v}" <php>if($member_info['housing']==$v){echo 'selected';}</php>>{$v}</option> 
+                    </foreach>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="member_wanshandiv over">
+    	<div class="member_wanshan1 over"><label>职业</label>
+        	<div class="member_xiala_hidden">
+                <select class="member_xiala" name="post[profession]">
+                    <option></option>
+                    <foreach name="profession" item="v">
+                    <option value="{$v}" <php>if($member_info['profession']==$v){echo 'selected';}</php>>{$v}</option> 
+                    </foreach>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="member_wanshandiv over">
+    	<div class="member_wanshan1 over"><label>工作环境</label>
+        	<div class="member_xiala_hidden">
+                <select class="member_xiala" name="post[work]">
+                    <option></option>
+                    <foreach name="work" item="v">
+                    <option value="{$v}" <php>if($member_info['work']==$v){echo 'selected';}</php>>{$v}</option> 
+                    </foreach>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="member_wanshandiv over">
+    	<div class="member_wanshan1 over"><label>个人月收入</label>
+        	<div class="member_xiala_hidden">
+                <select class="member_xiala" name="post[month_income]">
+                    <option></option>
+                    <foreach name="month_income" item="v">
+                    <option value="{$v}" <php>if($member_info['month_income']==$v){echo 'selected';}</php>>{$v}</option> 
+                    </foreach>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="member_wanshandiv over">
+    	<div class="member_wanshan1 over"><label>家庭月收入</label>
+        	<div class="member_xiala_hidden">
+                <select class="member_xiala" name="post[family_income]">
+                    <option></option>
+                    <foreach name="family_income" item="v">
+                    <option value="{$v}" <php>if($member_info['family_income']==$v){echo 'selected';}</php>>{$v}</option> 
+                    </foreach>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="member_wanshan_ico"><img src="__TMPL__Public/mobile/images/member-ico9.png">&nbsp;为必填项</div>
+    <div class="verification_button_list over">
+    	<a href="{:U('member/perfect1')}"><span class="verification_Prev l">上一步</span></a>
+		<!--<a href="{:U('member/perfect3')}"><span class="verification_next2 r">最后一步</span></a>-->
+        <a href="javascript:" onclick="tijiao('submit')"><div class="verification_next2 r">最后一步</div></a>
+    </div>
+    <input type="hidden" value="" name="new_area_name" id="new_area_name">
+</form>  
+</div>
+<script type="text/javascript">
+	function tijiao(form){
+		var areaID = getAreaID();
+    	var areaName = getAreaNamebyID(areaID);
+		$("#new_area_name").val(areaName);
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Mobile&m=member&a=perfect2_ajax",//+tab,
+			data : $('#'+form).serialize(),// 你的formid
+			dataType: "html",
+			success: function(data){
+				//alert(data);return true;
+				if(data=='操作成功！')
+				{
+					location.href="{:U('member/perfect3')}";
+				}else
+				{
+					alert(data);
+				}
+			}
+		});
+	}
+</script>
+</body>
+</html>
+   

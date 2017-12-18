@@ -1,0 +1,45 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		
+		<form class="form-horizontal js-ajax-forms" action="{:U('index/save_drive')}" method="post">
+			<fieldset>
+				<div class="tabbable">
+					<div class="tab-content">
+						<div class="tab-pane active" id="A">
+							<fieldset>
+								<div class="control-group">
+									<label class="control-label">关注人数</label>
+									<div class="controls">
+										<input type="text" name="guanzhu" value="{$config.guanzhu}"><span class="form-required">*</span>
+									
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">新增关注人数：</label>
+									<div class="controls">
+										<input type="text" name="new_add_num" value="{$config.new_add_num}" id="js-site-admin-url-password"><span class="form-required">*</span>
+										
+									</div>
+								</div>
+	
+								
+							</fieldset>
+						</div>
+						
+	
+					</div>
+				</div>
+
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary  js-ajax-submit">保存</button>
+				</div>
+			</fieldset>
+		</form>
+
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+
+</body>
+</html>

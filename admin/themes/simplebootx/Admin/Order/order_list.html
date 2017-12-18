@@ -1,0 +1,251 @@
+<admintpl file="header" />
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap js-check-wrap">
+	<ul class="nav nav-tabs">
+    	<li <?php if(empty($state)){echo 'class="active"';}?>><a href="{:U('order/order_list')}">订单列表</a></li>
+    	<li <?php if($state==1){echo 'class="active"';}?>><a href="{:U('order/order_list',array('state'=>1))}">审核中订单</a></li>
+        <li <?php if($state==2){echo 'class="active"';}?>><a href="{:U('order/order_list',array('state'=>2))}">已发货订单</a></li>
+        <li <?php if($state==3){echo 'class="active"';}?>><a href="{:U('order/order_list',array('state'=>3))}">以收货订单</a></li>
+        
+	</ul>
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">搜索：
+                    订单状态：
+                    
+                    <select class="select_2" style="width:100px;" name="state">
+						<option value=''>不限</option>
+                            <option value="1" <?php if($state==1){echo 'selected';}?>>审核中</option>
+                            <option value="2" <?php if($state==2){echo 'selected';}?>>已发货</option>
+                            <option value="3" <?php if($state==3){echo 'selected';}?>>以收货</option>
+                    </select>
+                    
+                    &nbsp;&nbsp;
+                    搜索：
+                    <select class="select_2" style="width:100px;" name="search_type">
+						<!--<option value=''>全部</option>-->
+                        <option value='1' <php>if($search_type==1){echo 'selected';}</php>>订单编号</option>
+                        <option value='2' <php>if($search_type==2){echo 'selected';}</php>>用户姓名</option>
+                        <option value='3' <php>if($search_type==3){echo 'selected';}</php>>商品名</option>
+                        <option value='4' <php>if($search_type==4){echo 'selected';}</php>>收货人电话</option>
+
+                    </select>
+						<input type="text" name="keyword" style="width: 200px;" value="{$keyword}" placeholder="请输入关键字...">
+						<input type="submit" class="btn btn-primary" value="搜索" />
+					</span>
+			</div>
+		</div>
+	</form>
+	<form class="js-ajax-form" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="15"><label><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></label></th>
+				<th width="20">id</th>
+                <th width="55">订单编号</th>
+				<th width="55">用户姓名</th>
+                <th width="88">商品名</th>
+                <th width="66">兑换数量</th>
+                <th width="66">所需积分</th>
+                <th width="77">收货人姓名</th>
+                <th width="77">收货人电话</th>
+                <th width="66">地区名</th>
+                <th width="88">详细地址</th>
+                <th width="88">买家留言</th>
+                <th width="66">快递</th>
+                <th width="44">快递编号</th>
+                <th width="66">快递编码</th>
+				<th width="122">添加时间</th>
+				<th width="66">订单状态</th>
+				<th width="66">操作</th>
+			</tr>
+			</thead>
+			<foreach name="list" item="v">
+				<tr>
+					<td><input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]" value="{$v.order_id}" title="ID:{$v.order_id}"></td>
+					<td>{$v.order_id}</td>
+                    <td>{$v.order_no}</td>
+					<td>{$v.user_name}</td>
+                    <td>{$v.goods_name}</td>
+                    <td>{$v.num}</td>
+                    <td>{$v.jifen}</td>
+                    <td>{$v.name}</td>
+                    <td>{$v.phone}</td>
+                    <td>{$v.area_name}</td>
+                    <td>{$v.address}</td>
+                    <td>{$v.marks}</td>
+                    <td>{$v.kuaidi}</td>
+                    <td>{$v.kuaidi_no}</td>
+                    <td>{$v.kuaidi_code}</td>
+					<td width="77"><php>if(!empty($v['add_time'])){echo date("Y-m-d H:i:s",$v['add_time']);}</php></td>
+					
+					 <td><?php if($v['state']==1){echo '<span style=" color:red">审核中</span>';}elseif($v['state']==2){echo '<span style=" color:green">已发货</span>';}elseif($v['state']==3){echo '<span style=" color:blue">以收货</span>';}?></td>
+
+					<td>
+                    	<?php if($v['state']==1){?>
+						<a href="javascript:" onClick="select_block('<?php echo $v['order_id']?>')">发货</a> |
+                        <?php }?>
+                        
+                        <?php if($v['state']==2){?>
+						<a href="index.php?g=admin&m=order&a=order_state&state=3&order_id=<?php echo $v['order_id'];?>" class="js-ajax-dialog-btn" data-msg="你确定要确认收货吗？">收货</a> |
+                        <?php }?>
+
+						<a href="{:U('order/order_del',array('tid'=>$v['order_id']))}" class="js-ajax-delete">删除</a>
+                         <!--| 
+                        <a href="{:U('quespaper/quespaper_info',array('project_id'=>$v['id']))}">添加试卷</a>-->
+
+					</td>
+				</tr>
+			</foreach>
+
+		</table>
+		<div class="table-actions">
+			<button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('order/order_del')}" data-subcheck="true" data-msg="你确定删除吗？">批量删除</button>
+			<button class="btn btn-danger btn-small " type="button" data-subcheck="true" onclick="ajax_download()" ><a href="javascript:">导出</a></button>
+			<!--<button class="btn btn-primary btn-small J_ajax_submit_btn" type="submit" data-action="{:U('Phone/yes_d')}" data-subcheck="true" data-msg="你确定复原吗？">未下载</button>
+            <button class="btn btn-primary btn-small J_ajax_submit_btn" type="submit" data-action="{:U('Phone/no_d')}" data-subcheck="true" data-msg="你确定标记吗？">已下载</button>-->
+			<span style="float:right; margin:0 20px 0 0">共<span style="color:#F93"> {$count} </span>条记录</span>
+		</div>
+		<div class="pagination">{$page}</div>
+
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+
+<div style="height:auto; width:550px; border:1px #CCCCCC solid; background:#FFF; padding:5px;position: fixed; top:50%; left:50%; margin:-200px 0px 0px -375px; display:none" id="vv">
+    
+    <div style=" border-bottom:1px solid #CCC; height:36px; line-height:36px; text-indent:15px;"><span style="font-size:16px; font-weight:bold">商品发货</span><a class="aui_close" onClick="select_none()" href="javascript:;">×</a></div>
+    	<div style="margin:20px 20px 0 20px;">
+        <form action="" id="select" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">快递名</label>
+					<div class="controls">
+                    <select class="select_2" style="width:150px;" name="kuaidi">
+						<option value='线下-0'>线下</option>
+                        <foreach name="express_list" item="v">
+                        <option value='{$v.name}-{$v.code}' >{$v.name}</option>
+                        </foreach>
+                    </select>
+					</div>
+				</div>
+                <div class="control-group">
+					<label class="control-label">快递编号</label>
+					<div class="controls">
+						<input type="text" name="post[kuaidi_no]" value="{$type_info.type_sort}">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+                
+                <input type="hidden" value="" name="order_id" id="order_id">
+				<div class="form-actions">
+                    <a href="javascript:select_save('select')" class="btn btn-primary js-ajax-submit">确认发货</a>
+                    <!--<button class="btn btn-primary js-ajax-submit" type="submit">提交</button>-->
+                    <a class="btn" href="javascript:select_none()">关闭</a>
+                </div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+
+function ajax_download()
+	{
+		var state=$("select[name='state']").val();
+		var search_type=$("select[name='search_type']").val();
+		var keyword=$("input[name='keyword']").val();
+		var url="&search_type="+search_type+"&keyword="+keyword+"&state="+state;
+		location.href="index.php?g=Admin&m=download&a=downExcel&mod=order"+url;
+
+	} 
+
+	function select_save(form)
+	{
+		$.ajax({
+			type : "POST",
+			url:"index.php?g=Admin&m=order&a=order_fahuo",//+tab,
+			data : $('#'+form).serialize(),// 你的formiddata : {area_parent_id:area_parent_id,area_id:area_id},// 你的formid
+			dataType: "json",
+			success: function(data){
+				//alert(data);return true;
+				if(data.status==1 || true)
+				{
+					
+					alert(data.info);
+					reloadPage(window);
+					select_none();
+				}
+				
+				
+				
+			}
+		});
+		//alert($("#v_select").html());
+		//.alert(form);
+	}
+	
+	function select_none()
+	{
+		/*window.test = '';
+		$('[name="select_id"]').attr("value",'');  
+		$('#select_name').attr("value",'');  
+		$("#ss_select").html('');*/
+		//alert(window.test);
+		//$(window.test).parent().parent().parent().show();
+		$("#vv").css('display','none');
+	}
+	function select_block(order_id)
+	{
+		//alert(order_id);
+		$("#order_id").val(order_id);
+		$("#vv").css('display','block');
+	}
+</script>
+
+<script>
+	function refersh_window() {
+		var refersh_time = getCookie('refersh_time');
+		if (refersh_time == 1) {
+			window.location = "{:U('AdminPost/index',$formget)}";
+		}
+	}
+	setInterval(function() {
+		refersh_window();
+	}, 2000);
+	$(function() {
+		setCookie("refersh_time", 0);
+		Wind.use('ajaxForm', 'artDialog', 'iframeTools', function() {
+			//批量移动
+			$('.js-articles-move').click(function(e) {
+				var str = 0;
+				var id = tag = '';
+				$("input[name='ids[]']").each(function() {
+					if ($(this).attr('checked')) {
+						str = 1;
+						id += tag + $(this).val();
+						tag = ',';
+					}
+				});
+				if (str == 0) {
+					art.dialog.through({
+						id : 'error',
+						icon : 'error',
+						content : '您没有勾选信息，无法进行操作！',
+						cancelVal : '关闭',
+						cancel : true
+					});
+					return false;
+				}
+				var $this = $(this);
+				art.dialog.open("__ROOT__/index.php?g=portal&m=AdminPost&a=move&ids="+ id, {
+					title : "批量移动",
+					width : "80%"
+				});
+			});
+		});
+	});
+</script>
+</body>
+</html>
