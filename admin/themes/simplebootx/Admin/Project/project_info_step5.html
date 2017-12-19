@@ -282,11 +282,11 @@
 							if($(e).val()=='签到扫描'||$(e).val()=='使用扫描')
 							{	if($(e).val()=='签到扫描')
 								{
-										shtml='<input type="number" style="display:none" name="ques_type[]" value="" style="width:44px; height:14px;">&nbsp;&nbsp;<a class="btn btn-primary" onClick="show_qiandao()" href="javascript:">查看二维码</a> <div id="qiandao" style="display:none;height:200px;width:200px;position: absolute; background-color:red; top:30%;left:60%;"><img id="qiandao_img" src=""></div>';
+										shtml='<input type="number" style="display:none" name="ques_type[]" value="" style="width:44px; height:14px;">&nbsp;&nbsp;<a class="btn btn-primary" onClick="show_qiandao_p()" href="javascript:">查看二维码</a> <div id="qiandao" style="display:none;height:200px;width:200px;position: absolute; background-color:red; top:30%;left:60%;"><img id="qiandao_img" src=""></div>';
 								}
 								if($(e).val()=='使用扫描')
 								{
-										shtml='<input type="number" style="display:none" name="ques_type[]" value="" style="width:44px; height:14px;position:relative;">&nbsp;&nbsp;<a class="btn btn-primary" onClick="show_shiyong()" href="javascript:">查看二维码</a> <div id="shiyong" style="display:none;height:200px;width:200px;position: absolute; background-color:red; top:30%;left:70%;"><img id="shiyong_img" src=""></div>';
+										shtml='<input type="number" style="display:none" name="ques_type[]" value="" style="width:44px; height:14px;position:relative;">&nbsp;&nbsp;<a class="btn btn-primary" onClick="show_shiyong_p()" href="javascript:">查看二维码</a> <div id="shiyong" style="display:none;height:200px;width:200px;position: absolute; background-color:red; top:30%;left:70%;"><img id="shiyong_img" src=""></div>';
 								}
 								
 								$(e).parent().find('b').html(shtml);
@@ -603,16 +603,21 @@
 			////-------------------------
 		});
 		//-------------
+		var HOST = "{$_SERVER['HTTP_HOST']}";
 		function show_qiandao_p(process_id){
 				var qiandao_id="qiandao_"+process_id;
 				var qiandao_img="qiandao_img_"+process_id;
+				if (!process_id){
+					qiandao_id="qiandao";
+					qiandao_img="qiandao_img";
+				}
 				var qiandao=document.getElementById(qiandao_id);
 				//将签到扫描的数据插入数据库
 				if(qiandao.style.display=='none')
 				{
 					//保存数据并返回process_id
 
-						url="{:U('Mobile/process/qiandao_ajax@'.WX_HOME_URL_HOST,array('project_id'=>$project_info.id))}";
+						url="http://"+HOST+"/index.php?g=Mobile&m=process&a=qiandao_ajax&project_id={$project_info.id}";
 						
 						$.ajax({
 									type : "POST",
@@ -638,11 +643,15 @@
 			function show_shiyong_p(process_id){
 				var shiyong_id="shiyong_"+process_id;
 				var shiyong_img="shiyong_img_"+process_id;
+				if (!process_id){
+					shiyong_id="shiyong";
+					shiyong_img="shiyong_img";
+				}
 				var shiyong=document.getElementById(shiyong_id);
 				if(shiyong.style.display=='none')
 				{
 
-						url="{:U('Mobile/process/shiyong_ajax@'.WX_HOME_URL_HOST,array('project_id'=>$project_info.id))}";
+						url="http://"+HOST+"/index.php?g=Mobile&m=process&a=shiyong_ajax&project_id={$project_info.id}";
 						$.ajax({
 								type : "POST",
 								url:"index.php?g=Admin&m=project&a=erweima&project_id={$project_info.id}",//+tab,
@@ -679,7 +688,7 @@
 							success: function(data){
 								process_id=data;
 
-								url="{:U('Mobile/process/qiandao_ajax@'.WX_HOME_URL_HOST,array('process_id'=>"+process_id+"))}";
+								url="http://"+HOST+"/index.php?g=Mobile&m=process&a=qiandao_ajax&process_id="+process_id;
 									$.ajax({
 												type : "POST",
 												url:"index.php?g=Admin&m=project&a=erweima&project_id={$project_info.id}",//+tab,
@@ -695,7 +704,7 @@
 							}
 						});
 					}else{
-						url="{:U('Mobile/process/qiandao_ajax@'.WX_HOME_URL_HOST,array('process_id'=>"+process_id+"))}";
+						url="http://"+HOST+"/index.php?g=Mobile&m=process&a=qiandao_ajax&process_id="+process_id;
 						$.ajax({
 									type : "POST",
 									url:"index.php?g=Admin&m=project&a=erweima&project_id={$project_info.id}",//+tab,
@@ -730,7 +739,7 @@
 							success: function(data){
 								process_id=data;
 							
-								url="{:U('Mobile/process/shiyong_ajax@'.WX_HOME_URL_HOST,array('project_id'=>$project_info.id, 'process_id'=>"+process_id+"))}";
+								url="http://"+HOST+"/index.php?g=Mobile&m=process&a=shiyong_ajax&process_id="+process_id+"&project_id={$project_info.id}";
 								$.ajax({
 										type : "POST",
 										url:"index.php?g=Admin&m=project&a=erweima&project_id={$project_info.id}",//+tab,
@@ -747,7 +756,7 @@
 						});
 
 					}else{
-						url="{:U('Mobile/process/shiyong_ajax@'.WX_HOME_URL_HOST,array('project_id'=>$project_info.id, 'process_id'=>"+process_id+"))}";
+						url="http://"+HOST+"/index.php?g=Mobile&m=process&a=shiyong_ajax&process_id="+process_id+"&project_id={$project_info.id}";
 						$.ajax({
 								type : "POST",
 								url:"index.php?g=Admin&m=project&a=erweima&project_id={$project_info.id}",//+tab,

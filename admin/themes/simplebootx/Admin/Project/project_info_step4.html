@@ -66,7 +66,7 @@
 		project_type='{$project_info.type}';
 		if(project_type=='3')
 		{
-			url="{:U('Mobile/process/erweima_ajax@'.WX_HOME_URL_HOST,array('action'=>'shouhuo', 'project_id'=>$project_id))}";
+			url="{:U('Mobile/process/shouhuo_ajax@'.WX_HOME_URL_HOST,array('project_id'=>$project_id))}";
 				
 				$.ajax({
 				type : "POST",

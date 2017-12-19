@@ -27,7 +27,15 @@
 </style>
 
 <body style="background: #fff;" onload="space_time_js()">
-
+    <div class="member_Promptcont" id="erweima_msg" style="z-index:4; display:none;">
+        <div class="member_Prompt">
+            <div class="member_Prompt_title">二维码扫描</div>
+            <div class="member_Prompt_desc">
+                <p>扫码失败，请扫描正确二维码！</p>
+            </div>
+            <div class="member_Prompt_button"><span class="member_yc2" style="color:#d35e7e;">确定</span></div>
+        </div>
+    </div>
     <div class="back-project">
         <div class="title5">
             <h3 class="color-sky-blue">{$project_info.title}</h3>
@@ -59,12 +67,6 @@
           <?php }   
             } ?>
 
-        
-
-
-           <!--  <div class="btn-img" id='btn-img' id='scanQRCode1' style='display: block' onClick="show('{$new_info.name}',{$new_info.process_id})">
-                {$new_info.name}
-            </div> -->
             <!-- 间隔时间内不能点击 -->
              <div class="btn-img" id="btn-img-space" style='display: none'>
                 {$new_info.name}
@@ -138,9 +140,8 @@
         <div class="member_Prompt_button"><a href="{:U('project/project_show',array('id'=>$project_info['id']))}"><span style="color:#d35e7e;">确定</span></a></div>
     </div>
 </div>
+    <script type="text/javascript">
 
-
-	<script type="text/javascript">
 	//倒计时进行间隔时间 单位是秒
 	var m=document.getElementById('space_time').value;
 
@@ -170,7 +171,9 @@
 		}else{
 			$('#btn-img').show();
 		}
-		
+        $(".member_yc2").click(function(){
+	        $("#erweima_msg").hide();
+        });
 	}
 
 
@@ -298,21 +301,20 @@
     ]
   });
   wx.ready(function () {
-      // 9 微信原生接口
-      // 9.1.1 扫描二维码并返回结果
-     //  document.querySelector('#scanQRCode1').onclick = function () {
-        // wx.scanQRCode({
-        //   desc: 'scanQRCode desc'
-        // });
-  // };
- 
+      var name = "{$new_info.name}";
       // 9.1.2 扫描二维码并返回结果
       document.querySelector('#scanQRCode1').onclick = function () {
         wx.scanQRCode({
-          needResult: 0,
+          needResult: 1,
           desc: 'scanQRCode desc',
           success: function (res) {
-         //  alert(JSON.stringify(res));
+            if (/^.+g=mobile&m=process&a=qiandao_ajax&project_id={$project_info['id']}/i.test(res.resultStr) && name=='签到扫描') {
+                    window.location.href = res.resultStr + '&v='+Math.random();
+            } else if (/^.+g=mobile&m=process&a=shiyong_ajax&project_id={$project_info['id']}/i.test(res.resultStr) && name=='使用扫描') {
+                    window.location.href = res.resultStr + '&v='+Math.random();
+            } else {
+                    $("#erweima_msg").show();
+            }
           }
         });
       };

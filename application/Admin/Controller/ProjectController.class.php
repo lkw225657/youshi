@@ -918,7 +918,7 @@ class ProjectController extends AdminbaseController{
 		$process=M('project_process');
 		$project=M('project');
 		$id = intval(I("get.project_id"));
-		$url=U('Mobile/process/project_qiandao@'.WX_HOME_URL_HOST,'project_id='.$id);
+		$url=U('Mobile/Project/project_qiandao@'.WX_HOME_URL_HOST,'project_id='.$id);
 		$erweima= $this->geterweima($url,time());
 		$this->assign("erweima",$erweima);
 		$project_info=$project->where(array('id'=>$id))->find();

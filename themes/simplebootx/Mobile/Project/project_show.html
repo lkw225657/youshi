@@ -256,7 +256,7 @@
             </div>
             </a>
         <?php }elseif($project_info['but_state']==32){?>
-        	<div class="btn-img" id="scanQRCode1">
+        	<div class="btn-img" id="scanQRCode2">
                 扫码签收试用品
             </div>
                 <center><a style=" text-decoration:underline;color:blue;" href="index.php?g=&m=member&a=shiyong_wuliu&project_id=<?php echo $project_info['id']?>">查看快递信息</a></center>
@@ -353,9 +353,9 @@
 </div>
 <div class="member_Promptcont" id="erweima_msg" style="display:none;">
     <div class="member_Prompt">
-        <div class="member_Prompt_title">扫码签收</div>
+        <div class="member_Prompt_title">二维码扫描</div>
         <div class="member_Prompt_desc">
-            <p>收货二维码不正确！</p>
+            <p>扫码失败，请扫描正确二维码！</p>
         </div>
         <div class="member_Prompt_button"><span class="member_yc2" style="color:#d35e7e;">确定</span></div>
     </div>
@@ -432,29 +432,43 @@ $("#longterm_on").click(function(){
   });
   
   wx.ready(function () {
-	  // 9 微信原生接口
-	  // 9.1.1 扫描二维码并返回结果
-	 //  document.querySelector('#scanQRCode1').onclick = function () {
-		// wx.scanQRCode({
-		//   desc: 'scanQRCode desc';
-  //         location.href=desc;
-		// });
-	 //  };
-	  // 9.1.2 扫描二维码并返回结果
-	  document.querySelector('#scanQRCode1').onclick = function () {
-		wx.scanQRCode({
-		  needResult: 1,
-		  desc: 'scanQRCode desc',
-		  success: function (res) {
-//    	  alert(res.resultStr);
-            if (/^.+g=mobile&m=process&a=erweima_ajax&action=shouhuo&project_id={$project_info['id']}/.test(res.resultStr)) {
-                window.location.href = res.resultStr + '&v='+Math.random();
-            } else {
-                $("#erweima_msg").show();
+	  // 扫描二维码并返回结果
+      var element = document.querySelector('#scanQRCode1');
+      if (element != null) {
+            document.querySelector('#scanQRCode1').onclick = function () {
+            wx.scanQRCode({
+            needResult: 1,
+            desc: 'scanQRCode desc',
+            success: function (res) {
+    //    	  alert(res.resultStr);
+                if (/^.+g=mobile&m=project&a=project_qiandao&project_id={$project_info['id']}/.test(res.resultStr)) {
+                    window.location.href = res.resultStr + '&v='+Math.random();
+                } else {
+                    $("#erweima_msg").show();
+                }
             }
-		  }
-		});
-	  };
+            });
+        };
+      }
+
+	  // 扫描二维码并返回结果
+      element = document.querySelector('#scanQRCode2');
+      if (element != null) {
+        document.querySelector('#scanQRCode2').onclick = function () {
+            wx.scanQRCode({
+            needResult: 1,
+            desc: 'scanQRCode desc',
+            success: function (res) {
+    //    	  alert(res.resultStr);
+                if (/^.+g=mobile&m=process&a=shouhuo_ajax&project_id={$project_info['id']}/.test(res.resultStr)) {
+                    window.location.href = res.resultStr + '&v='+Math.random();
+                } else {
+                    $("#erweima_msg").show();
+                }
+            }
+            });
+        };
+      }
   });
 
 wx.error(function (res) {
