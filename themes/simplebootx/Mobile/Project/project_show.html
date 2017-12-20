@@ -310,7 +310,7 @@
 					$(".baoming_ok").show();
 				}else
 				{
-					$(".member_Promptcont").show();
+					$("#baoming_msg").show();
                      $("#desc").html(data);
 				}
 			}
@@ -342,7 +342,7 @@
 </div>
 
 <!--报名失败-->
-<div class="member_Promptcont" style="display:none;">
+<div class="member_Promptcont" id="baoming_msg" style="display:none;">
 	<div class="member_Prompt">
     	<div class="member_Prompt_title">项目报名</div>
         <div class="member_Prompt_desc">

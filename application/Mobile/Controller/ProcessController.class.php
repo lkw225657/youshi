@@ -637,7 +637,7 @@ class ProcessController extends MobilebaseController {
 		$data['add_time']=time();
 		$data['sub_num']=1;
 		//流程中的签到扫描 判断二维码扫描时间
-		if($enrol_info['state']=='项目进行中'&&$name=='签到扫描')
+		if($enrol_info['state']=='项目进行中' && $name=='签到扫描')
 		{
 	
 				//符合时间继续
@@ -681,11 +681,15 @@ class ProcessController extends MobilebaseController {
 					}
 				}
 
-				$data_retun['title']=$project_info['title'];
-				$data_retun['msg']='签到扫描成功，请遵照流程进行下一步。';
-				$data_retun['url']=U('process/index',array('project_id'=>$project_info['id'],'type'=>$process_type));
-				$this->assign("data",$data_retun);
-				$this->display('qiandao_ajax');
+				if ($count+1 == count($process_list)) {
+					Header("Location: ".U('process/index',array('project_id'=>$project_info['id'],'type'=>$process_type)));
+				} else {
+					$data_retun['title']=$project_info['title'];
+					$data_retun['msg']='签到扫描成功，请遵照流程进行下一步。';
+					$data_retun['url']=U('process/index',array('project_id'=>$project_info['id'],'type'=>$process_type));
+					$this->assign("data",$data_retun);
+					$this->display('qiandao_ajax');
+				}
 		}else{
 			//提示扫描正确的二维码
 				$data_retun['title']=$project_info['title'];
@@ -989,7 +993,7 @@ class ProcessController extends MobilebaseController {
 		$data['add_time']=time();
 		$data['sub_num']=1;
 		//流程中的签到扫描 判断二维码扫描时间
-		if($enrol_info['state']=='项目进行中'&&$name=='使用扫描')
+		if($enrol_info['state']=='项目进行中' && $name=='使用扫描')
 		{
 	
 				//符合时间继续
@@ -1033,11 +1037,15 @@ class ProcessController extends MobilebaseController {
 					}
 				}
 
-				$data_retun['title']=$project_info['title'];
-				$data_retun['msg']='使用扫描成功，请遵照流程进行下一步。';
-				$data_retun['url']=U('process/index',array('project_id'=>$project_info['id'],'type'=>$process_type));
-				$this->assign("data",$data_retun);
-				$this->display('qiandao_ajax');
+				if ($count+1 == count($process_list)) {
+					Header("Location: ".U('process/index',array('project_id'=>$project_info['id'],'type'=>$process_type)));
+				} else {
+					$data_retun['title']=$project_info['title'];
+					$data_retun['msg']='使用扫描成功，请遵照流程进行下一步。';
+					$data_retun['url']=U('process/index',array('project_id'=>$project_info['id'],'type'=>$process_type));
+					$this->assign("data",$data_retun);
+					$this->display('qiandao_ajax');
+				}
 		}else{
 			//提示扫描正确的二维码
 				$data_retun['title']=$project_info['title'];
